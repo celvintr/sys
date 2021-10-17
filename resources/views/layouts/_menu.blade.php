@@ -12,7 +12,7 @@
                     <span class="menu-text">Dashboard</span>
                 </a>
             </li>
-            
+
 
             <li class="menu-item menu-item-submenu menu-item-open" aria-haspopup="true" data-menu-toggle="hover">
                 <a href="javascript:;" class="menu-link menu-toggle">
@@ -68,12 +68,12 @@
                                                             <span class="menu-text">Otros</span>
                                                         </a>
                                                         </li>
-                                                              
-                                                                
+
+
           </ul>
-          
+
          </div>
-        
+
         <!--end::Menu Nav-->
     </li>
      <li class="menu-item menu-item-submenu menu-item-open" aria-haspopup="true" data-menu-toggle="hover">
@@ -108,23 +108,23 @@
                                                             <span class="menu-text">Permisos de Usuarios</span>
                                                         </a>
                                                         </li>
-                                                              
-                                                                
+
+
                             </ul>
-          
+
          </div>
-        
+
         <!--end::Menu Nav-->
     </li>
-    
-    
+
+
 </ul>
 
 </div>
     <!--end::Menu Container-->
 </li>
-          
-            
+
+
 <li class="menu-item menu-item-submenu menu-item-open" aria-haspopup="true" data-menu-toggle="hover"><a href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"><!--begin::Svg Icon | path:assets/media/svg/icons/Home/Book-open.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <rect x="0" y="0" width="24" height="24"></rect>
@@ -137,11 +137,11 @@
     <i class="menu-arrow"></i>
     <ul class="menu-subnav">
         <li class="menu-item  menu-item-parent" aria-haspopup="true"><span class="menu-link">
-        <span class="menu-text">Custodios Electorales 
+        <span class="menu-text">Custodios Electorales
             </span></span>
         </li>
         <li class="menu-item " aria-haspopup="true">
-            <a href="#" class="menu-link "><i class="menu-bullet menu-bullet-dot">
+            <a href="{{ route('admin.custodios.index') }}" class="menu-link "><i class="menu-bullet menu-bullet-dot">
                 <span></span>
             </i>
                 <span class="menu-text">Mantenimiento de Custodios</span></a></li>
@@ -152,7 +152,7 @@
                     </i>
                         <span class="menu-text">Bitácora </span></a></li>
                         <li class="menu-item " aria-haspopup="true">
-                            <a href="#" class="menu-link ">
+                            <a href="{{ route('admin.custodios.create') }}" class="menu-link ">
                                 <i class="menu-bullet menu-bullet-dot">
                                     <span></span></i>
                                 <span class="menu-text">Registro de Custodio</span>
@@ -167,16 +167,16 @@
                         </li>
 </ul>
 </div>
-</li>                                             
-                                                              
+</li>
+
 
           </ul>
 
-          
+
          </div>
-        
+
         <!--end::Menu Nav-->
-        
+
     </div>
     <!--end::Menu Container-->
 
@@ -193,7 +193,7 @@
         <i class="menu-arrow"></i>
         <ul class="menu-subnav">
             <li class="menu-item  menu-item-parent" aria-haspopup="true"><span class="menu-link">
-            <span class="menu-text">Custodios Electorales 
+            <span class="menu-text">Custodios Electorales
                 </span></span>
             </li>
             <li class="menu-item " aria-haspopup="true">
@@ -233,7 +233,7 @@
         <i class="menu-arrow"></i>
         <ul class="menu-subnav">
             <li class="menu-item  menu-item-parent" aria-haspopup="true"><span class="menu-link">
-            <span class="menu-text">Custodios Electorales 
+            <span class="menu-text">Custodios Electorales
                 </span></span>
             </li>
             <li class="menu-item " aria-haspopup="true">
@@ -263,6 +263,6 @@
                             </li>
     </ul>
     </div>
-    </li>    
-    
+    </li>
+
 </div>

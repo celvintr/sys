@@ -14,13 +14,13 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
                                         <span class="nav-icon"><i class="flaticon2-chat-1"></i></span>
-                                        <span class="nav-text">Week</span>
+                                        <span class="nav-text">Datos Generales</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
                                         <span class="nav-icon"><i class="flaticon2-drop"></i></span>
-                                        <span class="nav-text">Month</span>
+                                        <span class="nav-text">Dirección</span>
                                     </a>
                                 </li>
                             </ul>

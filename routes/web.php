@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
             #Agregar custodio
             Route::get('/', [CustodiosController::class, 'index'])->name('index');
             Route::get('/data', [CustodiosController::class, 'data'])->name('data');
+            Route::post('/dni', [CustodiosController::class, 'dni'])->name('dni');
             Route::get('/agregar', [CustodiosController::class, 'create'])->name('create');
         });
     });
