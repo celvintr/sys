@@ -891,7 +891,7 @@
             </div>
             <!--end::Page-->
         </div>
-        <!--end::Main-->
+        <!--end::Main -->
 
         <!-- begin::User Panel-->
         <div id="kt_quick_user" class="offcanvas offcanvas-right p-10">
