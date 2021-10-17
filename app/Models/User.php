@@ -13,14 +13,45 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'tbl_usuarios';
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'dni_usuario';
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var string[]
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'dni_usuario',
+        'nombre_usuario',
+        'pass_usuario',
+        'cargo_usuario',
+        'cod_rol',
+        'tel_usuario',
+        'correo_usuario',
+        'cod_departamento',
+        'cod_municipio',
+        'dir_usuario',
+        'estado_usuario',
+        'fecha_registro',
+        'cod_usuario_registro',
     ];
 
     /**
@@ -29,8 +60,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'pass_usuario',
     ];
 
     /**
@@ -39,6 +69,16 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'fecha_registro' => 'datetime',
     ];
+
+    public function getAuthPassword()
+    {
+        return $this->pass_usuario;
+    }
+
+    public function getAvatarAttribute()
+    {
+        return "https://ui-avatars.com/api/?name=" . $this->nombre_usuario . "&color=7F9CF5&background=EBF4FF";
+    }
 }

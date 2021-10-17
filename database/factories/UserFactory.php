@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserFactory extends Factory
@@ -22,25 +23,32 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $num = $this->faker->numberBetween();
+        $dni = str_pad($num, 13, "0", STR_PAD_LEFT);
+
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'dni_usuario'    => $dni,
+            'nombre_usuario' => $this->faker->name,
+            'pass_usuario'   => Hash::make('password'),
+            'cargo_usuario'  => $this->faker->word,
+            'tel_usuario'    => $this->faker->phoneNumber,
+            'dir_usuario'    => $this->faker->address,
         ];
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * User admin.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function unverified()
+    public function su()
     {
         return $this->state(function (array $attributes) {
             return [
-                'email_verified_at' => null,
+                'dni_usuario'    => "0000123456789",
+                'nombre_usuario' => 'Administrador',
+                'pass_usuario'   => Hash::make('password'),
+                'cargo_usuario'  => 'Superusuario',
             ];
         });
     }

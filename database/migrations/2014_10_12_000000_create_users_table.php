@@ -13,14 +13,21 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+        Schema::create('tbl_usuarios', function (Blueprint $table) {
+            $table->string('dni_usuario', 13);
+            $table->text('nombre_usuario');
+            $table->text('pass_usuario');
+            $table->text('cargo_usuario')->nullable();
+            $table->bigInteger('cod_rol')->nullable();
+            $table->text('tel_usuario')->nullable();
+            $table->bigInteger('correo_usuario')->nullable();
+            $table->bigInteger('cod_departamento')->nullable();
+            $table->bigInteger('cod_municipio')->nullable();
+            $table->text('dir_usuario')->nullable();
+            $table->bigInteger('estado_usuario')->nullable();
+            $table->dateTime('fecha_registro')->nullable();
+            $table->bigInteger('cod_usuario_registro')->nullable();
+            $table->primary('dni_usuario');
         });
     }
 

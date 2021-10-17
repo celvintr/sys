@@ -1,73 +1,50 @@
-@extends('layouts.app')
+<x-guest-layout>
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Login-->
+        <div class="login login-4 login-signin-on d-flex flex-row-fluid" id="kt_login">
+            <div class="d-flex flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat" style="background-image: url('{{ asset('metronic/media/bg/bg-3.jpg') }}');">
+                <div class="login-form text-center p-7 position-relative overflow-hidden">
+                    <!--begin::Login Header-->
+                    <div class="d-flex flex-center mb-15">
+                        <a href="#">
+                            <img src="{{ asset('metronic/media/logos/logo-letter-13.png') }}" class="max-h-75px" alt="" />
+                        </a>
+                    </div>
+                    <!--end::Login Header-->
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                    <!--begin::Login Sign in form-->
+                    <div class="login-signin">
+                        <div class="mb-20">
+                            <h3>Iniciar Sesión al Sistema</h3>
+                            <div class="text-muted font-weight-bold">Ingrese sus credenciales para ingresar a su cuenta:</div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                        <div>
+                            <!-- Session Status -->
+                            <x-auth-session-status class="mb-3" :status="session('status')" />
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                            <!-- Validation Errors -->
+                            <x-auth-validation-errors class="mb-3" :errors="$errors" />
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                        <form method="POST" action="{{ route('login') }}" class="form" id="kt_login_signin_form">
+                            @csrf
 
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
+                            <div class="form-group mb-5">
+                                <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="DNI" name="dni_usuario" maxlength="13" autocomplete="off" value="{{ old('dni_usuario') }}" autofocus />
                             </div>
-                        </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
+                            <div class="form-group mb-5">
+                                <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Contraseña" name="pass_usuario" autocomplete="current-password" />
                             </div>
-                        </div>
-                    </form>
+
+                            <button id="kt_login_signin_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Iniciar Sesión</button>
+                        </form>
+                    </div>
+                    <!--end::Login Sign in form-->
                 </div>
             </div>
         </div>
+        <!--end::Login-->
     </div>
-</div>
-@endsection
+</x-guest-layout>
