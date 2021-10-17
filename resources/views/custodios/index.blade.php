@@ -88,7 +88,7 @@
                         <!--end::Dropdown-->
 
                         <!--begin::Button-->
-                        <a href="#" class="btn btn-primary font-weight-bolder">
+                        <a href="{{ route('admin.custodios.create') }}" class="btn btn-primary font-weight-bolder">
                             <span class="svg-icon svg-icon-md">
                                 <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -160,21 +160,76 @@
                             width: 40,
                             type: 'number',
                             selector: false,
-                            textAlign: 'left'
+                            textAlign: 'left',
+                            template: function(data) {
+                                return '<span class="font-weight-bolder">' + data.cod_custodio + '</span>';
+                            }
                         }, {
-                            field: 'DNI',
-                            title: 'dni_custodio',
-                            width: 150,
-                            type: 'number'
-                        }, {
-                            field: 'nombre_custodio',
-                            title: 'Nombre'
+                            field: 'dni_custodio',
+                            title: 'custodio',
+                            template: function(data) {
+                                var output = `
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol symbol-40 symbol-sm flex-shrink-0">
+                                        <img class="" src="${data.avatar}" alt="photo">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">${data.nombre_custodio}</div>
+                                        <a href="#" class="text-muted font-weight-bold text-hover-primary">DNI: ${data.dni_custodio}</a>
+                                    </div>
+                                </div>
+                                `;
+
+                                return output;
+                            }
                         }, {
                             field: 'tel_movil',
-                            title: 'Celular'
+                            title: 'Telefono',
+                            template: function(data) {
+                                var output = ``;
+                                if (data.tel_movil) {
+                                    output += `
+                                    <div class="d-flex align-items-center" style="gap: 5px;">
+                                        <i class="fas fa-mobile-alt"></i>
+                                        <a href="tel:${data.tel_movil}" class="text-muted font-weight-bold text-hover-primary">${data.tel_movil}</a>
+                                    </div>
+                                    `;
+                                }
+                                if (data.tel_fijo) {
+                                    output += `
+                                    <div class="d-flex align-items-center" style="gap: 5px;">
+                                        <i class="fas fa-phone-alt"></i>
+                                        <a href="tel:${data.tel_fijo}" class="text-muted font-weight-bold text-hover-primary">${data.tel_fijo}</a>
+                                    </div>
+                                    `;
+                                }
+
+                                return output;
+                            }
                         }, {
                             field: 'correo1_custodio',
-                            title: 'Correo'
+                            title: 'Correo',
+                            template: function(data) {
+                                var output = ``;
+                                if (data.correo1_custodio) {
+                                    output += `
+                                    <div class="d-flex align-items-center" style="gap: 5px;">
+                                        <i class="far fa-envelope"></i>
+                                        <a href="mailto:${data.correo1_custodio}" class="text-muted font-weight-bold text-hover-primary">${data.correo1_custodio}</a>
+                                    </div>
+                                    `;
+                                }
+                                if (data.correo2_custodio) {
+                                    output += `
+                                    <div class="d-flex align-items-center" style="gap: 5px;">
+                                        <i class="far fa-envelope"></i>
+                                        <a href="mailto:${data.correo2_custodio}" class="text-muted font-weight-bold text-hover-primary">${data.correo2_custodio}</a>
+                                    </div>
+                                    `;
+                                }
+
+                                return output;
+                            }
                         }, {
                             field: 'Acciones',
                             title: 'Acciones',

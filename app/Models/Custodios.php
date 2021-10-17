@@ -53,5 +53,46 @@ class Custodios extends Model
         'estado_custodio',
         'fecha_registro',
         'cod_usuario_registro',
-    ];
+    ];/**
+    * The accessors to append to the model's array form.
+    *
+    * @var array
+    */
+   protected $appends = ['avatar'];
+
+    /**
+     * Obtener avatar
+     */
+    public function getAvatarAttribute()
+    {
+        if (empty($this->foto_custodio)) {
+            return "https://ui-avatars.com/api/?name=" . $this->nombre_custodio . "&color=7F9CF5&background=EBF4FF";
+        } else {
+            return asset('storage/custodios/' . $this->foto_custodio);
+        }
+    }
+
+    /**
+     * Obtener avatar
+     */
+    public function getFotoAttribute()
+    {
+        return asset('storage/custodios/' . $this->foto_custodio);
+    }
+
+    /**
+     * Obtener avatar
+     */
+    public function getFotoDniAttribute()
+    {
+        return asset('storage/custodios/' . $this->foto_dni_custodio);
+    }
+
+    /**
+     * Obtener avatar
+     */
+    public function getFotoCompAttribute()
+    {
+        return asset('storage/custodios/' . $this->foto_comp_custodio);
+    }
 }
