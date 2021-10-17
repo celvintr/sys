@@ -12,7 +12,7 @@
                     <div class="card-title">
                         <h3 class="card-label">
                             Registro de Custodios
-                            <span class="d-block text-muted pt-2 font-size-sm">Módulo para el control y reistro de custodios</span>
+                            <span class="d-block text-muted pt-2 font-size-sm">Módulo para el control y registro de custodios</span>
                         </h3>
                     </div>
                     <div class="card-toolbar">
