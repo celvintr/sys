@@ -36,7 +36,7 @@
                                         </g>
                                     </svg>
                                     <!--end::Svg Icon-->
-                                </span> Export
+                                </span> Exportar
                             </button>
 
                             <!--begin::Dropdown Menu-->
@@ -45,7 +45,7 @@
                                 <ul class="navi flex-column navi-hover py-2">
                                     <li
                                         class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">
-                                        Herramientas:
+                                        Seleccione:
                                     </li>
                                     <li class="navi-item">
                                         <a href="#" class="navi-link">
