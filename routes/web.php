@@ -46,7 +46,11 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         #Agregar custodio
         Route::get('/custodios/agregar', [CustodiosController::class, 'create'])->name('custodios.create');
-    });
+    }); 
+
+  
+
+   
 
 });
 
