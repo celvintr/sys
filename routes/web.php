@@ -36,9 +36,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         #Usuarios
         Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
-    });
 
-    Route::prefix('admin')->name('admin.')->group(function () {
         #Custodios
         Route::get('/custodios', [CustodiosController::class, 'index'])->name('custodios.index');
     });

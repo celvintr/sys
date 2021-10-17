@@ -2,18 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Custodios;
 use Illuminate\Http\Request;
 
 class CustodiosController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostrar vista listado.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         return view('custodios.index');
+    }
+
+    /**
+     * Obtener data para el listado.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function data(Request $request)
+    {
+        $custodios = Custodios::all();
+
+        return response()->json($custodios);
     }
 
     /**
