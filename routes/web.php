@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UsuariosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +23,19 @@ use Illuminate\Support\Facades\Route;
 // })->middleware(['auth'])->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
+    #Dashboard (ESTO VA A CAMBIR EN EL FUTURO POR EL DASHBOAR REAL)
     Route::get('/', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    /**
+     * RUTAS PARA EL ADMIN
+     */
+    Route::prefix('admin')->name('admin.')->group(function () {
+        #Usuarios
+        Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
+    });
+
 });
 
 require __DIR__.'/auth.php';
