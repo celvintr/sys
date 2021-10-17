@@ -29,6 +29,7 @@
                 <a href="{{ route('admin.custodios.index') }}" class="menu-link ">
                     <span class="svg-icon menu-icon">
                         <i class="fas fa-users"></i>
+                        
                     </span>
                     <span class="menu-text">Registro de Custodios</span>
                 </a>

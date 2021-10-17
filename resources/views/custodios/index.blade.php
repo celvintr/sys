@@ -94,10 +94,9 @@
                                         </a>
                     <!--end::Button-->
     
-                                                    <!--begin::Button-->
-                        <a href="custom/apps/user/add-user.html" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2">
-    
-                           Agregar Custodio                    </a>
+                                                    <!--begin::Button--> 
+                         <a href="{{ route('dashboard') }}/admin/custodios/agregar" class=" btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2">Agregar Custodio</a>
+                                                    
                         <!--end::Button-->
     
                                 <!--begin::Dropdown-->
