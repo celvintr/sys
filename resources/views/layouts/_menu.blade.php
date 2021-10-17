@@ -24,6 +24,15 @@
                     <span class="menu-text">Usuarios</span>
                 </a>
             </li>
+
+            <li class="menu-item  menu-item-active" aria-haspopup="true">
+                <a href="{{ route('admin.custodios.index') }}" class="menu-link ">
+                    <span class="svg-icon menu-icon">
+                        <i class="fas fa-users"></i>
+                    </span>
+                    <span class="menu-text">Registro de Custodios</span>
+                </a>
+            </li>
         </ul>
         <!--end::Menu Nav-->
     </div>

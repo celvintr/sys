@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\CustodiosController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +36,11 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         #Usuarios
         Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
+    });
+
+    Route::prefix('admin')->name('admin.')->group(function () {
+        #Usuarios
+        Route::get('/custodios', [CustodiosController::class, 'index'])->name('custodios.index');
     });
 
 });

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5"> Usuarios </h5>
+        <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5"> Registro de custodios </h5>
     </x-slot>
 
     <div class="row">
