@@ -13,8 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(1)->su()->create();   //  aqui creo el admin fijo
-        \App\Models\User::factory(50)->create();        //  aqui creo 50 usuarios aleatorios
+        // \App\Models\User::factory(1)->su()->create();   //  aqui creo el admin fijo
+        // \App\Models\User::factory(50)->create();        //  aqui creo 50 usuarios aleatorios
+        \App\Models\Custodios::factory(500)->create();
 
         // \App\Models\User::factory(10)->create();
     }

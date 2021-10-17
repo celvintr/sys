@@ -36,16 +36,13 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         #Usuarios
         Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
-    });
 
-    Route::prefix('admin')->name('admin.')->group(function () {
         #Custodios
-        Route::get('/custodios', [CustodiosController::class, 'index'])->name('custodios.index');
-    });
-
-    Route::prefix('admin')->name('admin.')->group(function () {
-        #Agregar custodio
-        Route::get('/custodios/agregar', [CustodiosController::class, 'create'])->name('custodios.create');
+        Route::prefix('custodios')->name('custodios.')->group(function () {
+            Route::get('/', [CustodiosController::class, 'index'])->name('index');
+            Route::get('/data', [CustodiosController::class, 'data'])->name('data');
+            Route::get('/agregar', [CustodiosController::class, 'create'])->name('create');
+        });
     });
 
 });
