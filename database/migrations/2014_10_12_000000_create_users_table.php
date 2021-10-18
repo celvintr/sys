@@ -13,7 +13,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_usuarios', function (Blueprint $table) {
+        Schema::create('TBL_USUARIOS', function (Blueprint $table) {
             $table->string('dni_usuario', 13);
             $table->text('nombre_usuario');
             $table->text('pass_usuario');
