@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class RegistroBController extends Controller
+class BitacoraController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +13,7 @@ class RegistroBController extends Controller
      */
     public function index()
     {
-         
+        return view('bitacoras.index');
     }
 
     /**
@@ -23,7 +23,7 @@ class RegistroBController extends Controller
      */
     public function create()
     {
-       
+        return view('bitacoras.create');
     }
 
     /**
@@ -45,7 +45,7 @@ class RegistroBController extends Controller
      */
     public function show($id)
     {
-        return view('custodios.view');
+        return view('bitacoras.view');
     }
 
     /**

@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\CustodiosController;
+
+use App\Http\Controllers\BitacoraController;
+
+
 use App\Http\Controllers\DepartamentosController;
 use App\Http\Controllers\MunicipiosController;
 
@@ -63,6 +67,13 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/', [CustodiosController::class, 'store'])->name('store');
         });
 
+
+         #Bitacora
+         Route::prefix('bitacoras')->name('bitacoras.')->group(function () {
+            Route::get('/', [BitacoraController::class, 'index'])->name('index');
+  
+    
+        });
 
 
     });
