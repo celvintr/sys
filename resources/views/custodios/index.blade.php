@@ -36,7 +36,7 @@
                                         </g>
                                     </svg>
                                     <!--end::Svg Icon-->
-                                </span> Export
+                                </span> Exportar
                             </button>
 
                             <!--begin::Dropdown Menu-->
@@ -45,20 +45,14 @@
                                 <ul class="navi flex-column navi-hover py-2">
                                     <li
                                         class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">
-                                        Choose an option:
+                                        Seleccione:
                                     </li>
                                     <li class="navi-item">
                                         <a href="#" class="navi-link">
                                             <span class="navi-icon"><i class="la la-print"></i></span>
-                                            <span class="navi-text">Print</span>
+                                            <span class="navi-text">Imprimir</span>
                                         </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link">
-                                            <span class="navi-icon"><i class="la la-copy"></i></span>
-                                            <span class="navi-text">Copy</span>
-                                        </a>
-                                    </li>
+                                    </li>                              
                                     <li class="navi-item">
                                         <a href="#" class="navi-link">
                                             <span class="navi-icon"><i
