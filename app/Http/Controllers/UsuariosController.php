@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+
 use Illuminate\Http\Request;
 
 class UsuariosController extends Controller
@@ -16,6 +18,15 @@ class UsuariosController extends Controller
         return view('usuarios.index');
     }
 
+
+
+    public function data(Request $request)
+    {
+        $usuarios = User::all();
+
+        return response()->json($usuarios);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -23,7 +34,7 @@ class UsuariosController extends Controller
      */
     public function create()
     {
-        //
+      //   return view('usuarios.create');
     }
 
     /**

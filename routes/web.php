@@ -34,8 +34,16 @@ Route::middleware(['auth'])->group(function () {
      * RUTAS PARA EL ADMIN
      */
     Route::prefix('admin')->name('admin.')->group(function () {
-        #Usuarios
-        Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
+        
+ 
+         #Usuarios
+          Route::prefix('usuarios')->name('usuarios.')->group(function () {
+            #Agregar usaurio
+            Route::get('/', [UsuariosController::class, 'index'])->name('index');
+            Route::get('/data', [UsuariosController::class, 'data'])->name('data');
+            Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
+        });
+          
 
         #Custodios
         Route::prefix('custodios')->name('custodios.')->group(function () {
@@ -45,6 +53,9 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/dni', [CustodiosController::class, 'dni'])->name('dni');
             Route::get('/agregar', [CustodiosController::class, 'create'])->name('create');
         });
+
+
+
     });
 
 
