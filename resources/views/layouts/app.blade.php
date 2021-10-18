@@ -1317,6 +1317,43 @@
         <script src="{{ asset('metronic/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
         <!--end::Page Vendors-->
 
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('.kt-selectpicker').selectpicker();
+
+                if ($('.select-departamentos').length && $('.select-municipios').length) {
+                    $('.select-departamentos').on('change', function(e) {
+                        var $departamento = $(this);
+                        var $municipio = $($departamento.data('child'));
+
+                        $municipio.html(`<option>::. Seleccione .::</option>`);
+                        $municipio.selectpicker('refresh');
+
+                        if ($departamento.val()) {
+                            axios.get('{{ url('/api/municipios') }}/' + $departamento.val())
+                            .then(function (response) {
+                                var data = response.data;
+                                var output = ``;
+                                data.forEach(item => {
+                                    output += `<option value="${item.cod_municipio}">${item.nombre_municipio}</option>`;
+                                });
+                                $municipio.html(output);
+                                $municipio.selectpicker('refresh');
+                            })
+                            .catch(function (error) {
+                                // handle error
+                                console.log(error);
+                            });
+                        } else {
+
+                        }
+                    });
+                }
+            });
+        </script>
+
         @stack('scripts')
     </body>
 </html>

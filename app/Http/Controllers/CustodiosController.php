@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Custodios;
+use App\Models\Departamentos;
+use App\Models\DNI;
 use Illuminate\Http\Request;
 
 class CustodiosController extends Controller
@@ -37,18 +39,42 @@ class CustodiosController extends Controller
      */
     public function create()
     {
-        return view('custodios.create');
+        $form = null;
+        $departamentos = Departamentos::all();
+
+        if (session()->has('dni')) {
+            $form = (object) [
+                'dni_custodio'    => session('dni')['dni_custodio'],
+                'nombre_custodio' => session('dni')['nombre_custodio'],
+            ];
+        }
+
+        return view('custodios.create', [
+            'form'          => $form,
+            'departamentos' => $departamentos,
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Buscar DNI
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function dni(Request $request)
     {
-        //
+        if (!empty($request->dni)) {
+            $data = DNI::where('dni_custodio', $request->dni)->first();
+            if (empty($data->dni_custodio)) {
+                $request->session()->flash('dni_error', "No se encontro este DNI en la base de datos.");
+            } else {
+                $request->session()->flash('dni', $data);
+            }
+        } else {
+            $request->session()->flash('dni_error', "Debe agregar un DNI a buscar.");
+        }
+
+        return redirect()->route('admin.custodios.create');
     }
 
     /**
