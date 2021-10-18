@@ -28,9 +28,9 @@ class CrearTablaCustodios extends Migration
             $table->text('dir_custodio')->nullable();
             $table->bigInteger('cod_partido')->nullable();
             $table->bigInteger('cod_centro')->nullable();
-            $table->bigInteger('estado_custodio')->nullable();
+            $table->bigInteger('cod_estado')->nullable();
             $table->dateTime('fecha_registro')->nullable();
-            $table->bigInteger('cod_usuario_registro')->nullable();
+            $table->bigInteger('dni_usuario_registro')->nullable();
         });
     }
 

@@ -50,9 +50,9 @@ class Custodios extends Model
         'dir_custodio',
         'cod_partido',
         'cod_centro',
-        'estado_custodio',
+        'cod_estado',
         'fecha_registro',
-        'cod_usuario_registro',
+        'dni_usuario_registro',
     ];
 
     /**

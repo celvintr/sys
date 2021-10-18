@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->text('dir_usuario')->nullable();
             $table->bigInteger('estado_usuario')->nullable();
             $table->dateTime('fecha_registro')->nullable();
-            $table->bigInteger('cod_usuario_registro')->nullable();
+            $table->bigInteger('dni_usuario_registro')->nullable();
             $table->primary('dni_usuario');
         });
     }

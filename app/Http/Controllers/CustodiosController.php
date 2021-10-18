@@ -126,7 +126,7 @@ class CustodiosController extends Controller
             'cod_partido'          => $request->cod_partido,
             'cod_centro'           => $request->cod_centro,
             'fecha_registro'       => now(),
-            'cod_usuario_registro' => Auth::user()->dni_usuario,
+            'dni_usuario_registro' => Auth::user()->dni_usuario,
         ]);
 
         return response()->json(['success' => 'Custodio creado exitosamente']);
