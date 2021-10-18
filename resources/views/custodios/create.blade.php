@@ -37,8 +37,11 @@
                     </div>
                 @endif
             @else
-                <form method="POST" action="{{ route('admin.custodios.store') }}" class="form">
+                <form method="POST" action="{{ route('admin.custodios.store') }}" class="form form-ajax" id="form" enctype="multipart/form-data" data-return="{{ route('admin.custodios.index') }}">
                     <div class="card card-custom">
+
+                        <div class="alert alert-danger alert-errores d-none" role="alert"></div>
+
                         <div class="card-header card-header-tabs-line">
                             <div class="card-toolbar">
                                 <ul class="nav nav-tabs nav-bold nav-tabs-line">
@@ -175,6 +178,18 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Partido Político:</label>
+                                                    <select name="cod_partido" class="form-control kt-selectpicker">
+                                                        <option value="">::. Seleccione .::</option>
+                                                        @foreach ($partidos as $item)
+                                                            <option value="{{ $item->cod_partido }}">{{ $item->nombre_partido }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
                                             <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <label for="">Dirección</label>
@@ -186,7 +201,84 @@
                                 </div>
 
                                 <div class="tab-pane fade" id="kt_tab_pane_3_4" role="tabpanel" aria-labelledby="kt_tab_pane_3_4">
-                                    ...
+                                    <div class="card-body">
+                                        <div class="form-row mb-5">
+                                            <div class="col-lg-4">
+                                                <label class="d-block mb-3 text-center">Foto:</label>
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="image-input image-input-outline" id="kt_foto_custodio">
+                                                        <div class="image-input-wrapper" style="background-image: url(https://ui-avatars.com/api/?name={{ $form->nombre_custodio }}&color=7F9CF5&background=EBF4FF)"></div>
+
+                                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                                            data-action="change"
+                                                            data-toggle="tooltip" title=""
+                                                            data-original-title="Cambia foto">
+                                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                                            <input type="file" name="foto_custodio" accept=".png, .jpg, .jpeg" />
+                                                            <input type="hidden" name="foto_custodio_remove" />
+                                                        </label>
+
+                                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                                            data-action="cancel"
+                                                            data-toggle="tooltip"
+                                                            title="Cancelar foto">
+                                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <label class="d-block mb-3 text-center">Foto DNI:</label>
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="image-input image-input-outline" id="kt_foto_dni_custodio">
+                                                        <div class="image-input-wrapper" style="background-image: url(https://ui-avatars.com/api/?name={{ $form->nombre_custodio }}&color=7F9CF5&background=EBF4FF)"></div>
+
+                                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                                            data-action="change"
+                                                            data-toggle="tooltip" title=""
+                                                            data-original-title="Cambia foto DNI">
+                                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                                            <input type="file" name="foto_dni_custodio" accept=".png, .jpg, .jpeg" />
+                                                            <input type="hidden" name="foto_dni_custodio_remove" />
+                                                        </label>
+
+                                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                                            data-action="cancel"
+                                                            data-toggle="tooltip"
+                                                            title="Cancelar foto DNI">
+                                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <label class="d-block mb-3 text-center">Foto Comp.:</label>
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="image-input image-input-outline" id="kt_foto_comp_custodio">
+                                                        <div class="image-input-wrapper" style="background-image: url(https://ui-avatars.com/api/?name={{ $form->nombre_custodio }}&color=7F9CF5&background=EBF4FF)"></div>
+
+                                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                                            data-action="change"
+                                                            data-toggle="tooltip" title=""
+                                                            data-original-title="Cambia foto comp">
+                                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                                            <input type="file" name="foto_comp_custodio" accept=".png, .jpg, .jpeg" />
+                                                            <input type="hidden" name="foto_comp_custodio_remove" />
+                                                        </label>
+
+                                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                                            data-action="cancel"
+                                                            data-toggle="tooltip"
+                                                            title="Cancelar foto DNI">
+                                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -207,6 +299,55 @@
     </div>
 
     @push('scripts')
+        <script>
+            $(document).ready(function() {
+                var foto_custodio = new KTImageInput('kt_foto_custodio');
+                var foto_dni_custodio = new KTImageInput('kt_foto_dni_custodio');
+                var foto_comp_custodio = new KTImageInput('kt_foto_comp_custodio');
+
+                $('.form-ajax').on('submit', function(e) {
+                    e.preventDefault();
+
+                    var $form = $(this);
+                    var formData = new FormData(document.getElementById($form.attr('id')));
+
+                    axios.post($(this).attr('action'), formData)
+                    .then(function (response) {
+                        console.log(response);
+                        var data = response.data;
+
+                        $('.alert-errores').addClass('d-none');
+                        $('.alert-errores').html('');
+                        if (data.errors) {
+                            $.each(data.errors, function(key, value){
+                                $('.alert-errores').removeClass('d-none');
+                                $('.alert-errores').append(`<p>${value}</p>`);
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Exito",
+                                text: data.success,
+                                icon: "success",
+                                showCancelButton: false,
+                                confirmButtonText: "Aceptar",
+                                reverseButtons: true
+                            }).then(function(result) {
+                                if (result.value) {
+                                    if ($form.data('return')) location.href = $form.data('return');
+                                    else location.reload();
+                                }
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    });
+
+
+                });
+            });
+        </script>
     @endpush
 
     @push('styles')

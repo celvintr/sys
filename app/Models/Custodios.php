@@ -70,7 +70,7 @@ class Custodios extends Model
         if (empty($this->foto_custodio)) {
             return "https://ui-avatars.com/api/?name=" . $this->nombre_custodio . "&color=7F9CF5&background=EBF4FF";
         } else {
-            return asset('storage/custodios/' . $this->foto_custodio);
+            return asset('storage/' . $this->foto_custodio);
         }
     }
 
