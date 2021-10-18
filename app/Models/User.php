@@ -79,6 +79,10 @@ class User extends Authenticatable
 
     public function getAvatarAttribute()
     {
-        return "https://ui-avatars.com/api/?name=" . $this->nombre_usuario . "&color=7F9CF5&background=EBF4FF";
+        if (empty($this->foto_usuario)) {
+            return "https://ui-avatars.com/api/?name=" . $this->nombre_usuario . "&color=7F9CF5&background=EBF4FF";
+        } else {
+            return asset('storage/usuarios/' . $this->foto_usuario);
+        }
     }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\CustodiosController;
+use App\Http\Controllers\BitacoraController;
 
 
 /*
@@ -54,6 +55,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/agregar', [CustodiosController::class, 'create'])->name('create');
         });
 
+
+         #Bitacora
+         Route::prefix('bitacoras')->name('bitacoras.')->group(function () {
+            Route::get('/', [BitacoraController::class, 'index'])->name('index');
+  
+    
+        });
 
 
     });

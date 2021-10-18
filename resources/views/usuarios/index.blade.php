@@ -147,18 +147,7 @@
 
                     // columns definition
                     columns: [
-                        {
-                            field: 'dni_usuario',
-                            title: 'ID',
-                            sortable: 'asc',
-                            width: 40,
-                            type: 'number',
-                            selector: false,
-                            textAlign: 'left',
-                            template: function(data) {
-                                return '<span class="font-weight-bolder">' + data.dni_usuario + '</span>';
-                            }
-                        }, {
+                     {
                             field: 'nombre_usuario',
                             title: 'usuario',
                             template: function(data) {
