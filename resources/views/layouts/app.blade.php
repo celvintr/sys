@@ -1341,6 +1341,36 @@
                                 });
                                 $municipio.html(output);
                                 $municipio.selectpicker('refresh');
+                                $municipio.trigger('change');
+                            })
+                            .catch(function (error) {
+                                // handle error
+                                console.log(error);
+                            });
+                        } else {
+
+                        }
+                    });
+                }
+
+                if ($('.select-municipios').length && $('.select-centros').length) {
+                    $('.select-municipios').on('change', function(e) {
+                        var $municipio = $(this);
+                        var $centro = $($municipio.data('child'));
+
+                        $centro.html(`<option>::. Seleccione .::</option>`);
+                        $centro.selectpicker('refresh');
+
+                        if ($municipio.val()) {
+                            axios.get('{{ url('/api/centros') }}/' + $municipio.val())
+                            .then(function (response) {
+                                var data = response.data;
+                                var output = ``;
+                                data.forEach(item => {
+                                    output += `<option value="${item.cod_centro}">${item.nombre_centro}</option>`;
+                                });
+                                $centro.html(output);
+                                $centro.selectpicker('refresh');
                             })
                             .catch(function (error) {
                                 // handle error

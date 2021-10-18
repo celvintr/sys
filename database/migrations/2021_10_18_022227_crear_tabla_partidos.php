@@ -14,7 +14,7 @@ class CrearTablaPartidos extends Migration
     public function up()
     {
         Schema::create('tbl_partidos_politicos', function (Blueprint $table) {
-            $table->integer('cod_partido', 1);
+            $table->string('cod_partido', 1);
             $table->text('nombre_partido');
             $table->primary('cod_partido');
         });

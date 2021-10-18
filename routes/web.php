@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\CustodiosController;
 use App\Http\Controllers\DepartamentosController;
+use App\Http\Controllers\MunicipiosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,7 @@ use App\Http\Controllers\DepartamentosController;
 // })->middleware(['auth'])->name('dashboard');
 
 Route::get('/api/municipios/{cod_departamento}', [DepartamentosController::class, 'municipios'])->name('api.municipios');
+Route::get('/api/centros/{cod_municipio}', [MunicipiosController::class, 'centros'])->name('api.centros');
 
 Route::middleware(['auth'])->group(function () {
     #Dashboard (ESTO VA A CAMBIR EN EL FUTURO POR EL DASHBOAR REAL)
@@ -32,12 +34,16 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard2');
+
     /**
      * RUTAS PARA EL ADMIN
      */
     Route::prefix('admin')->name('admin.')->group(function () {
-        
- 
+
+
          #Usuarios
           Route::prefix('usuarios')->name('usuarios.')->group(function () {
             #Agregar usaurio
@@ -45,7 +51,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/data', [UsuariosController::class, 'data'])->name('data');
             Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
         });
-          
+
 
         #Custodios
         Route::prefix('custodios')->name('custodios.')->group(function () {

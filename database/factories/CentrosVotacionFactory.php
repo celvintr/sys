@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Model;
+use App\Models\CentrosVotacion;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +13,7 @@ class CentrosVotacionFactory extends Factory
      *
      * @var string
      */
-    protected $model = Model::class;
+    protected $model = CentrosVotacion::class;
 
     /**
      * Define the model's default state.
@@ -28,7 +28,7 @@ class CentrosVotacionFactory extends Factory
 
         return [
             'cod_municipio' => $municipio->cod_municipio,
-            'nombre_centro' => $this->faker->words,
+            'nombre_centro' => $this->faker->company,
         ];
     }
 }

@@ -160,7 +160,16 @@
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label>Municipios:</label>
-                                                    <select name="cod_municipio" id="cod_municipio" class="form-control select-municipios kt-selectpicker" data-size="7" data-live-search="true">
+                                                    <select name="cod_municipio" id="cod_municipio" class="form-control select-municipios kt-selectpicker" data-child="#cod_centro" data-size="7" data-live-search="true">
+                                                        <option value="">::. Seleccione .::</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Centro de Votación:</label>
+                                                    <select name="cod_centro" id="cod_centro" class="form-control select-centros kt-selectpicker" data-size="7" data-live-search="true">
                                                         <option value="">::. Seleccione .::</option>
                                                     </select>
                                                 </div>
