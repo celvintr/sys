@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\CustodiosController;
+
 use App\Http\Controllers\BitacoraController;
 
+
+use App\Http\Controllers\DepartamentosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +27,8 @@ use App\Http\Controllers\BitacoraController;
 // Route::get('/', function () {
 //     return view('dashboard');
 // })->middleware(['auth'])->name('dashboard');
+
+Route::get('/api/municipios/{cod_departamento}', [DepartamentosController::class, 'municipios'])->name('api.municipios');
 
 Route::middleware(['auth'])->group(function () {
     #Dashboard (ESTO VA A CAMBIR EN EL FUTURO POR EL DASHBOAR REAL)
@@ -51,8 +56,9 @@ Route::middleware(['auth'])->group(function () {
             #Agregar custodio
             Route::get('/', [CustodiosController::class, 'index'])->name('index');
             Route::get('/data', [CustodiosController::class, 'data'])->name('data');
-            Route::post('/dni', [CustodiosController::class, 'dni'])->name('dni');
             Route::get('/agregar', [CustodiosController::class, 'create'])->name('create');
+            Route::post('/dni', [CustodiosController::class, 'dni'])->name('dni');
+            Route::post('/', [CustodiosController::class, 'store'])->name('store');
         });
 
 

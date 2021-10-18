@@ -97,7 +97,7 @@
                                     </g>
                                 </svg>
                                 <!--end::Svg Icon-->
-                            </span> Nuevo Registro
+                            </span> Nuevo Registrox
                         </a>
                         <!--end::Button-->
                     </div>

@@ -53,10 +53,12 @@ class Custodios extends Model
         'estado_custodio',
         'fecha_registro',
         'cod_usuario_registro',
-    ];/**
-    * The accessors to append to the model's array form.
-    *
-    * @var array
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
     */
    protected $appends = ['avatar'];
 
