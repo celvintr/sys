@@ -15,7 +15,7 @@
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group m-0">
-                                        <label>Buscar DNI:</label>
+                                        <label>DNI del postulante a custodio:</label>
                                         <div class="input-group input-group-lg">
                                             <input name="dni" required type="text" class="form-control text-bold" maxlength="13" placeholder="Ingrese el DNI..."/>
                                             <div class="input-group-append">
