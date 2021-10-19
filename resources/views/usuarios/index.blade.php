@@ -274,30 +274,38 @@
                 });
             });
         </script>
+        
+        <script>
+            jQuery(document).on('click', '.delete-link', function () {
+                var link_id = $(this).val();
+                var dni_usuario = $(this).data('id');
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: "DELETE",
+                    url: $(this).data('url'),
+                    success: function (data) {
+                        Swal.fire({
+                            title: "Exito",
+                            text: data.message,
+                            icon: data.type,
+                            showCancelButton: false,
+                            confirmButtonText: "Aceptar",
+                            reverseButtons: true
+                        }).then(function(result) {
+                            if (result.value) {
+                                location.reload();
+                            }
+                        });
+                    },
+                    error: function (data) {
+                        console.log('Error:', data);
+                    }
+                });
+            });
+        </script>
     @endpush
-
-    @push('scripts')
-    <script>
-        jQuery('.delete-link').click(function () {
-        var link_id = $(this).val();
-        var dni_usuario = $(this).data('id');
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "DELETE",
-            url: $(this).data('url'),
-            success: function (data) {
-                console.log(data);
-                $("#link" + link_id).remove();
-            },
-            error: function (data) {
-                console.log('Error:', data);
-            }
-        });
-    });
-    </script>
-@endpush
 </x-app-layout>

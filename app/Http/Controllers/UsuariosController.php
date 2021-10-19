@@ -90,14 +90,11 @@ class UsuariosController extends Controller
      */
     public function eliminarusuario($dni_usuario)
     { 
-            Users::where('dni_usuario',$dni_usuario)->delete();  
-
-            return redirect()->route('usuarios.index')->with([
-                'clase'   => 'alert alert-info',
-                'mensaje' => 'Usuario  eliminado satisfactoriamente'
-            ]);
-
- 
+        User::where('dni_usuario',$dni_usuario)->delete();
+        return response()->json([
+            'type' => 'success',
+            'message' => 'Usuario eliminado.',
+        ]);
     }
 
 
