@@ -15,8 +15,10 @@
                     <!--begin::Login Sign in form-->
                     <div class="login-signin">
                         <div class="mb-20">
-                            <h3>Iniciar Sesión al Sistema</h3>
-                            <div class="text-muted font-weight-bold">Ingrese sus credenciales para ingresar a su cuenta:</div>
+
+                           <h4> Sistema de gestión de custodios electorales </h4>
+                            <h4>Iniciar Sesión</h4>
+                            <div class="text  font-weight-bold">Por favor ingrese sus credenciales:</div>
                         </div>
 
                         <div>

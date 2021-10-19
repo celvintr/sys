@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5"> Control de Usuarios </h5>
+        <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Tablero  
+            <span style="color:#a1a5b7!important;font-size:.95rem!important"> | Administración - Seguridad - Usuarios</span></h5>
     </x-slot>
 
     <div class="row">
