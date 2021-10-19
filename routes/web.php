@@ -69,6 +69,16 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('bitacoras')->name('bitacoras.')->group(function () {
             Route::get('/', [BitacoraController::class, 'index'])->name('index');
         });
+
+        //Roles y Permisos
+        Route::prefix('roles')->name('roles.')->group(function () {
+            #Agregar usaurio
+            Route::get('/', [RolesyPermisosController::class, 'index'])->name('index');
+            Route::get('/data', [RolesyPermisosController::class, 'data'])->name('data');
+            Route::get('/agregar', [RolesyPermisosController::class, 'create'])->name('create');
+        });    
+
+
     });
 });
 
