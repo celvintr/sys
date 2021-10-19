@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\EstadosBitacora;
 
 use Illuminate\Http\Request;
 

@@ -93,7 +93,7 @@
                     <div class="brand  flex-column-auto " id="kt_brand" style ="bacground-color:#fff;">
                         <!--begin::Logo-->
                         <a href="{{ route('dashboard') }}l" class="brand-logo">
-                            <img alt="Logo" src="{{ asset('metronic/media/logos/logo-deskt.png') }}" />
+                            <img alt="Logo" src="{{ asset('metronic/media/logos/logo-light.png') }}" />
                         </a>
                         <!--end::Logo-->
 

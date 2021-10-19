@@ -88,8 +88,18 @@ class UsuariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function eliminarusuario($dni_usuario)
+    { 
+            Users::where('dni_usuario',$dni_usuario)->delete();  
+
+            return redirect()->route('usuarios.index')->with([
+                'clase'   => 'alert alert-info',
+                'mensaje' => 'Usuario  eliminado satisfactoriamente'
+            ]);
+
+ 
     }
+
+
+   
 }

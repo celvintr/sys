@@ -1,7 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5"> Registro de Bitacoras </h5>
-    </x-slot>
+        <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Tablero  
+            <span style="color:#a1a5b7!important;font-size:.95rem!important"> | Registro de bitacoras </span>
+        </h5>    
+     </x-slot>
 
     <div class="row">
         <div class="col">
@@ -32,7 +34,7 @@
                                             <div class="form-group">
                                                 <label>DNI</label>
                                                 <div class="input-group input-group-lg">
-                                                    <input type="text" class="form-control text-bold" maxlength="13" placeholder="Buscar..."/>
+                                                    <input type="text" class="form-control text-bold" maxlength="13" placeholder="Buscar custodio..."/>
                                                     <div class="input-group-append">
                                                         <button class="btn btn-secondary" type="button">
                                                             <i class="fas fa-search"></i>
@@ -47,8 +49,8 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="reset" class="btn btn-primary mr-2">Submit</button>
-                                    <button type="reset" class="btn btn-secondary">Cancel</button>
+                                    <button type="reset" class="btn btn-primary mr-2">Enviar</button>
+                                    <button type="reset" class="btn btn-secondary">Cancelar</button>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel" aria-labelledby="kt_tab_pane_2_4">
