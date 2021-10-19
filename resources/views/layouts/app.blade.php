@@ -41,7 +41,7 @@
         <!--begin::Header Mobile-->
         <div id="kt_header_mobile" class="header-mobile align-items-center  header-mobile-fixed ">
             <!--begin::Logo-->
-            <a href="index.html">
+            <a href="{{ route('dashboard') }}">
                 <img alt="Logo" src="{{ asset('metronic/media/logos/logo-light.png') }}" />
             </a>
             <!--end::Logo-->
@@ -90,10 +90,10 @@
                 <!--begin::Aside-->
                 <div class="aside aside-left  aside-fixed  d-flex flex-column flex-row-auto" id="kt_aside">
                     <!--begin::Brand-->
-                    <div class="brand flex-column-auto " id="kt_brand">
+                    <div class="brand  flex-column-auto " id="kt_brand" style ="bacground-color:#fff;">
                         <!--begin::Logo-->
-                        <a href="index.html" class="brand-logo">
-                            <img alt="Logo" src="{{ asset('metronic/media/logos/logo-light.png') }}" />
+                        <a href="{{ route('dashboard') }}l" class="brand-logo">
+                            <img alt="Logo" src="{{ asset('metronic/media/logos/logo-deskt.png') }}" />
                         </a>
                         <!--end::Logo-->
 
