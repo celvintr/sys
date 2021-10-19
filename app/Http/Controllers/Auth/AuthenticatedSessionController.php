@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
     {
         // $request->authenticate();
 
-        $user = User::find($request->dni_usuario);
+        $user = User::where('dni_usuario', $request->dni_usuario)->first();
 
         $checkPass = false;
         if (!empty($user->dni_usuario)) {
