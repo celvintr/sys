@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Tablero  
+        <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Tablero
             <span style="color:#a1a5b7!important;font-size:.95rem!important"> | Administración - Seguridad - Usuarios</span></h5>
     </x-slot>
 
@@ -53,7 +53,7 @@
                                             <span class="navi-icon"><i class="la la-print"></i></span>
                                             <span class="navi-text">Imprimir</span>
                                         </a>
-                                    </li>                              
+                                    </li>
                                     <li class="navi-item">
                                         <a href="#" class="navi-link">
                                             <span class="navi-icon"><i
@@ -123,7 +123,7 @@
                 var datatable = $('#table_usuarios').KTDatatable({
                     data: {
                         type: 'remote',
-                        source: {       
+                        source: {
                             read: {
                                 method: 'GET',
                                 url: '{{ route('admin.usuarios.data') }}',
@@ -179,7 +179,7 @@
                                     </div>
                                     `;
                                 }
-                            
+
 
                                 return output;
                             }
@@ -196,7 +196,7 @@
                                     </div>
                                     `;
                                 }
-                              
+
 
                                 return output;
                             }
@@ -207,46 +207,44 @@
                             width: 130,
                             overflow: 'visible',
                             autoHide: false,
-                            template: function() {
+                            template: function(data) {
                                 return `
-                                    
-                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                            <ul class="navi flex-column navi-hover py-2">
-                                                <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">
-                                                    Choose an action:
-                                                </li>
-                                                <li class="navi-item">
-                                                    <a href="#" class="navi-link">
-                                                        <span class="navi-icon"><i class="la la-print"></i></span>
-                                                        <span class="navi-text">Print</span>
-                                                    </a>
-                                                </li>
-                                                <li class="navi-item">
-                                                    <a href="#" class="navi-link">
-                                                        <span class="navi-icon"><i class="la la-copy"></i></span>
-                                                        <span class="navi-text">Copy</span>
-                                                    </a>
-                                                </li>
-                                                <li class="navi-item">
-                                                    <a href="#" class="navi-link">
-                                                        <span class="navi-icon"><i class="la la-file-excel-o"></i></span>
-                                                        <span class="navi-text">Excel</span>
-                                                    </a>
-                                                </li>
-                                                <li class="navi-item">
-                                                    <a href="#" class="navi-link">
-                                                        <span class="navi-icon"><i class="la la-file-text-o"></i></span>
-                                                        <span class="navi-text">CSV</span>
-                                                    </a>
-                                                </li>
-                                                <li class="navi-item">
-                                                    <a href="#" class="navi-link">
-                                                        <span class="navi-icon"><i class="la la-file-pdf-o"></i></span>
-                                                        <span class="navi-text">PDF</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                        <ul class="navi flex-column navi-hover py-2">
+                                            <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">
+                                                Choose an action:
+                                            </li>
+                                            <li class="navi-item">
+                                                <a href="#" class="navi-link">
+                                                    <span class="navi-icon"><i class="la la-print"></i></span>
+                                                    <span class="navi-text">Print</span>
+                                                </a>
+                                            </li>
+                                            <li class="navi-item">
+                                                <a href="#" class="navi-link">
+                                                    <span class="navi-icon"><i class="la la-copy"></i></span>
+                                                    <span class="navi-text">Copy</span>
+                                                </a>
+                                            </li>
+                                            <li class="navi-item">
+                                                <a href="#" class="navi-link">
+                                                    <span class="navi-icon"><i class="la la-file-excel-o"></i></span>
+                                                    <span class="navi-text">Excel</span>
+                                                </a>
+                                            </li>
+                                            <li class="navi-item">
+                                                <a href="#" class="navi-link">
+                                                    <span class="navi-icon"><i class="la la-file-text-o"></i></span>
+                                                    <span class="navi-text">CSV</span>
+                                                </a>
+                                            </li>
+                                            <li class="navi-item">
+                                                <a href="#" class="navi-link">
+                                                    <span class="navi-icon"><i class="la la-file-pdf-o"></i></span>
+                                                    <span class="navi-text">PDF</span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
                                     <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
                                         <span class="svg-icon svg-icon-md">
@@ -259,7 +257,7 @@
                                             </svg>
                                         </span>
                                     </a>
-                                    <a href="javascript:;"  data-url="{{ route('admin.usuarios.destroy', $item->dni_usuario) }}" class="delete-link btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Delete">
+                                    <a href="javascript:;" data-url="{{ url('admin/usuarios/eliminar-usuario') }}/${data.dni_usuario}" class="delete-link btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Delete">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -282,6 +280,7 @@
     <script>
         jQuery('.delete-link').click(function () {
         var link_id = $(this).val();
+        var dni_usuario = $(this).data('id');
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -289,7 +288,7 @@
         });
         $.ajax({
             type: "DELETE",
-            url: "$(this).data('url')" + link_id,
+            url: $(this).data('url'),
             success: function (data) {
                 console.log(data);
                 $("#link" + link_id).remove();

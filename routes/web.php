@@ -46,19 +46,15 @@ Route::middleware(['auth'])->group(function () {
      * RUTAS PARA EL ADMIN
      */
     Route::prefix('admin')->name('admin.')->group(function () {
-
-
-         #Usuarios
-          Route::prefix('usuarios')->name('usuarios.')->group(function () {
+        #Usuarios
+        Route::prefix('usuarios')->name('usuarios.')->group(function () {
             #Agregar usaurio
             Route::get('/', [UsuariosController::class, 'index'])->name('index');
             Route::get('/data', [UsuariosController::class, 'data'])->name('data');
             Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
             Route::delete('/eliminar-usuario/{dni_usuario}',[UsuariosController::class, 'eliminarusuario'])->name('destroy');
-    
         });
-
-
+        
         #Custodios
         Route::prefix('custodios')->name('custodios.')->group(function () {
             #Agregar custodio
@@ -68,22 +64,12 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/dni', [CustodiosController::class, 'dni'])->name('dni');
             Route::post('/', [CustodiosController::class, 'store'])->name('store');
         });
-
-
-         #Estado de Bitacora
-         Route::prefix('bitacoras')->name('bitacoras.')->group(function () {
+        
+        #Estado de Bitacora
+        Route::prefix('bitacoras')->name('bitacoras.')->group(function () {
             Route::get('/', [BitacoraController::class, 'index'])->name('index');
-  
-    
         });
-
-
     });
-
-
-
-
-
 });
 
 require __DIR__.'/auth.php';
