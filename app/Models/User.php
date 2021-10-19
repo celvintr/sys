@@ -24,7 +24,7 @@ class User extends Authenticatable
      *
      * @var string
      */
-    protected $primaryKey = 'dni_usuario';
+    protected $primaryKey = 'idc_usuario';
 
     /**
      * Indicates if the model should be timestamped.

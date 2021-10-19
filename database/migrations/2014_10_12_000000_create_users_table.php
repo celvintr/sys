@@ -14,7 +14,8 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('TBL_USUARIOS', function (Blueprint $table) {
-            $table->string('dni_usuario', 13);
+            $table->bigIncrements('idc_usuario');
+            $table->string('dni_usuario', 13)->unique();
             $table->text('nombre_usuario');
             $table->text('pass_usuario');
             $table->text('cargo_usuario')->nullable();
@@ -27,7 +28,6 @@ class CreateUsersTable extends Migration
             $table->bigInteger('estado_usuario')->nullable();
             $table->dateTime('fecha_registro')->nullable();
             $table->bigInteger('dni_usuario_registro')->nullable();
-            $table->primary('dni_usuario');
         });
     }
 
