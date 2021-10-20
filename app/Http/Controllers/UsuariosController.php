@@ -3,17 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Custodios;
 use App\Models\Departamentos;
-use App\Models\DNI;
 use App\Models\Municipios;
-use App\Models\PartidosPoliticos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
-
 
 class UsuariosController extends Controller
 {
@@ -30,8 +25,29 @@ class UsuariosController extends Controller
      */
     public function data(Request $request)
     {
-        #Obtengo todos los usuarios
-        $usuarios = User::all();
+        #obtengo el filtro del datatable
+        $buscar = (!empty($request->all()['query']['buscar']) ? $request->all()['query']['buscar'] : null);
+        $estado_usuario = (!empty($request->all()['query']['estado_usuario']) ? $request->all()['query']['estado_usuario'] : null);
+
+        #usuarios
+        $query = User::query();
+
+        #filtro
+        if ($buscar) {
+            $query->where(function($q) use ($buscar) {
+                $q->where('nombre_usuario', 'LIKE', '%' . $buscar . '%');
+                $q->orWhere('dni_usuario', 'LIKE', '%' . $buscar . '%');
+                $q->orWhere('cargo_usuario', 'LIKE', '%' . $buscar . '%');
+                $q->orWhere('correo_usuario', 'LIKE', '%' . $buscar . '%');
+                $q->orWhere('tel_usuario', 'LIKE', '%' . $buscar . '%');
+            });
+        }
+        if ($estado_usuario) {
+            $query->where('estado_usuario', $estado_usuario);
+        }
+
+        #usuarios
+        $usuarios = $query->get();
 
         return response()->json($usuarios);
     }

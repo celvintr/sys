@@ -49,6 +49,31 @@
 
                 <!--begin::Body-->
                 <div class="card-body">
+                    <div class="wrapper-search mb-5">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group m-0">
+                                    <label class="d-block">Buscar:</label>
+                                    <div class="input-icon">
+                                        <input type="text" class="form-control" placeholder="Buscar..." id="filtro_buscar" />
+                                        <span><i class="flaticon2-search-1 text-muted"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group m-0">
+                                    <label class="d-block">Estado:</label>
+                                    <select class="form-control" id="filtro_estado_usuario">
+                                        <option value="">Todos</option>
+                                        @foreach (config('cons.usuarios-estado') as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!--begin: Datatable-->
                     <div class="datatable datatable-bordered datatable-head-custom" id="table_usuarios"></div>
                     <!--end: Datatable-->
@@ -87,6 +112,11 @@
                     sortable: true,
 
                     pagination: true,
+
+                    search: {
+                        input: $('#filtro_buscar'),
+                        key: 'buscar'
+                    },
 
                     // columns definition
                     columns: [
@@ -136,17 +166,25 @@
                                 return output;
                             }
                         },
-                        /*{
-                            field: 'cod_rol',
-                            title: 'Perfil',
-                            width:150,
+                        {
+                            field: 'estado_usuario',
+                            title: 'Estado',
+                            width:100,
                             template: function(data) {
-                                var output = `<div class="d-flex font-weight-bold align-items-center">${data.cod_rol}</div>`;
+                                var status = {
+                                    1: {
+                                        'title': 'Activo',
+                                        'class': ' label-light-success'
+                                    },
+                                    2: {
+                                        'title': 'Inactivo',
+                                        'class': ' label-light-danger'
+                                    },
+                                };
 
-                                return output;
+                                return '<span class="label font-weight-bold label-lg ' + status[data.estado_usuario].class + ' label-inline">' + status[data.estado_usuario].title + '</span>';
                             }
-                        },*/
-
+                        },
                         {
                             field: 'Acciones',
                             title: 'Acciones',
@@ -218,6 +256,10 @@
                                 `;
                             },
                         }],
+                });
+
+                $(document).on('change', '#filtro_estado_usuario', function() {
+                    datatable.search($(this).val().toLowerCase(), 'estado_usuario');
                 });
             });
         </script>
