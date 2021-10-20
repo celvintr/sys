@@ -53,36 +53,32 @@ class UsuariosController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'dni_usuario'       => 'required',
-            'nombre_usuario'    => 'required',
-            'tel_movil'          => 'required',
-            'pass_usuario'   => 'required',
+            'dni_usuario'        => 'required',
+            'nombre_usuario'     => 'required',
+            'pass_usuario'       => 'required',
             'cargo_usuario'      => 'required',
-            'cod_rol'  => 'required',
-            'tel_usuario' => 'required',
-            'correo_usuario'      => 'required',
-            'cod_departamento'        => 'required',
-            'cod_municipio'         => 'required',
-            'dir_usuario'         => 'required',
-            'estado_usuario'         => 'required',
-            'fecha_registro'         => 'required',
-            'dni_usuario_registro'         => 'required',
-        ], [], [
-            'dni_usuario'       => 'DNI',
-            'nombre_usuario'    => 'Nombre',
-            'tel_movil'          => 'Telefono',
-            'pass_usuario'   => 'Contraseña',
+            'cod_rol'            => 'required',
+            'tel_usuario'        => 'required',
+            'correo_usuario'     => 'required',
+            'cod_departamento'   => 'required',
+            'cod_municipio'      => 'required',
+            'dir_usuario'        => 'required',
+            'estado_usuario'     => 'required',
+            'fecha_registro'     => 'required',
+         ], [], [
+            'dni_usuario'        => 'DNI',
+            'nombre_usuario'     => 'Nombre',
+            'pass_usuario'       => 'Contraseña',
             'cargo_usuario'      => 'Cargo',
-            'cod_rol'  => 'required',
-            'tel_usuario' => 'required',
-            'correo_usuario'      => 'required',
-            'cod_departamento'        => 'required',
-            'cod_municipio'         => 'required',
-            'dir_usuario'         => 'required',
-            'estado_usuario'         => 'required',
-            'fecha_registro'         => 'required',
-            'dni_usuario_registro'         => 'required',
-        ]);
+            'cod_rol'            => 'required',
+            'tel_usuario'        => 'Telefono',
+            'correo_usuario'     => 'Correo',
+            'cod_departamento'   => 'Departamento',
+            'cod_municipio'      => 'Municipio',
+            'dir_usuario'        => 'Direccion',
+            'estado_usuario'     => 'Estado',
+            'fecha_registro'     => 'Fecha',
+         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
@@ -91,24 +87,22 @@ class UsuariosController extends Controller
      
 
         $usuarios = User::create([
-            'dni_custodio'         => $request->dni_custodio,
-            'nombre_custodio'      => $request->nombre_custodio,
-            'tel_movil'            => $request->tel_movil,
-            'tel_fijo'             => $request->tel_fijo,
-            'correo1_custodio'     => $request->correo1_custodio,
-            'correo2_custodio'     => $request->correo2_custodio,
-            'foto_custodio'        => $foto_custodio,
-            'foto_dni_custodio'    => $foto_dni_custodio,
-            'foto_comp_custodio'   => $foto_comp_custodio,
+            'dni_usuario'          => $request->dni_usuario,
+            'nombre_usuario'       => $request->nombre_usuario,
+            'pass_usuario'         => $request->pass_usuario,
+            'cargo_usuario'        => $request->cargo_usuario,
+            'cod_rol'              => $cod_rol,
+            'tel_usuario'          => $tel_usuario,
+            'correo_usuario'       => $request->correo_usuario,
+            'cod_departamento'     => $request->cod_departamento,
             'cod_municipio'        => $request->cod_municipio,
-            'dir_custodio'         => $request->dir_custodio,
-            'cod_partido'          => $request->cod_partido,
-            'cod_centro'           => $request->cod_centro,
+            'estado_usuario'       => $request->estado_usuario,
+            'dir_usuario'          => $request->dir_usuario,           
             'fecha_registro'       => now(),
             'dni_usuario_registro' => Auth::user()->dni_usuario,
         ]);
 
-        return response()->json(['success' => 'Custodio creado exitosamente']);
+        return response()->json(['success' => 'Usuario creado exitosamente']);
     }
 
 
@@ -120,47 +114,7 @@ class UsuariosController extends Controller
         return response()->json($usuarios);
     }
 
- 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function eliminarusuario($idc_usuario)
     { 
         User::where('idc_usuario',$idc_usuario)->delete();

@@ -53,7 +53,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [UsuariosController::class, 'index'])->name('index');
             Route::get('/data', [UsuariosController::class, 'data'])->name('data');
             Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
-            Route::delete('/eliminar-usuario/{idc_usuario}',[UsuariosController::class, 'eliminarusuario'])->name('destroy');
+            Route::post('/', [CustodiosController::class, 'store'])->name('store');
+            Route::delete('/',[UsuariosController::class, 'eliminarusuario'])->name('destroy');
         });
         
         #Custodios
