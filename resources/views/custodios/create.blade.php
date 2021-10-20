@@ -304,48 +304,6 @@
                 var foto_custodio = new KTImageInput('kt_foto_custodio');
                 var foto_dni_custodio = new KTImageInput('kt_foto_dni_custodio');
                 var foto_comp_custodio = new KTImageInput('kt_foto_comp_custodio');
-
-                $('.form-ajax').on('submit', function(e) {
-                    e.preventDefault();
-
-                    var $form = $(this);
-                    var formData = new FormData(document.getElementById($form.attr('id')));
-
-                    axios.post($(this).attr('action'), formData)
-                    .then(function (response) {
-                        console.log(response);
-                        var data = response.data;
-
-                        $('.alert-errores').addClass('d-none');
-                        $('.alert-errores').html('');
-                        if (data.errors) {
-                            $.each(data.errors, function(key, value){
-                                $('.alert-errores').removeClass('d-none');
-                                $('.alert-errores').append(`<p>${value}</p>`);
-                            });
-                        } else {
-                            Swal.fire({
-                                title: "Exito",
-                                text: data.success,
-                                icon: "success",
-                                showCancelButton: false,
-                                confirmButtonText: "Aceptar",
-                                reverseButtons: true
-                            }).then(function(result) {
-                                if (result.value) {
-                                    if ($form.data('return')) location.href = $form.data('return');
-                                    else location.reload();
-                                }
-                            });
-                        }
-                    })
-                    .catch(function (error) {
-                        // handle error
-                        console.log(error);
-                    });
-
-
-                });
             });
         </script>
     @endpush

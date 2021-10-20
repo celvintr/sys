@@ -21,11 +21,11 @@ class CreateUsersTable extends Migration
             $table->text('cargo_usuario')->nullable();
             $table->bigInteger('cod_rol')->nullable();
             $table->text('tel_usuario')->nullable();
-            $table->bigInteger('correo_usuario')->nullable();
-            $table->bigInteger('cod_departamento')->nullable();
-            $table->bigInteger('cod_municipio')->nullable();
+            $table->string('correo_usuario', 50)->nullable();
+            $table->string('cod_departamento', 2)->nullable();
+            $table->string('cod_municipio', 4)->nullable();
             $table->text('dir_usuario')->nullable();
-            $table->bigInteger('estado_usuario')->nullable();
+            $table->tinyInteger('estado_usuario')->nullable();
             $table->dateTime('fecha_registro')->nullable();
             $table->bigInteger('dni_usuario_registro')->nullable();
         });

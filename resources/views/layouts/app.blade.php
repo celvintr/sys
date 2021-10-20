@@ -129,7 +129,7 @@
 
                 <!--begin::Wrapper-->
                 <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-                    
+
                     <!--begin::Header-->
                     <div id="kt_header" class="header  header-fixed ">
                         <!--begin::Container-->
@@ -140,7 +140,7 @@
                     <div class="footer bg-white py-4 d-flex flex-lg-column " id="kt_footer">
                         <!--begin::Container-->
                         <div class=" container-fluid  d-flex flex-column flex-md-row align-items-center justify-content-between">
-                         
+
 
                             <!--begin::Nav-->
                             <div class="nav nav-dark hidden-md-down">
@@ -268,7 +268,7 @@
                                                             <!--end::Text-->
                                                         </div>
                                                         <!--end::Item-->
- 
+
 
                                                         <!--begin::Item-->
                                                         <a href="#" class="navi-item">
@@ -287,10 +287,10 @@
                                                             </div>
                                                         </a>
                                                         <!--end::Item-->
- 
-                                                       
 
-                                                       
+
+
+
                                                     </div>
                                                     <!--end::Nav-->
                                                 </div>
@@ -373,10 +373,10 @@
                             class=" container-fluid  d-flex flex-column flex-md-row align-items-center justify-content-between">
                             <!--begin::Copyright-->
                             <div class="text-dark order-2 order-md-1">
-                                <span class="text-muted font-weight-bold mr-2">© Derechos Reservados - Consejo Nacional Electoral - Honduras  
+                                <span class="text-muted font-weight-bold mr-2">© Derechos Reservados - Consejo Nacional Electoral - Honduras
                                     {{ date('Y') }}
                                     </span>
-                                 
+
                             </div>
                             <!--end::Copyright-->
 
@@ -393,12 +393,12 @@
                                 </div>
                                     <div class="alert-text">
                                         Edificio Edificaciones del Río, Colonia El Prado, frente a SYRE, Tegucigalpa M.D.C., Honduras, C.A.<br>
-                                   
-                                 
+
+
                                        Teléfono: +504 2239-1058
                                     </div>
                                    </div>
-                             
+
                              <!--end::Nav-->
                         </div>
                         <!--end::Container-->
@@ -862,15 +862,20 @@
         <!--end::Global Theme Bundle-->
 
         <!--begin::Page Vendors(used by this page)-->
-        <script src="{{ asset('metronic/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
+        <script src="{{ asset('metronic/js/pages/crud/forms/widgets/bootstrap-switch.js') }}"></script>
         <!--end::Page Vendors-->
 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
         <script>
             $(document).ready(function() {
+                //  dropdowns
                 $('.kt-selectpicker').selectpicker();
 
+                //  switch
+                $('[data-switch=true]').bootstrapSwitch();
+
+                //  Selects dependientes (departamentos, municipios, centros)
                 if ($('.select-departamentos').length && $('.select-municipios').length) {
                     $('.select-departamentos').on('change', function(e) {
                         var $departamento = $(this);
@@ -900,7 +905,6 @@
                         }
                     });
                 }
-
                 if ($('.select-municipios').length && $('.select-centros').length) {
                     $('.select-municipios').on('change', function(e) {
                         var $municipio = $(this);
@@ -929,6 +933,47 @@
                         }
                     });
                 }
+
+                //  Submit form por ajax
+                $('.form-ajax').on('submit', function(e) {
+                    e.preventDefault();
+
+                    var $form = $(this);
+                    var formData = new FormData(document.getElementById($form.attr('id')));
+
+                    axios.post($(this).attr('action'), formData)
+                    .then(function (response) {
+                        console.log(response);
+                        var data = response.data;
+
+                        $('.alert-errores').addClass('d-none');
+                        $('.alert-errores').html('');
+                        if (data.errors) {
+                            $.each(data.errors, function(key, value){
+                                $('.alert-errores').removeClass('d-none');
+                                $('.alert-errores').append(`<p>${value}</p>`);
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Exito",
+                                text: data.success,
+                                icon: "success",
+                                showCancelButton: false,
+                                confirmButtonText: "Aceptar",
+                                reverseButtons: true
+                            }).then(function(result) {
+                                if (result.value) {
+                                    if ($form.data('return')) location.href = $form.data('return');
+                                    else location.reload();
+                                }
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    });
+                });
             });
         </script>
 

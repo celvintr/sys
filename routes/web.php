@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RolesyPermisosController;  
+use App\Http\Controllers\RolesyPermisosController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\CustodiosController;
 
@@ -53,10 +53,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [UsuariosController::class, 'index'])->name('index');
             Route::get('/data', [UsuariosController::class, 'data'])->name('data');
             Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
-            Route::post('/', [CustodiosController::class, 'store'])->name('store');
-            Route::delete('/',[UsuariosController::class, 'eliminarusuario'])->name('destroy');
+            Route::get('/editar/{idc_usuario}', [UsuariosController::class, 'editar'])->name('editar');
+            Route::post('/', [UsuariosController::class, 'store'])->name('store');
+            Route::put('/{idc_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');
+            Route::delete('eliminar-usuario/{idc_usuario}',[UsuariosController::class, 'eliminarusuario'])->name('destroy');
         });
-        
+
         #Custodios
         Route::prefix('custodios')->name('custodios.')->group(function () {
             #Agregar custodio
@@ -66,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/dni', [CustodiosController::class, 'dni'])->name('dni');
             Route::post('/', [CustodiosController::class, 'store'])->name('store');
         });
-        
+
         #Estado de Bitacora
         Route::prefix('bitacoras')->name('bitacoras.')->group(function () {
             Route::get('/', [BitacoraController::class, 'index'])->name('index');
@@ -78,7 +80,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [RolesyPermisosController::class, 'index'])->name('index');
             Route::get('/data', [RolesyPermisosController::class, 'data'])->name('data');
             Route::get('/agregar', [RolesyPermisosController::class, 'create'])->name('create');
-        });    
+        });
 
 
     });

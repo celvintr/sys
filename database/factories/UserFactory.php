@@ -27,11 +27,11 @@ class UserFactory extends Factory
         $dni = str_pad($num, 13, "0", STR_PAD_LEFT);
 
         return [
-            
             'dni_usuario'    => $dni,
             'nombre_usuario' => $this->faker->name,
             'pass_usuario'   => Hash::make('password'),
             'cargo_usuario'  => $this->faker->word,
+            'correo_usuario' => $this->faker->email,
             'tel_usuario'    => $this->faker->phoneNumber,
             'dir_usuario'    => $this->faker->address,
         ];
@@ -50,6 +50,7 @@ class UserFactory extends Factory
                 'nombre_usuario' => 'Administrador',
                 'pass_usuario'   => Hash::make('password'),
                 'cargo_usuario'  => 'Superusuario',
+                'correo_usuario' => 'admin@admin.com',
             ];
         });
     }

@@ -18,10 +18,8 @@
                     <div class="card-toolbar">
                         <!--begin::Dropdown-->
                         <div class="dropdown dropdown-inline mr-2">
-                             
-
                             <!--begin::Dropdown Menu-->
-                             
+
                             <!--end::Dropdown Menu-->
                         </div>
                         <!--end::Dropdown-->
@@ -93,45 +91,63 @@
                     // columns definition
                     columns: [
                      {
-                            field: 'idc_usuario',
+                            field: 'nombre_usuario',
                             title: 'Nombre',
                             width: 250,
                             template: function(data) {
                                 var output = `<div class="d-flex font-weight-bold align-items-center">${data.nombre_usuario}</div>`;
-                                
+
                                 return output;
                             }
                         }, {
                             field: 'dni_usuario',
                             title: 'DNI',
                             width: 120,
-                            template: function(data) {                               
+                            template: function(data) {
                                 var output = `<div class="d-flex font-weight-bold align-items-center">${data.dni_usuario}</div>`;
-                                
+
                                 return output;
                             }
                         }, {
                             field: 'cargo_usuario',
                             title: 'Cargo',
                             width:200,
-                            template: function(data) {                               
+                            template: function(data) {
                                 var output = `<div class="d-flex font-weight-bold align-items-center">${data.cargo_usuario}</div>`;
-                                
+
+                                return output;
+                            }
+                        }, {
+                            field: 'correo_usuario',
+                            title: 'Correo',
+                            width:200,
+                            template: function(data) {
+                                var output = `<div class="d-flex font-weight-bold align-items-center">${data.correo_usuario}</div>`;
+
+                                return output;
+                            }
+                        }, {
+                            field: 'tel_usuario',
+                            title: 'Teléfono',
+                            width:200,
+                            template: function(data) {
+                                var output = `<div class="d-flex font-weight-bold align-items-center">${data.tel_usuario}</div>`;
+
                                 return output;
                             }
                         },
-                        {
+                        /*{
                             field: 'cod_rol',
                             title: 'Perfil',
                             width:150,
-                            template: function(data) {                               
+                            template: function(data) {
                                 var output = `<div class="d-flex font-weight-bold align-items-center">${data.cod_rol}</div>`;
-                                
+
                                 return output;
                             }
-                        },
-                        
-                         {
+                        },*/
+
+                        {
                             field: 'Acciones',
                             title: 'Acciones',
                             sortable: false,
@@ -177,7 +193,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
+                                    <a href="{{ url('admin/usuarios/editar') }}/${data.idc_usuario}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -205,35 +221,47 @@
                 });
             });
         </script>
-        
+
         <script>
             jQuery(document).on('click', '.delete-link', function () {
-                var link_id = $(this).val();
-                var dni_usuario = $(this).data('id');
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    type: "DELETE",
-                    url: $(this).data('url'),
-                    success: function (data) {
-                        Swal.fire({
-                            title: "Exito",
-                            text: data.message,
-                            icon: data.type,
-                            showCancelButton: false,
-                            confirmButtonText: "Aceptar",
-                            reverseButtons: true
-                        }).then(function(result) {
-                            if (result.value) {
-                                location.reload();
+                Swal.fire({
+                    title: "Está seguro?",
+                    text: "Esta acción es irreversible!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Si, Eliminar!",
+                    cancelButtonText: "No, cancelar!",
+                    confirmButtonColor: '#d33'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var link_id = $(this).val();
+                        var dni_usuario = $(this).data('id');
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                             }
                         });
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
+                        $.ajax({
+                            type: "DELETE",
+                            url: $(this).data('url'),
+                            success: function (data) {
+                                Swal.fire({
+                                    title: "Exito",
+                                    text: data.message,
+                                    icon: data.type,
+                                    showCancelButton: false,
+                                    confirmButtonText: "Aceptar",
+                                    reverseButtons: true
+                                }).then(function(result) {
+                                    if (result.value) {
+                                        location.reload();
+                                    }
+                                });
+                            },
+                            error: function (data) {
+                                console.log('Error:', data);
+                            }
+                        });
                     }
                 });
             });
