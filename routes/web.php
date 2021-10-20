@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RolesyPermisosController;  
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\CustodiosController;
 
@@ -52,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [UsuariosController::class, 'index'])->name('index');
             Route::get('/data', [UsuariosController::class, 'data'])->name('data');
             Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
-            Route::delete('/eliminar-usuario/{dni_usuario}',[UsuariosController::class, 'eliminarusuario'])->name('destroy');
+            Route::delete('/eliminar-usuario/{idc_usuario}',[UsuariosController::class, 'eliminarusuario'])->name('destroy');
         });
         
         #Custodios

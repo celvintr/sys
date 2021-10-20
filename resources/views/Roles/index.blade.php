@@ -11,19 +11,13 @@
                 <div class="card-header flex-wrap border-0 pt-6 pb-0">
                     <div class="card-title">
                         <h3 class="card-label">
-                            Registro de Usuarios
-                            <span class="d-block text-muted pt-2 font-size-sm">Módulo para el control y registro de Usuarios del sistema</span>
+                            Usuarios
+                            <span class="d-block text-muted pt-2 font-size-sm">Gestión de usuarios de sistema</span>
                         </h3>
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Dropdown-->
-                        <div class="dropdown dropdown-inline mr-2">
-                             
-
-                            <!--begin::Dropdown Menu-->
-                             
-                            <!--end::Dropdown Menu-->
-                        </div>
+                        
                         <!--end::Dropdown-->
 
                         <!--begin::Button-->
@@ -42,7 +36,7 @@
                                     </g>
                                 </svg>
                                 <!--end::Svg Icon-->
-                            </span> Nuevo Registro
+                            </span> Agregar usuario
                         </a>
                         <!--end::Button-->
                     </div>
@@ -64,10 +58,11 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+ 
                 var datatable = $('#table_usuarios').KTDatatable({
                     data: {
                         type: 'remote',
-                        source: {
+                        source: {       
                             read: {
                                 method: 'GET',
                                 url: '{{ route('admin.usuarios.data') }}',
@@ -76,7 +71,7 @@
                         pageSize: 10, // display 20 records per page
                         serverPaging: true,
                         serverFiltering: true,
-                        serverSorting: true
+                        //serverSorting: true
                     },
 
                     // layout definition
@@ -86,17 +81,19 @@
                     },
 
                     // column sorting
-                    sortable: true,
+                    //sortable: true,
 
                     pagination: true,
 
+                    
                     // columns definition
                     columns: [
-                     {
+                       
+                        {
                             field: 'idc_usuario',
                             title: 'Nombre',
                             width: 250,
-                            template: function(data) {
+                            template: function(data) {                               
                                 var output = `<div class="d-flex font-weight-bold align-items-center">${data.nombre_usuario}</div>`;
                                 
                                 return output;
@@ -130,7 +127,6 @@
                                 return output;
                             }
                         },
-                        
                          {
                             field: 'Acciones',
                             title: 'Acciones',
@@ -138,44 +134,57 @@
                             width: 130,
                             overflow: 'visible',
                             autoHide: false,
-                            template: function(data) {
+                            template: function() {
                                 return `
-                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                        <ul class="navi flex-column navi-hover py-2">
-                                            <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">
-                                                Choose an action:
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="la la-print"></i></span>
-                                                    <span class="navi-text">Print</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="la la-copy"></i></span>
-                                                    <span class="navi-text">Copy</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="la la-file-excel-o"></i></span>
-                                                    <span class="navi-text">Excel</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="la la-file-text-o"></i></span>
-                                                    <span class="navi-text">CSV</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="la la-file-pdf-o"></i></span>
-                                                    <span class="navi-text">PDF</span>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                    <div class="dropdown dropdown-inline">
+                                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" data-toggle="dropdown">
+                                            <span class="svg-icon svg-icon-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="svg-icon">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24"/>
+                                                        <path d="M7,3 L17,3 C19.209139,3 21,4.790861 21,7 C21,9.209139 19.209139,11 17,11 L7,11 C4.790861,11 3,9.209139 3,7 C3,4.790861 4.790861,3 7,3 Z M7,9 C8.1045695,9 9,8.1045695 9,7 C9,5.8954305 8.1045695,5 7,5 C5.8954305,5 5,5.8954305 5,7 C5,8.1045695 5.8954305,9 7,9 Z" fill="#000000"/>
+                                                        <path d="M7,13 L17,13 C19.209139,13 21,14.790861 21,17 C21,19.209139 19.209139,21 17,21 L7,21 C4.790861,21 3,19.209139 3,17 C3,14.790861 4.790861,13 7,13 Z M17,19 C18.1045695,19 19,18.1045695 19,17 C19,15.8954305 18.1045695,15 17,15 C15.8954305,15 15,15.8954305 15,17 C15,18.1045695 15.8954305,19 17,19 Z" fill="#000000" opacity="0.3"/>
+                                                    </g>
+                                                </svg>
+                                            </span>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                            <ul class="navi flex-column navi-hover py-2">
+                                                <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">
+                                                    Choose an action:
+                                                </li>
+                                                <li class="navi-item">
+                                                    <a href="#" class="navi-link">
+                                                        <span class="navi-icon"><i class="la la-print"></i></span>
+                                                        <span class="navi-text">Print</span>
+                                                    </a>
+                                                </li>
+                                                <li class="navi-item">
+                                                    <a href="#" class="navi-link">
+                                                        <span class="navi-icon"><i class="la la-copy"></i></span>
+                                                        <span class="navi-text">Copy</span>
+                                                    </a>
+                                                </li>
+                                                <li class="navi-item">
+                                                    <a href="#" class="navi-link">
+                                                        <span class="navi-icon"><i class="la la-file-excel-o"></i></span>
+                                                        <span class="navi-text">Excel</span>
+                                                    </a>
+                                                </li>
+                                                <li class="navi-item">
+                                                    <a href="#" class="navi-link">
+                                                        <span class="navi-icon"><i class="la la-file-text-o"></i></span>
+                                                        <span class="navi-text">CSV</span>
+                                                    </a>
+                                                </li>
+                                                <li class="navi-item">
+                                                    <a href="#" class="navi-link">
+                                                        <span class="navi-icon"><i class="la la-file-pdf-o"></i></span>
+                                                        <span class="navi-text">PDF</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                     <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
                                         <span class="svg-icon svg-icon-md">
@@ -205,38 +214,39 @@
                 });
             });
         </script>
-        
-        <script>
-            jQuery(document).on('click', '.delete-link', function () {
-                var link_id = $(this).val();
-                var dni_usuario = $(this).data('id');
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    type: "DELETE",
-                    url: $(this).data('url'),
-                    success: function (data) {
-                        Swal.fire({
-                            title: "Exito",
-                            text: data.message,
-                            icon: data.type,
-                            showCancelButton: false,
-                            confirmButtonText: "Aceptar",
-                            reverseButtons: true
-                        }).then(function(result) {
-                            if (result.value) {
-                                location.reload();
-                            }
-                        });
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                    }
-                });
+    
+
+    <script>
+        jQuery(document).on('click', '.delete-link', function () {
+            var link_id = $(this).val();
+            var dni_usuario = $(this).data('id');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
             });
-        </script>
-    @endpush
+            $.ajax({
+                type: "DELETE",
+                url: $(this).data('url'),
+                success: function (data) {
+                    Swal.fire({
+                        title: "Exito",
+                        text: data.message,
+                        icon: data.type,
+                        showCancelButton: false,
+                        confirmButtonText: "Aceptar",
+                        reverseButtons: true
+                    }).then(function(result) {
+                        if (result.value) {
+                            location.reload();
+                        }
+                    });
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                }
+            });
+        });
+    </script>
+@endpush
 </x-app-layout>

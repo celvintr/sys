@@ -27,6 +27,7 @@ class UserFactory extends Factory
         $dni = str_pad($num, 13, "0", STR_PAD_LEFT);
 
         return [
+            
             'dni_usuario'    => $dni,
             'nombre_usuario' => $this->faker->name,
             'pass_usuario'   => Hash::make('password'),

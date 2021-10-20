@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('TBL_USUARIOS', function (Blueprint $table) {
             $table->bigIncrements('idc_usuario');
-            $table->string('dni_usuario', 13)->unique();
+            $table->string('dni_usuario', 13);
             $table->text('nombre_usuario');
             $table->text('pass_usuario');
             $table->text('cargo_usuario')->nullable();
