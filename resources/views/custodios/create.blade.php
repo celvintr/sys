@@ -5,13 +5,11 @@
 
     <div class="row">
         <div class="col">
-
-            @if (empty($form))
+            @if(empty($form))
                 <div class="card card-custom my-5">
                     <div class="card-body">
                         <form method="POST" action="{{ route('admin.custodios.dni') }}">
                             @csrf
-
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group m-0">
@@ -38,10 +36,9 @@
                 @endif
             @else
                 <form method="POST" action="{{ route('admin.custodios.store') }}" class="form form-ajax" id="form" enctype="multipart/form-data" data-return="{{ route('admin.custodios.index') }}">
+                {{ csrf_field() }}
                     <div class="card card-custom">
-
                         <div class="alert alert-danger alert-errores d-none" role="alert"></div>
-
                         <div class="card-header card-header-tabs-line">
                             <div class="card-toolbar">
                                 <ul class="nav nav-tabs nav-bold nav-tabs-line">
@@ -102,7 +99,7 @@
 
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label for="">Teléfono fio</label>
+                                                    <label for="">Teléfono fijo</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">
@@ -284,7 +281,7 @@
                         </div>
 
                         <div class="card-footer d-flex align-items-center justify-content-center">
-                            <button type="submit" class="btn btn-primary mx-1">
+                            <button  type="submit" class="btn btn-primary mx-1">
                                 <i class="far fa-save"></i> Guadar
                             </button>
                             <a href="{{ route('admin.custodios.index') }}" class="btn btn-secondary mx-1">
@@ -299,13 +296,167 @@
     </div>
 
     @push('scripts')
+        @if(!empty($form))
         <script>
             $(document).ready(function() {
-                var foto_custodio = new KTImageInput('kt_foto_custodio');
-                var foto_dni_custodio = new KTImageInput('kt_foto_dni_custodio');
-                var foto_comp_custodio = new KTImageInput('kt_foto_comp_custodio');
+                const foto_custodio = new KTImageInput('kt_foto_custodio');
+                const foto_dni_custodio = new KTImageInput('kt_foto_dni_custodio');
+                const foto_comp_custodio = new KTImageInput('kt_foto_comp_custodio');
+
+                $('.form-ajax').on('submit', function(e) {
+                    e.preventDefault();
+
+                    const $form = $(this);
+                    const formData = new FormData(document.getElementById($form.attr('id')));
+
+                    axios.post($(this).attr('action'), formData)
+                    .then(function (response) {
+                        const data = response.data;
+
+                        $('.alert-errores').addClass('d-none');
+                        $('.alert-errores').html('');
+                        if (data.errors) {
+                            $.each(data.errors, function(key, value){
+                                $('.alert-errores').removeClass('d-none');
+                                $('.alert-errores').append(`<p>${value}</p>`);
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Exito",
+                                text: data.success,
+                                icon: "success",
+                                showCancelButton: false,
+                                confirmButtonText: "Aceptar",
+                                reverseButtons: true
+                            }).then(function(result) {
+                                if (result.value) {
+                                    if ($form.data('return')) location.href = $form.data('return');
+                                    else location.reload();
+                                }
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    });
+                });
+
+                // FormValidation.formValidation(
+                //     document.getElementById('form'),
+                //     {
+                //         fields: {
+                //             nombre_custodio: {
+                //                 validators: {
+                //                     notEmpty: {
+                //                         message: 'Nombre es requerido'
+                //                     },
+                //                     regexp: {
+                //                         regexp: /^[A-Za-z ]+$/,
+                //                         message: 'El nombre solo puede contener letras'
+                //                     }
+                //                 }
+                //             },
+                //             tel_movil: {
+                //                 validators: {
+                //                     notEmpty: {
+                //                         message: 'Teléfono celular es requerido'
+                //                     },
+                //                     stringLength: {
+                //                         min: 8,
+                //                         max: 8,
+                //                         message: 'El teléfono celular debe contener 8 dígitos',
+                //                     },
+                //                     regexp: {
+                //                         regexp: /^[0-9]+$/,
+                //                         message: 'Solo puede contener números'
+                //                     }
+                //                 }  
+                //             },
+                //             tel_fijo: {
+                //                 validators: {
+                //                     notEmpty: {
+                //                         message: 'Teléfono fijo es requerido'
+                //                     },
+                //                     stringLength: {
+                //                         min: 8,
+                //                         max: 8,
+                //                         message: 'El teléfono fijo debe contener 8 dígitos',
+                //                     },
+                //                     regexp: {
+                //                         regexp: /^[0-9]+$/,
+                //                         message: 'Solo puede contener números'
+                //                     }
+                //                 }  
+                //             },
+                //             correo1_custodio: {
+                //                 validators: {
+                //                     notEmpty: {
+                //                         message: 'Correo #1 es requerido'
+                //                     },
+                //                     emailAddress: {
+                //                         message: 'Debe ser un correo válido'
+                //                     }
+                //                 }  
+                //             },
+                //             correo2_custodio: {
+                //                 validators: {
+                //                     emailAddress: {
+                //                         message: 'Debe ser un correo válido'
+                //                     }
+                //                 }  
+                //             },
+                //             cod_departamento: {
+                //                 validators: {
+                //                     notEmpty: {
+                //                         message: 'Por favor selecciona una opción'
+                //                     }
+                //                 }
+                //             },
+                //             cod_municipio: {
+                //                 validators: {
+                //                     notEmpty: {
+                //                         message: 'Por favor selecciona una opción'
+                //                     }
+                //                 }
+                //             },
+                //             cod_centro: {
+                //                 validators: {
+                //                     notEmpty: {
+                //                         message: 'Por favor selecciona una opción'
+                //                     }
+                //                 }
+                //             },
+                //             cod_partido: {
+                //                 validators: {
+                //                     notEmpty: {
+                //                         message: 'Por favor selecciona una opción'
+                //                     }
+                //                 }
+                //             },
+                //             dir_custodio: {
+                //                 validators: {
+                //                     notEmpty: {
+                //                         message: 'Dirección es requerida'
+                //                     }
+                //                 }
+                //             }
+                //         },
+
+                //         plugins: {
+                //             trigger: new FormValidation.plugins.Trigger(),
+                //             // Bootstrap Framework Integration
+                //             bootstrap: new FormValidation.plugins.Bootstrap(),
+                //             // Validate fields when clicking the Submit button
+                //             submitButton: new FormValidation.plugins.SubmitButton(),
+                //             // Submit the form when all fields are valid
+                //             defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                //         }
+                //     }
+                // );
             });
         </script>
+        @endif
     @endpush
 
     @push('styles')

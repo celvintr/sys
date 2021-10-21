@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Custodios;
 use App\Models\Departamentos;
 use App\Models\DNI;
+use App\Models\CensoAspirante;
+use App\Models\CensoNacional;
 use App\Models\PartidosPoliticos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use DB;
 
 class CustodiosController extends Controller
 {
@@ -30,8 +33,10 @@ class CustodiosController extends Controller
      */
     public function data(Request $request)
     {
-        $custodios = Custodios::all();
-
+        $custodios = DB::table('tbl_custodios')
+                        ->join('tbl_estados_custodios', 'tbl_custodios.cod_estado', 'tbl_estados_custodios.cod_estado')
+                        ->get();
+        
         return response()->json($custodios);
     }
 
@@ -48,8 +53,8 @@ class CustodiosController extends Controller
 
         if (session()->has('dni')) {
             $form = (object) [
-                'dni_custodio'    => session('dni')['dni_custodio'],
-                'nombre_custodio' => session('dni')['nombre_custodio'],
+                'dni_custodio'    => session('dni')['dni'],
+                'nombre_custodio' => session('dni')['nombre'],
             ];
         }
 
@@ -70,12 +75,14 @@ class CustodiosController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'dni_custodio'       => 'required',
-            'nombre_custodio'    => 'required',
-            'tel_movil'          => 'required',
+            'nombre_custodio'    => 'required|regex:/^[A-Za-z ]+$/',
+            'tel_movil'          => 'required|regex:/^[0-9]+$/|max:8',
+            'tel_fijo'          => 'required|regex:/^[0-9]+$/|max:8',
             'correo1_custodio'   => 'required|email',
-            'foto_custodio'      => 'image',
-            'foto_dni_custodio'  => 'image',
-            'foto_comp_custodio' => 'image',
+            'correo2_custodio'   => 'email',
+            'foto_custodio'      => 'required|image',
+            'foto_dni_custodio'  => 'required|image',
+            'foto_comp_custodio' => 'required|image',
             'cod_municipio'      => 'required',
             'cod_partido'        => 'required',
             'cod_centro'         => 'required',
@@ -83,7 +90,9 @@ class CustodiosController extends Controller
             'dni_custodio'       => 'DNI',
             'nombre_custodio'    => 'Nombre',
             'tel_movil'          => 'Teléfono movil',
+            'tel_fijo'          => 'Teléfono fijo',
             'correo1_custodio'   => 'Correo #1',
+            'correo2_custodio'   => 'Correo #2',
             'foto_custodio'      => 'Foto',
             'foto_dni_custodio'  => 'Foto DNI',
             'foto_comp_custodio' => 'Foto comp.',
@@ -92,7 +101,7 @@ class CustodiosController extends Controller
             'cod_centro'         => 'Centro de votación',
         ]);
 
-        if ($validator->fails()) {
+        if($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }
 
@@ -125,9 +134,21 @@ class CustodiosController extends Controller
             'dir_custodio'         => $request->dir_custodio,
             'cod_partido'          => $request->cod_partido,
             'cod_centro'           => $request->cod_centro,
+            'cod_estado'           => 1,
             'fecha_registro'       => now(),
             'dni_usuario_registro' => Auth::user()->dni_usuario,
         ]);
+
+        $newCustodio = Custodios::find($custodio->idc_custodio);
+        $newCustodio->cod_custodio = $newCustodio->cod_partido .  $newCustodio->cod_municipio . str_pad($newCustodio->cod_centro, 4, "0", STR_PAD_LEFT) . $newCustodio->idc_custodio;
+        $newCustodio->save();
+
+        $custodio_aspirante = CensoAspirante::where('dni', $newCustodio->dni_custodio)->first();
+        
+        if(!is_null($custodio_aspirante)) {
+            $newCustodio->cod_estado = 3;
+            $newCustodio->save();
+        }
 
         return response()->json(['success' => 'Custodio creado exitosamente']);
     }
@@ -141,11 +162,18 @@ class CustodiosController extends Controller
     public function dni(Request $request)
     {
         if (!empty($request->dni)) {
-            $data = DNI::where('dni_custodio', $request->dni)->first();
-            if (empty($data->dni_custodio)) {
-                $request->session()->flash('dni_error', "No se encontro este DNI en la base de datos.");
+            $custodio_registrado = Custodios::where('dni_custodio', $request->dni)->first();
+
+            if(empty($custodio_registrado)) {
+                $data = CensoNacional::where('dni', $request->dni)->first();
+               
+                if (empty($data->dni)) {
+                    $request->session()->flash('dni_error', "No se encontró este DNI en el censo nacional.");
+                } else {
+                    $request->session()->flash('dni', $data);
+                }
             } else {
-                $request->session()->flash('dni', $data);
+                $request->session()->flash('dni_error', "El custodio que intentas ingresar ya se encuentra registrado.");
             }
         } else {
             $request->session()->flash('dni_error', "Debe agregar un DNI a buscar.");

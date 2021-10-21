@@ -149,9 +149,9 @@
                     columns: [
                         {
                             field: 'cod_custodio',
-                            title: 'ID',
+                            title: 'COD CUSTODIO',
                             sortable: 'asc',
-                            width: 40,
+                            width: 85,
                             type: 'number',
                             selector: false,
                             textAlign: 'left',
@@ -165,7 +165,7 @@
                                 var output = `
                                 <div class="d-flex align-items-center">
                                     <div class="symbol symbol-40 symbol-sm flex-shrink-0">
-                                        <img class="" src="${data.avatar}" alt="photo">
+                                        <img class="" src="{{ asset('/storage') }}/${data.foto_custodio}" alt="photo">
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">${data.nombre_custodio}</div>
@@ -218,6 +218,21 @@
                                     <div class="d-flex align-items-center" style="gap: 5px;">
                                         <i class="far fa-envelope"></i>
                                         <a href="mailto:${data.correo2_custodio}" class="text-muted font-weight-bold text-hover-primary">${data.correo2_custodio}</a>
+                                    </div>
+                                    `;
+                                }
+
+                                return output;
+                            }
+                        }, {
+                            field: 'cod_estado',
+                            title: 'Estado',
+                            template: function(data) {
+                                var output = ``;
+                                if (data.cod_estado) {
+                                    output += `
+                                    <div class="alert alert-custom ${data.cod_estado === 1 ? 'alert-outline-success' : 'alert-outline-danger'} fade show mb-5">
+                                        <div class="alert-text">${data.nombre_estado}</>
                                     </div>
                                     `;
                                 }
@@ -283,7 +298,7 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
+                                    <a href="/edit" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -294,7 +309,7 @@
                                             </svg>
                                         </span>
                                     </a>
-                                    <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Delete">
+                                    <a href="/delete" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Delete">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

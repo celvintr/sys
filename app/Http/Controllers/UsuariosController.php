@@ -25,14 +25,14 @@ class UsuariosController extends Controller
      */
     public function data(Request $request)
     {
-        #obtengo el filtro del datatable
+        #obtener el filtro del datatable
         $buscar = (!empty($request->all()['query']['buscar']) ? $request->all()['query']['buscar'] : null);
         $estado_usuario = (!empty($request->all()['query']['estado_usuario']) ? $request->all()['query']['estado_usuario'] : null);
 
         #usuarios
         $query = User::query();
 
-        #filtro
+        #filtro lista
         if ($buscar) {
             $query->where(function($q) use ($buscar) {
                 $q->where('nombre_usuario', 'LIKE', '%' . $buscar . '%');
@@ -173,11 +173,11 @@ class UsuariosController extends Controller
     {
         #Validar campos
         $validator = Validator::make($request->all(), [
-            'nombre_usuario'            => 'required',
+            'nombre_usuario'            => 'required|regex:/^[A-Za-z ]+$/',
             'pass_usuario'              => ($request->update_pass ? 'required|confirmed' : ''),
             'pass_usuario_confirmation' => ($request->update_pass ? 'required' : ''),
             'cargo_usuario'             => 'required',
-            'tel_usuario'               => 'required',
+            'tel_usuario'               => 'required|regex:/^[0-9]+$/|max:8',
             'cod_departamento'          => 'required',
             'cod_municipio'             => 'required',
             'dir_usuario'               => 'required',
