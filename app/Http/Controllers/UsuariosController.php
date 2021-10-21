@@ -82,6 +82,7 @@ class UsuariosController extends Controller
             'cod_departamento'     => '',
             'cod_municipio'        => '',
             'dir_usuario'          => '',
+            'cod_rol'          => '',
             'estado_usuario'       => 1,
         ];
 
