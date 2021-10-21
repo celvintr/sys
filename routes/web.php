@@ -10,6 +10,7 @@ use App\Http\Controllers\BitacoraController;
 
 use App\Http\Controllers\DepartamentosController;
 use App\Http\Controllers\MunicipiosController;
+use App\Http\Controllers\RolesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,12 +77,14 @@ Route::middleware(['auth'])->group(function () {
 
         //Roles y Permisos
         Route::prefix('roles')->name('roles.')->group(function () {
-            #Agregar usaurio
-            Route::get('/', [RolesyPermisosController::class, 'index'])->name('index');
-            Route::get('/data', [RolesyPermisosController::class, 'data'])->name('data');
-            Route::get('/agregar', [RolesyPermisosController::class, 'create'])->name('create');
+            Route::get('/', [RolesController::class, 'index'])->name('index');
+            Route::get('/data', [RolesController::class, 'data'])->name('data');
+            Route::get('/agregar', [RolesController::class, 'create'])->name('create');
+            Route::get('/editar', [RolesController::class, 'edit'])->name('edit');
+            Route::get('/eliminar', [RolesController::class, 'destroy'])->name('destroy');
+            //Post
+            Route::post('/agregar', [RolesController::class, 'store'])->name('store');
         });
-
 
     });
 });
