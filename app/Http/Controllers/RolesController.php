@@ -2,26 +2,19 @@
 
 namespace App\Http\Controllers;
 
-//use App\Models\Roles;
-
 use Illuminate\Http\Request;
-
-use Spatie\Permission\Models\Role;
-
-use Spatie\Permission\Models\Permission;
-
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
 
     public function index()
     {
-        $roles = Role ::all();
-        return view('roles.index',compact('roles'));
+        $roles = Role::all();
+        return view('roles.index', compact('roles'));
     }
-
-
 
     public function data(Request $request)
     {
@@ -29,13 +22,11 @@ class RolesController extends Controller
         return response()->json($Roles);
     }
 
-
     public function create()
     {
         $permissions = Permission::all();
-         return view('roles.AgregarRol',compact('permissions'));
+        return view('roles.AgregarRol', compact('permissions'));
     }
-
 
     public function store(Request $request)
     {
@@ -43,37 +34,51 @@ class RolesController extends Controller
         $val = Validator::make($request->all(), [
             'name' => 'required',
 
-        ]);
+        ], [], [
+            'name' => 'Nombre de rol',
 
+        ]);
         if ($val->fails()) {
             return response()->json(['errors' => $val->errors()->all()]);
         }
 
-        $role = Role::create($request->all());
-        $role->permissions()->sync($request->permissions);
+        $Roles = Role::all();
+        $exist = false;
+        foreach ($Roles as $rol) {
+            if ($rol['name'] == $request->name) {
+                $exist = true;
+            }
+        }
 
-        //return redirect()->route('admin.roles.index')->with('info','El rol se creo!!');
-        //return response()->json(['exito' => 'Nuevo rol agregado correctamente.']);
+        if (empty($request->permissions)) {
+            return response()->json(['exist_rol' => 'Agregue almenos un permiso al rol']);
+        }
+
+        if ($exist) {
+            return response()->json(['exist_rol' => 'El nombre del rol ya existe']);
+        } else {
+            $role = Role::create($request->all());
+            $role->permissions()->sync($request->permissions);
+            return response()->json(['success' => 'Rol agregado exitosamente']);
+            return redirect()->route('admin.roles.index');
+        }
+
     }
-
 
     public function show(Role $role)
     {
-        return view('roles.Show',compact('role'));
-    }
 
+    }
 
     public function edit(Role $role)
     {
-        return view('roles.EditarRol',compact('role'));
+        return view('roles.EditarRol', compact('role'));
     }
-
 
     public function update(Request $request, Role $role)
     {
         //
     }
-
 
     public function destroy(Role $role)
     {

@@ -50,8 +50,13 @@ class UsuariosController extends Controller
         if ($estado_usuario) {
             $query->where('estado_usuario', $estado_usuario);
         }
+        if ($estado_usuario) {
+            $query->where('estado_usuario', $estado_usuario);
+        }
         if ($cod_rol) {
-            $query->where('cod_rol', $cod_rol);
+            $query->whereHas('rol', function($q) use ($cod_rol) {
+                $q->where('role_id', $cod_rol);
+            });
         }
 
         #usuarios
@@ -115,6 +120,7 @@ class UsuariosController extends Controller
             'cod_departamento'          => 'required',
             'cod_municipio'             => 'required',
             'dir_usuario'               => 'required',
+            'cod_rol'                   => 'required',
         ], [], [
             'dni_usuario'               => 'DNI',
             'nombre_usuario'            => 'Nombre',
@@ -145,7 +151,6 @@ class UsuariosController extends Controller
             'cargo_usuario'        => $request->cargo_usuario,
             'tel_usuario'          => $request->tel_usuario,
             'correo_usuario'       => $request->correo_usuario,
-            'cod_rol'              => $request->cod_rol,
             'cod_departamento'     => $request->cod_departamento,
             'cod_municipio'        => $request->cod_municipio,
             'dir_usuario'          => $request->dir_usuario,
@@ -154,6 +159,9 @@ class UsuariosController extends Controller
             'dni_usuario_registro' => Auth::user()->dni_usuario,
         ]);
 
+        // Adding permissions via a role
+        $usuario->assignRole($request->cod_rol);
+
         #Respuesta
         return response()->json(['success' => 'Usuario creado exitosamente']);
     }
@@ -161,10 +169,10 @@ class UsuariosController extends Controller
     /**
      * Editar registro
      */
-    public function editar($idc_usuario)
+    public function editar($dni_usuario)
     {
         #Obtener usuario
-        $form = User::findOrFail($idc_usuario);
+        $form = User::with('rol')->findOrFail($dni_usuario);
 
         #Obtengo todos los departamentos y municipios
         $departamentos = Departamentos::all();
@@ -181,14 +189,14 @@ class UsuariosController extends Controller
             'title'         => 'Actualizar Usuario',
             'btn'           => 'Actualizar',
             'method'        => 'PUT',
-            'action'        => route('admin.usuarios.actualizar', $idc_usuario),
+            'action'        => route('admin.usuarios.actualizar', $dni_usuario),
         ]);
     }
 
     /**
      * Guardar nuevo registro
      */
-    public function actualizar(Request $request, $idc_usuario)
+    public function actualizar(Request $request, $dni_usuario)
     {
         #Validar campos
         $validator = Validator::make($request->all(), [
@@ -200,6 +208,7 @@ class UsuariosController extends Controller
             'cod_departamento'          => 'required',
             'cod_municipio'             => 'required',
             'dir_usuario'               => 'required',
+            'cod_rol'                   => 'required',
         ], [], [
             'dni_usuario'               => 'DNI',
             'nombre_usuario'            => 'Nombre',
@@ -220,10 +229,10 @@ class UsuariosController extends Controller
         }
 
         #Crear registro
-        User::find($idc_usuario)->update([
+        $usuario = User::find($dni_usuario);
+        $usuario->update([
             'nombre_usuario'   => $request->nombre_usuario,
             'cargo_usuario'    => $request->cargo_usuario,
-            'cod_rol'          => $request->cod_rol,
             'tel_usuario'      => $request->tel_usuario,
             'cod_departamento' => $request->cod_departamento,
             'cod_municipio'    => $request->cod_municipio,
@@ -234,18 +243,21 @@ class UsuariosController extends Controller
         #Encriptar password
         if ($request->update_pass) {
             $pass_usuario = Hash::make($request->pass_usuario);
-            User::find($idc_usuario)->update([
+            $usuario->update([
                 'pass_usuario' => $pass_usuario,
             ]);
         }
+
+        // Adding permissions via a role
+        $usuario->assignRole($request->cod_rol);
 
         #Respuesta
         return response()->json(['success' => 'Usuario actualizado exitosamente']);
     }
 
-    public function eliminarusuario($idc_usuario)
+    public function eliminarusuario($dni_usuario)
     {
-        User::find($idc_usuario)->delete();
+        User::find($dni_usuario)->delete();
 
         return response()->json([
             'type' => 'success',

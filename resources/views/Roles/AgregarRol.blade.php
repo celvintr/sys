@@ -26,8 +26,8 @@
                         'data-return' => route('admin.roles.index'),
                     ]) !!}
 
-                        {{ csrf_field() }}
-                        <div class="form-group">
+                         {{ csrf_field() }}
+                             <div class="form-group">
                             {!! Form::label ('name','Nombre') !!}
                             {!! Form::text ('name',null,['class'=>'form-control','placeholder'=>'','autofocus']) !!}
                         </div>
@@ -117,7 +117,6 @@
                     .then(function (response) {
                         console.log(response);
                         var data = response.data;
-
                         $('.alert-errores').addClass('d-none');
                         $('.alert-errores').html('');
                         if (data.errors) {
@@ -125,9 +124,13 @@
                                 $('.alert-errores').removeClass('d-none');
                                 $('.alert-errores').append(`<p>${value}</p>`);
                             });
-                        } else {
+                        }else if(data.exist_rol){
+                            $('.alert-errores').removeClass('d-none');
+                            $('.alert-errores').append(`<p>${data.exist_rol}</p>`);
+                        } 
+                        else {
                             Swal.fire({
-                                title: "Exito",
+                                title: "Agregado",
                                 text: data.success,
                                 icon: "success",
                                 showCancelButton: false,

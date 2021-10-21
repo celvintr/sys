@@ -14,12 +14,10 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('TBL_USUARIOS', function (Blueprint $table) {
-            $table->bigIncrements('idc_usuario');
             $table->string('dni_usuario', 13);
             $table->text('nombre_usuario');
             $table->text('pass_usuario');
             $table->text('cargo_usuario')->nullable();
-            $table->bigInteger('cod_rol')->nullable();
             $table->text('tel_usuario')->nullable();
             $table->string('correo_usuario', 50)->nullable();
             $table->string('cod_departamento', 2)->nullable();
@@ -28,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('estado_usuario')->default(1);
             $table->dateTime('fecha_registro')->nullable();
             $table->bigInteger('dni_usuario_registro')->nullable();
+            $table->primary('dni_usuario');
         });
     }
 

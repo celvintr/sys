@@ -54,10 +54,10 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [UsuariosController::class, 'index'])->name('index');
             Route::get('/data', [UsuariosController::class, 'data'])->name('data');
             Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
-            Route::get('/editar/{idc_usuario}', [UsuariosController::class, 'editar'])->name('editar');
+            Route::get('/editar/{dni_usuario}', [UsuariosController::class, 'editar'])->name('editar');
             Route::post('/', [UsuariosController::class, 'store'])->name('store');
-            Route::put('/{idc_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');
-            Route::delete('eliminar-usuario/{idc_usuario}',[UsuariosController::class, 'eliminarusuario'])->name('destroy');
+            Route::put('/{dni_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');
+            Route::delete('eliminar-usuario/{dni_usuario}',[UsuariosController::class, 'eliminarusuario'])->name('destroy');
         });
 
         #Custodios

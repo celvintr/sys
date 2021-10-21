@@ -26,7 +26,21 @@ class User extends Authenticatable
      *
      * @var string
      */
-    protected $primaryKey = 'idc_usuario';
+    protected $primaryKey = 'dni_usuario';
+
+    /**
+     * Indicates if the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * The data type of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
 
     /**
      * Indicates if the model should be timestamped.
@@ -41,12 +55,10 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'idc_usuario',
         'dni_usuario',
         'nombre_usuario',
         'pass_usuario',
         'cargo_usuario',
-        'cod_rol',
         'tel_usuario',
         'correo_usuario',
         'cod_departamento',
@@ -80,7 +92,7 @@ class User extends Authenticatable
      */
     public function rol()
     {
-        return $this->belongsTo(\Spatie\Permission\Models\Role::class, 'cod_rol', 'id');
+        return $this->belongsToMany(\Spatie\Permission\Models\Role::class, 'model_has_roles', 'model_id', 'role_id');
     }
 
     public function getAuthPassword()

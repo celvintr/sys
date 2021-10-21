@@ -168,11 +168,14 @@
                                 return output;
                             }
                         }, {
-                            field: 'cod_rol',
+                            field: 'rol',
                             title: 'Rol',
                             width:200,
                             template: function(data) {
-                                var output = `<div class="d-flex font-weight-bold align-items-center">${data.rol.name}</div>`;
+                                if (data.rol.length)
+                                    var output = `<div class="d-flex font-weight-bold align-items-center">${data.rol[0].name}</div>`;
+                                else
+                                var output = '';
 
                                 return output;
                             }
@@ -242,7 +245,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <a href="{{ url('admin/usuarios/editar') }}/${data.idc_usuario}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
+                                    <a href="{{ url('admin/usuarios/editar') }}/${data.dni_usuario}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -253,7 +256,7 @@
                                             </svg>
                                         </span>
                                     </a>
-                                    <a href="javascript:;" data-url="{{ url('admin/usuarios/eliminar-usuario') }}/${data.idc_usuario}" class="delete-link btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Delete">
+                                    <a href="javascript:;" data-url="{{ url('admin/usuarios/eliminar-usuario') }}/${data.dni_usuario}" class="delete-link btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Delete">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
