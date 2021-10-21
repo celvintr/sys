@@ -36,11 +36,13 @@ class AuthenticatedSessionController extends Controller
         $user = User::where('dni_usuario', $request->dni_usuario)->first();
 
         $checkPass = false;
+        $active = false;
         if (!empty($user->dni_usuario)) {
             $checkPass = Hash::check($request->pass_usuario, $user->pass_usuario);
+            $active = ($user->estado_usuario == 1 ? true : false);
         }
 
-        if (empty($user->dni_usuario) || !$checkPass) {
+        if (empty($user->dni_usuario) || !$checkPass || !$active) {
             throw ValidationException::withMessages([
                 'dni_usuario' => __('auth.failed'),
             ]);
