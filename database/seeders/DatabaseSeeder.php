@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             DepartamentosSeeder::class,
             MunicipiosSeeder::class,
             PartidosPoliticosSeeder::class,
+            RoleSeeder::class,
         ]);
 
         \App\Models\User::factory(1)->su()->create();   //  aqui creo el admin fijo

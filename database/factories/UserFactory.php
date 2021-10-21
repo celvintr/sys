@@ -34,6 +34,7 @@ class UserFactory extends Factory
             'correo_usuario' => $this->faker->email,
             'tel_usuario'    => $this->faker->phoneNumber,
             'dir_usuario'    => $this->faker->address,
+            'cod_rol'        => $this->faker->randomElement([1, 2]),
         ];
     }
 
@@ -51,6 +52,7 @@ class UserFactory extends Factory
                 'pass_usuario'   => Hash::make('password'),
                 'cargo_usuario'  => 'Superusuario',
                 'correo_usuario' => 'admin@admin.com',
+                'cod_rol'        => 1,
             ];
         });
     }

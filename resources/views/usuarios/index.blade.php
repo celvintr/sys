@@ -62,6 +62,17 @@
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group m-0">
+                                    <label class="d-block">Rol:</label>
+                                    <select class="form-control" id="filtro_cod_rol">
+                                        <option value="">Todos</option>
+                                        @foreach ($roles as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group m-0">
                                     <label class="d-block">Estado:</label>
                                     <select class="form-control" id="filtro_estado_usuario">
                                         <option value="">Todos</option>
@@ -157,11 +168,11 @@
                                 return output;
                             }
                         }, {
-                            field: 'tel_usuario',
-                            title: 'Teléfono',
+                            field: 'cod_rol',
+                            title: 'Rol',
                             width:200,
                             template: function(data) {
-                                var output = `<div class="d-flex font-weight-bold align-items-center">${data.tel_usuario}</div>`;
+                                var output = `<div class="d-flex font-weight-bold align-items-center">${data.rol.name}</div>`;
 
                                 return output;
                             }
@@ -260,6 +271,10 @@
 
                 $(document).on('change', '#filtro_estado_usuario', function() {
                     datatable.search($(this).val().toLowerCase(), 'estado_usuario');
+                });
+
+                $(document).on('change', '#filtro_cod_rol', function() {
+                    datatable.search($(this).val().toLowerCase(), 'cod_rol');
                 });
             });
         </script>

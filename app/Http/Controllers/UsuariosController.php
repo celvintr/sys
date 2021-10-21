@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Departamentos;
 use App\Models\Municipios;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +18,10 @@ class UsuariosController extends Controller
      */
     public function index()
     {
-        return view('usuarios.index');
+        $roles = Role::all();
+        return view('usuarios.index', [
+            'roles' => $roles,
+        ]);
     }
 
     /**
@@ -28,6 +32,7 @@ class UsuariosController extends Controller
         #obtener el filtro del datatable
         $buscar = (!empty($request->all()['query']['buscar']) ? $request->all()['query']['buscar'] : null);
         $estado_usuario = (!empty($request->all()['query']['estado_usuario']) ? $request->all()['query']['estado_usuario'] : null);
+        $cod_rol = (!empty($request->all()['query']['cod_rol']) ? $request->all()['query']['cod_rol'] : null);
 
         #usuarios
         $query = User::query();
@@ -45,9 +50,12 @@ class UsuariosController extends Controller
         if ($estado_usuario) {
             $query->where('estado_usuario', $estado_usuario);
         }
+        if ($cod_rol) {
+            $query->where('cod_rol', $cod_rol);
+        }
 
         #usuarios
-        $usuarios = $query->get();
+        $usuarios = $query->with('rol')->get();
 
         return response()->json($usuarios);
     }
@@ -60,6 +68,9 @@ class UsuariosController extends Controller
         #Obtengo todos los departamentos y municipios
         $departamentos = Departamentos::all();
         $municipios = [];
+
+        #Roles
+        $roles = Role::all();
 
         $form = (object) [
             'dni_usuario'          => '',
@@ -77,6 +88,7 @@ class UsuariosController extends Controller
         return view('usuarios.create', [
             'departamentos' => $departamentos,
             'municipios'    => $municipios,
+            'roles'         => $roles,
             'form'          => $form,
             'title'         => 'Agregar Usuario',
             'btn'           => 'Guardar',
@@ -110,6 +122,7 @@ class UsuariosController extends Controller
             'cargo_usuario'             => 'Cargo',
             'tel_usuario'               => 'Telefono',
             'correo_usuario'            => 'Correo',
+            'cod_rol'                   => 'Rol',
             'cod_departamento'          => 'Departamento',
             'cod_municipio'             => 'Municipio',
             'dir_usuario'               => 'Direccion',
@@ -131,6 +144,7 @@ class UsuariosController extends Controller
             'cargo_usuario'        => $request->cargo_usuario,
             'tel_usuario'          => $request->tel_usuario,
             'correo_usuario'       => $request->correo_usuario,
+            'cod_rol'              => $request->cod_rol,
             'cod_departamento'     => $request->cod_departamento,
             'cod_municipio'        => $request->cod_municipio,
             'dir_usuario'          => $request->dir_usuario,
@@ -155,9 +169,13 @@ class UsuariosController extends Controller
         $departamentos = Departamentos::all();
         $municipios = Municipios::where('cod_departamento', $form->cod_departamento)->get();
 
+        #Roles
+        $roles = Role::all();
+
         return view('usuarios.create', [
             'departamentos' => $departamentos,
             'municipios'    => $municipios,
+            'roles'         => $roles,
             'form'          => $form,
             'title'         => 'Actualizar Usuario',
             'btn'           => 'Actualizar',
@@ -189,6 +207,7 @@ class UsuariosController extends Controller
             'cargo_usuario'             => 'Cargo',
             'tel_usuario'               => 'Telefono',
             'correo_usuario'            => 'Correo',
+            'cod_rol'                   => 'Rol',
             'cod_departamento'          => 'Departamento',
             'cod_municipio'             => 'Municipio',
             'dir_usuario'               => 'Direccion',
@@ -203,6 +222,7 @@ class UsuariosController extends Controller
         User::find($idc_usuario)->update([
             'nombre_usuario'   => $request->nombre_usuario,
             'cargo_usuario'    => $request->cargo_usuario,
+            'cod_rol'          => $request->cod_rol,
             'tel_usuario'      => $request->tel_usuario,
             'cod_departamento' => $request->cod_departamento,
             'cod_municipio'    => $request->cod_municipio,

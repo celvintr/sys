@@ -73,6 +73,14 @@ class User extends Authenticatable
         'fecha_registro' => 'datetime',
     ];
 
+    /**
+     * Rol.
+     */
+    public function rol()
+    {
+        return $this->belongsTo(\Spatie\Permission\Models\Role::class, 'cod_rol', 'id');
+    }
+
     public function getAuthPassword()
     {
         return $this->pass_usuario;

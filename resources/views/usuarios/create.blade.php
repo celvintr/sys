@@ -74,7 +74,7 @@
                                                             <i class="fas fa-mobile-alt"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="text" class="form-control" name="tel_usuario" value="{{ $form->tel_usuario }}" maxlength="25" />
+                                                    <input type="text" class="form-control" name="tel_usuario" value="{{ $form->tel_usuario }}" maxlength="8" />
                                                 </div>
                                             </div>
                                         </div>
@@ -109,8 +109,17 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label class="d-block">Estado</label>
-                                                <input type="checkbox" name="estado_usuario" {{ $form->estado_usuario == 1 ? 'checked' : '' }} data-on-text="Activo" data-handle-width="70" data-off-text="Inactivo" data-on-color="success" data-switch="true" />
+                                                <label>Rol:</label>
+                                                <select name="cod_rol" id="cod_rol" class="form-control kt-selectpicker">
+                                                    @if ($form->cod_rol)
+                                                        <option value="">::. Seleccione .::</option>
+                                                    @endif
+                                                    @foreach ($roles as $item)
+                                                        <option value="{{ $item->id }}" {{ $item->id == $form->cod_rol ? 'selected' : '' }}>
+                                                            {{ $item->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -165,6 +174,15 @@
 
                                         <div class="col-12">
                                             <span id="password-generated"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row mt-5">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="d-block">Estado</label>
+                                                <input type="checkbox" name="estado_usuario" {{ $form->estado_usuario == 1 ? 'checked' : '' }} data-on-text="Activo" data-handle-width="70" data-off-text="Inactivo" data-on-color="success" data-switch="true" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -244,6 +262,12 @@
                     $('#wrapper-update-pass').remove();
                     $('#wrapper-pass').removeClass('d-none');
                     $('[name="update_pass"]').val('1');
+                });
+
+                $('[name="tel_usuario"]').inputmask({
+                    "mask": "9",
+                    "repeat": 10,
+                    "greedy": false
                 });
             });
 
