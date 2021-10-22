@@ -48,44 +48,47 @@ Route::middleware(['auth'])->group(function () {
      * RUTAS PARA EL ADMIN
      */
     Route::prefix('admin')->name('admin.')->group(function () {
-        #Usuarios
-        Route::prefix('usuarios')->name('usuarios.')->group(function () {
-            #Agregar usaurio
-            Route::get('/', [UsuariosController::class, 'index'])->name('index');
-            Route::get('/data', [UsuariosController::class, 'data'])->name('data');
-            Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
-            Route::get('/editar/{dni_usuario}', [UsuariosController::class, 'editar'])->name('editar');
-            Route::post('/', [UsuariosController::class, 'store'])->name('store');
-            Route::put('/{dni_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');
-            Route::delete('eliminar-usuario/{dni_usuario}',[UsuariosController::class, 'eliminarusuario'])->name('destroy');
+        Route::group(['middleware' => ['role:Administrador del sistema']], function () {
+            #Usuarios
+            Route::prefix('usuarios')->name('usuarios.')->group(function () {
+                #Agregar usaurio
+                Route::get('/', [UsuariosController::class, 'index'])->name('index');
+                Route::get('/data', [UsuariosController::class, 'data'])->name('data');
+                Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
+                Route::get('/editar/{dni_usuario}', [UsuariosController::class, 'editar'])->name('editar');
+                Route::post('/', [UsuariosController::class, 'store'])->name('store');
+                Route::put('/{dni_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');
+                Route::delete('eliminar-usuario/{dni_usuario}',[UsuariosController::class, 'eliminarusuario'])->name('destroy');
+            });
+
+            #Estado de Bitacora
+            Route::prefix('bitacoras')->name('bitacoras.')->group(function () {
+                Route::get('/', [BitacoraController::class, 'index'])->name('index');
+            });
+
+            #Roles y Permisos
+            Route::prefix('roles')->name('roles.')->group(function () {
+                Route::get('/', [RolesController::class, 'index'])->name('index');
+                Route::get('/data', [RolesController::class, 'data'])->name('data');
+                Route::get('/agregar', [RolesController::class, 'create'])->name('create');
+                Route::get('/editar', [RolesController::class, 'edit'])->name('edit');
+                Route::get('/eliminar', [RolesController::class, 'destroy'])->name('destroy');
+                //Post
+                Route::post('/agregar', [RolesController::class, 'store'])->name('store');
+            });
         });
 
-        #Custodios
-        Route::prefix('custodios')->name('custodios.')->group(function () {
-            #Agregar custodio
-            Route::get('/', [CustodiosController::class, 'index'])->name('index');
-            Route::get('/data', [CustodiosController::class, 'data'])->name('data');
-            Route::get('/agregar', [CustodiosController::class, 'create'])->name('create');
-            Route::post('/dni', [CustodiosController::class, 'dni'])->name('dni');
-            Route::post('/', [CustodiosController::class, 'store'])->name('store');
+        Route::group(['middleware' => ['role:Operador de sistema']], function () {
+            #Custodios
+            Route::prefix('custodios')->name('custodios.')->group(function () {
+                #Agregar custodio
+                Route::get('/', [CustodiosController::class, 'index'])->name('index');
+                Route::get('/data', [CustodiosController::class, 'data'])->name('data');
+                Route::get('/agregar', [CustodiosController::class, 'create'])->name('create');
+                Route::post('/dni', [CustodiosController::class, 'dni'])->name('dni');
+                Route::post('/', [CustodiosController::class, 'store'])->name('store');
+            });
         });
-
-        #Estado de Bitacora
-        Route::prefix('bitacoras')->name('bitacoras.')->group(function () {
-            Route::get('/', [BitacoraController::class, 'index'])->name('index');
-        });
-
-        //Roles y Permisos
-        Route::prefix('roles')->name('roles.')->group(function () {
-            Route::get('/', [RolesController::class, 'index'])->name('index');
-            Route::get('/data', [RolesController::class, 'data'])->name('data');
-            Route::get('/agregar', [RolesController::class, 'create'])->name('create');
-            Route::get('/editar', [RolesController::class, 'edit'])->name('edit');
-            Route::get('/eliminar', [RolesController::class, 'destroy'])->name('destroy');
-            //Post
-            Route::post('/agregar', [RolesController::class, 'store'])->name('store');
-        });
-
     });
 });
 
