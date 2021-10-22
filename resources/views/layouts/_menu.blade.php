@@ -48,11 +48,14 @@
                                 <div class="menu-submenu " kt-hidden-height="120" style="">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
+                                        @can('admin.parametros-generales.index')
                                         <li class="menu-item " aria-haspopup="true">
                                         <a href="#" class="menu-link ">
                                             <i class="menu-bullet menu-bullet-dot"><span></span>
                                             </i>
-                                            <span class="menu-text">Parámetros Generales</span></a></li>
+                                            <span class="menu-text">Parámetros Generales</span></a>
+                                        </li>
+                                        @endcan
                                             
                                                     
 
@@ -87,16 +90,17 @@
                                         </li>
 
                                         @endcan
+                                        @can('admin.roles.index')
                                             <li class="menu-item " aria-haspopup="true">
                                                 <a href="{{ route('admin.roles.index') }}" class="menu-link ">
-                                                    <i class="menu-bullet menu-bullet-dot">
+                                                     <i class="menu-bullet menu-bullet-dot">
                                                         <span></span></i>
-                                                    <span class="menu-text">Roles y permisos</span>
+                                                    <span class="menu-text">Roles</span>
                                                 </a>
 
                                             
-                                                </li>
-                                                
+                                            </li>
+                                            @endcan   
                                                     
 
                             </ul>
@@ -104,6 +108,7 @@
          </div>
 
         <!--end::Menu Nav-->
+        @can('admin.medios-de-prueba.index')
         <li class="menu-item " aria-haspopup="true">
             <a href="#" class="menu-link ">
                 <i class="menu-bullet menu-bullet-dot">
@@ -111,13 +116,14 @@
                 <span class="menu-text">Medios de Prueba</span>
             </a>
             </li>
+            @endcan   
     </li>
 
 
 </ul>
 
 </div>
-    <!--end::Menu Container-->
+            <!--end::Menu Container-->
 </li>
 
 
@@ -137,17 +143,26 @@
         <span class="menu-text">Custodios Electorales
             </span></span>
         </li>
+
+        @can('admin.mantenimiento-estados.index')
         <li class="menu-item " aria-haspopup="true">
             <a href="{{ route('admin.custodios.index') }}" class="menu-link "><i class="menu-bullet menu-bullet-dot">
                 <span></span>
             </i>
-                <span class="menu-text">Mantenimiento de estados</span></a></li>
+                <span class="menu-text">Mantenimiento de estados</span></a>
+            
+        </li>
+        @endcan  
+        @can('admin.bitacora-estados.index') 
                 <li class="menu-item " aria-haspopup="true">
                     <a href="#" class="menu-link ">
                         <i class="menu-bullet menu-bullet-dot">
                         <span></span>
                     </i>
-                        <span class="menu-text">Bitácora de estados</span></a></li>
+                        <span class="menu-text">Bitácora de estados</span></a>
+        </li>
+        @endcan 
+        @can('admin.custodios.create') 
                         <li class="menu-item " aria-haspopup="true">
                             <a href="{{ route('admin.custodios.create') }}" class="menu-link ">
                                 <i class="menu-bullet menu-bullet-dot">
@@ -155,6 +170,8 @@
                                 <span class="menu-text">Registrar nuevo custodio</span>
                             </a>
                         </li>
+                        @endcan
+                        @can('admin.custodios.consultar') 
                         <li class="menu-item " aria-haspopup="true">
                             <a href="#" class="menu-link ">
                                 <i class="menu-bullet menu-bullet-dot">
@@ -162,6 +179,7 @@
                                 <span class="menu-text">Consulta de Custodio</span>
                             </a>
                         </li>
+                        @endcan 
 </ul>
 </div>
 </li>
