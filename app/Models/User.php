@@ -64,6 +64,7 @@ class User extends Authenticatable
         'cod_departamento',
         'cod_municipio',
         'dir_usuario',
+        'cod_partido',
         'estado_usuario',
         'fecha_registro',
         'dni_usuario_registro',
@@ -93,6 +94,14 @@ class User extends Authenticatable
     public function rol()
     {
         return $this->belongsToMany(\Spatie\Permission\Models\Role::class, 'model_has_roles', 'model_id', 'role_id');
+    }
+
+    /**
+     * Partido.
+     */
+    public function partido()
+    {
+        return $this->belongsTo(PartidosPoliticos::class, 'cod_partido', 'cod_partido');
     }
 
     public function getAuthPassword()

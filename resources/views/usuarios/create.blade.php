@@ -122,6 +122,20 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="col-lg-6 {{ $form->cod_rol == 2 ? '' : 'd-none' }}" id="wrapper-partidos">
+                                            <div class="form-group">
+                                                <label>Partido:</label>
+                                                <select name="cod_partido" id="cod_partido" class="form-control kt-selectpicker">
+                                                    <option value="">::. Seleccione .::</option>
+                                                    @foreach ($partidos as $item)
+                                                        <option value="{{ $item->cod_partido }}" {{ $item->cod_partido == $form->cod_partido ? 'selected' : '' }}>
+                                                            {{ $item->nombre_partido }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     @if ($method == 'PUT')
@@ -174,15 +188,6 @@
 
                                         <div class="col-12">
                                             <span id="password-generated"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-row mt-5">
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label class="d-block">Estado</label>
-                                                <input type="checkbox" name="estado_usuario" {{ $form->estado_usuario == 1 ? 'checked' : '' }} data-on-text="Activo" data-handle-width="70" data-off-text="Inactivo" data-on-color="success" data-switch="true" />
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -268,6 +273,17 @@
                     "mask": "9",
                     "repeat": 10,
                     "greedy": false
+                });
+
+                $('#cod_rol').on('change', function() {
+                    var cod_rol = $(this).val();
+                    if (cod_rol == 2) {
+                        $('#wrapper-partidos').removeClass('d-none');
+                    } else {
+                        $('#wrapper-partidos').addClass('d-none');
+                    }
+                    $('#cod_partido').val('');
+                    $('#cod_partido').selectpicker('refresh');
                 });
             });
 

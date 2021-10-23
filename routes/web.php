@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/editar/{dni_usuario}', [UsuariosController::class, 'editar'])->name('editar');
                 Route::post('/', [UsuariosController::class, 'store'])->name('store');
                 Route::put('/{dni_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');
+                Route::post('/estatus', [UsuariosController::class, 'estatus'])->name('estatus');
                 Route::delete('eliminar-usuario/{dni_usuario}',[UsuariosController::class, 'eliminarusuario'])->name('destroy');
             });
 

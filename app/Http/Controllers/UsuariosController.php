@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Departamentos;
 use App\Models\Municipios;
+use App\Models\PartidosPoliticos;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,7 +61,7 @@ class UsuariosController extends Controller
         }
 
         #usuarios
-        $usuarios = $query->with('rol')->get();
+        $usuarios = $query->with(['rol', 'partido'])->get();
 
         return response()->json($usuarios);
     }
@@ -77,24 +78,28 @@ class UsuariosController extends Controller
         #Roles
         $roles = Role::all();
 
+        #Partidos
+        $partidos = PartidosPoliticos::all();
+
         $form = (object) [
-            'dni_usuario'          => '',
-            'nombre_usuario'       => '',
-            'pass_usuario'         => '',
-            'cargo_usuario'        => '',
-            'tel_usuario'          => '',
-            'correo_usuario'       => '',
-            'cod_departamento'     => '',
-            'cod_municipio'        => '',
-            'dir_usuario'          => '',
+            'dni_usuario'      => '',
+            'nombre_usuario'   => '',
+            'pass_usuario'     => '',
+            'cargo_usuario'    => '',
+            'tel_usuario'      => '',
+            'correo_usuario'   => '',
+            'cod_departamento' => '',
+            'cod_municipio'    => '',
+            'dir_usuario'      => '',
             'cod_rol'          => '',
-            'estado_usuario'       => 1,
+            'cod_partido'      => '',
         ];
 
         return view('usuarios.create', [
             'departamentos' => $departamentos,
             'municipios'    => $municipios,
             'roles'         => $roles,
+            'partidos'      => $partidos,
             'form'          => $form,
             'title'         => 'Agregar Usuario',
             'btn'           => 'Guardar',
@@ -121,6 +126,7 @@ class UsuariosController extends Controller
             'cod_municipio'             => 'required',
             'dir_usuario'               => 'required',
             'cod_rol'                   => 'required',
+            'cod_partido'               => ($request->cod_rol == 2 ? 'required' : ''),
         ], [], [
             'dni_usuario'               => 'DNI',
             'nombre_usuario'            => 'Nombre',
@@ -133,6 +139,7 @@ class UsuariosController extends Controller
             'cod_departamento'          => 'Departamento',
             'cod_municipio'             => 'Municipio',
             'dir_usuario'               => 'Direccion',
+            'cod_partido'               => 'Partido',
         ]);
 
         #Si la validacion falla
@@ -154,7 +161,8 @@ class UsuariosController extends Controller
             'cod_departamento'     => $request->cod_departamento,
             'cod_municipio'        => $request->cod_municipio,
             'dir_usuario'          => $request->dir_usuario,
-            'estado_usuario'       => ($request->estado_usuario ? 1 : 2),
+            'cod_partido'          => ($request->cod_rol == 2 ? $request->cod_partido : null),
+            'estado_usuario'       => 1,
             'fecha_registro'       => now(),
             'dni_usuario_registro' => Auth::user()->dni_usuario,
         ]);
@@ -173,6 +181,11 @@ class UsuariosController extends Controller
     {
         #Obtener usuario
         $form = User::with('rol')->findOrFail($dni_usuario);
+        if (empty($form->rol[0]->id)) {
+            $form->cod_rol = '';
+        } else {
+            $form->cod_rol = $form->rol[0]->id;
+        }
 
         #Obtengo todos los departamentos y municipios
         $departamentos = Departamentos::all();
@@ -181,10 +194,14 @@ class UsuariosController extends Controller
         #Roles
         $roles = Role::all();
 
+        #Partidos
+        $partidos = PartidosPoliticos::all();
+
         return view('usuarios.create', [
             'departamentos' => $departamentos,
             'municipios'    => $municipios,
             'roles'         => $roles,
+            'partidos'      => $partidos,
             'form'          => $form,
             'title'         => 'Actualizar Usuario',
             'btn'           => 'Actualizar',
@@ -209,6 +226,7 @@ class UsuariosController extends Controller
             'cod_municipio'             => 'required',
             'dir_usuario'               => 'required',
             'cod_rol'                   => 'required',
+            'cod_partido'               => ($request->cod_rol == 2 ? 'required' : ''),
         ], [], [
             'dni_usuario'               => 'DNI',
             'nombre_usuario'            => 'Nombre',
@@ -221,6 +239,7 @@ class UsuariosController extends Controller
             'cod_departamento'          => 'Departamento',
             'cod_municipio'             => 'Municipio',
             'dir_usuario'               => 'Direccion',
+            'cod_partido'               => 'Partido',
         ]);
 
         #Si la validacion falla
@@ -237,7 +256,7 @@ class UsuariosController extends Controller
             'cod_departamento' => $request->cod_departamento,
             'cod_municipio'    => $request->cod_municipio,
             'dir_usuario'      => $request->dir_usuario,
-            'estado_usuario'   => ($request->estado_usuario ? 1 : 2),
+            'cod_partido'      => ($request->cod_rol == 2 ? $request->cod_partido : null),
         ]);
 
         #Encriptar password
@@ -263,5 +282,20 @@ class UsuariosController extends Controller
             'type' => 'success',
             'message' => 'Usuario eliminado.',
         ]);
+    }
+
+    /**
+     * Guardar nuevo registro
+     */
+    public function estatus(Request $request)
+    {
+        #Actualizar
+        $usuario = User::find($request->dni_usuario);
+        $usuario->update([
+            'estado_usuario' => ($usuario->estado_usuario == 1 ? 2 : 1),
+        ]);
+
+        #Respuesta
+        return response()->json(['success' => 'Usuario actualizado exitosamente']);
     }
 }

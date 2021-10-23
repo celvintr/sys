@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('cod_departamento', 2)->nullable();
             $table->string('cod_municipio', 4)->nullable();
             $table->text('dir_usuario')->nullable();
+            $table->bigInteger('cod_partido')->nullable();
             $table->tinyInteger('estado_usuario')->default(1);
             $table->dateTime('fecha_registro')->nullable();
             $table->bigInteger('dni_usuario_registro')->nullable();

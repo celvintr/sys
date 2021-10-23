@@ -155,6 +155,9 @@
                             width:200,
                             template: function(data) {
                                 var output = `<div class="d-flex font-weight-bold align-items-center">${data.cargo_usuario}</div>`;
+                                if (data.partido) {
+                                    output += `<div class="d-flex text-muted align-items-center">${data.partido.nombre_partido}</div>`;
+                                }
 
                                 return output;
                             }
@@ -185,7 +188,7 @@
                             title: 'Estado',
                             width:100,
                             template: function(data) {
-                                var status = {
+                                /*var status = {
                                     1: {
                                         'title': 'Activo',
                                         'class': ' label-light-success'
@@ -196,7 +199,21 @@
                                     },
                                 };
 
-                                return '<span class="label font-weight-bold label-lg ' + status[data.estado_usuario].class + ' label-inline">' + status[data.estado_usuario].title + '</span>';
+                                return '<span class="label font-weight-bold label-lg ' + status[data.estado_usuario].class + ' label-inline">' + status[data.estado_usuario].title + '</span>';*/
+
+                                var checked = 'checked="checked"';
+                                if (data.estado_usuario == 2) checked = '';
+
+                                var output = `
+                                <span class="switch switch-outline switch-icon switch-success">
+                                    <label>
+                                        <input type="checkbox" ${checked} name="estado_usuario" value="${data.dni_usuario}" class="chk-estatus" />
+                                        <span></span>
+                                    </label>
+                                </span>
+                                `;
+
+                                return output;
                             }
                         },
                         {
@@ -278,6 +295,20 @@
 
                 $(document).on('change', '#filtro_cod_rol', function() {
                     datatable.search($(this).val().toLowerCase(), 'cod_rol');
+                });
+
+                $(document).on('change', '.chk-estatus', function() {
+                    var formData = new FormData();
+                    formData.append('dni_usuario', $(this).val());
+
+                    axios.post("{{ route('admin.usuarios.estatus') }}", formData)
+                    .then(function (response) {
+                        toastr.success(response.data.success);
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    });
                 });
             });
         </script>
