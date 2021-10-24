@@ -288,7 +288,7 @@
                             },
                         }],
                 });
-
+                // cambiar estatus del usuario desde el listado
                 $(document).on('change', '#filtro_estado_usuario', function() {
                     datatable.search($(this).val().toLowerCase(), 'estado_usuario');
                 });
@@ -312,8 +312,9 @@
                 });
             });
         </script>
-
+        
         <script>
+                // eliminar usuario desde la lista
             jQuery(document).on('click', '.delete-link', function () {
                 Swal.fire({
                     title: "Está seguro?",
