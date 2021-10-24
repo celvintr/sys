@@ -12,13 +12,19 @@
             </div>
 
             <div class="card-body">
+                @if (Session::has('message'))
+                        <div class="alert alert-success" role="alert">
+                        {{ Session::get('message') }}
+                    </div>
+                @endif
+
                 <!-- Session Status -->
                 <x-auth-session-status class="mb-3" :status="session('status')" />
 
                 <!-- Validation Errors -->
                 <x-auth-validation-errors class="mb-3" :errors="$errors" />
 
-                <form method="POST" action="{{ route('password.email') }}">
+                <form method="POST" action="{{ route('forget.password.post') }}">
                 @csrf
 
                 <!-- Email Address -->

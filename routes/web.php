@@ -90,6 +90,9 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/', [CustodiosController::class, 'store'])->name('store');
             });
         });
+
+        Route::get('perfil', [UsuariosController::class, 'perfil'])->name('usuarios.perfil');
+        Route::post('perfil', [UsuariosController::class, 'perfilUpdate'])->name('usuarios.perfil.update');
     });
 });
 

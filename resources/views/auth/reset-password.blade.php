@@ -10,17 +10,17 @@
             <!-- Validation Errors -->
             <x-auth-validation-errors class="mb-3" :errors="$errors" />
 
-            <form method="POST" action="{{ route('password.update') }}">
+            <form method="POST" action="{{ route('reset.password.post') }}">
                 @csrf
 
                 <!-- Password Reset Token -->
-                <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                <input type="hidden" name="token" value="{{ $token }}">
 
                 <!-- Email Address -->
                 <div class="form-group">
                     <x-label for="email" :value="__('Email')" />
 
-                    <x-input id="email" type="email" name="email" :value="old('email', $request->email)" required autofocus />
+                    <x-input id="email" type="email" name="email" :value="old('email')" required autofocus />
                 </div>
 
                 <!-- Password -->

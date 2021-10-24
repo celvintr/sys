@@ -22,6 +22,12 @@
                         </div>
 
                         <div>
+                            @if (Session::has('message'))
+                                <div class="alert alert-success" role="alert">
+                                    {{ Session::get('message') }}
+                                </div>
+                            @endif
+
                             <!-- Session Status -->
                             <x-auth-session-status class="mb-3" :status="session('status')" />
 
@@ -38,6 +44,10 @@
 
                             <div class="form-group mb-5">
                                 <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Contraseña" name="pass_usuario" autocomplete="current-password" />
+                            </div>
+
+                            <div class="d-flex justify-content-end my-4">
+                                <a href="{{ route('forget.password.get') }}" class="text-dark">Olvidó su contraseña?</a>
                             </div>
 
                             <button id="kt_login_signin_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Iniciar Sesión</button>
