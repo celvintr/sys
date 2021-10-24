@@ -91,13 +91,9 @@
                                                      <i class="menu-bullet menu-bullet-dot">
                                                         <span></span></i>
                                                     <span class="menu-text">Roles</span>
-                                                </a>
-
-                                            
+                                                </a>                                           
                                             </li>
-                                            @endcan   
-                                                    
-
+                                        @endcan                                                       
                             </ul>
 
          </div>
