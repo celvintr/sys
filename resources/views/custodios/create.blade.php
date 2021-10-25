@@ -15,7 +15,7 @@
                                     <div class="form-group m-0">
                                         <label>DNI del postulante a custodio:</label>
                                         <div class="input-group input-group-lg">
-                                            <input name="dni" required type="text" class="form-control text-bold" maxlength="13" placeholder="Ingrese el DNI..."/>
+                                            <input name="dni" required type="text" @if(session()->has('dni_numero')) value="{{ session('dni_numero') }}" @endif class="form-control text-bold" maxlength="13" placeholder="Ingrese el DNI..."/>
                                             <div class="input-group-append">
                                                 <button class="btn btn-secondary" type="submit" id="btn-dni">
                                                     <i class="fas fa-search"></i>
@@ -138,6 +138,18 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Partido Político:</label>
+                                                    <select name="cod_partido" id="cbo-partido" class="form-control kt-selectpicker">
+                                                        <option value="">::. Seleccione .::</option>
+                                                        @foreach ($partidos as $item)
+                                                            <option value="{{ $item->cod_partido }}">{{ $item->nombre_partido }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -169,20 +181,8 @@
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label>Centro de Votación:</label>
-                                                    <select name="cod_centro" id="cod_centro" class="form-control select-centros kt-selectpicker" data-size="7" data-live-search="true">
+                                                    <select name="cod_centro" id="cod_centro" class="form-control cbo-centros kt-selectpicker" data-size="7" data-live-search="true">
                                                         <option value="">::. Seleccione .::</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label>Partido Político:</label>
-                                                    <select name="cod_partido" class="form-control kt-selectpicker">
-                                                        <option value="">::. Seleccione .::</option>
-                                                        @foreach ($partidos as $item)
-                                                            <option value="{{ $item->cod_partido }}">{{ $item->nombre_partido }}</option>
-                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -281,7 +281,7 @@
                         </div>
 
                         <div class="card-footer d-flex align-items-center justify-content-center">
-                            <button  type="submit" class="btn btn-primary mx-1">
+                            <button type="submit" class="btn btn-primary mx-1" id="btn-guardar">
                                 <i class="far fa-save"></i> Guadar
                             </button>
                             <a href="{{ route('admin.custodios.index') }}" class="btn btn-secondary mx-1">
@@ -299,6 +299,67 @@
         @if(!empty($form))
         <script>
             $(document).ready(function() {
+                $('.kt-selectpicker').selectpicker();
+
+                if ($('.select-municipios').length && $('.cbo-centros').length) {
+                    $('.select-municipios').on('change', function(e) {
+                        const $municipio = $(this);
+                        const $centro = $($municipio.data('child'));
+                        const $partido = document.querySelector('#cbo-partido').value;
+
+                        if ($municipio.val()) {
+                            axios.get('{{ url('/admin/custodios/centros') }}/' + $municipio.val() + '/' + $partido) 
+                            .then(function (response) {
+                                let data = response.data;
+                                let output = `<option>::. Seleccione .::</option>`;
+
+                                if(data.length > 0) {
+                                    data.forEach(item => {
+                                        output += `<option value="${item.cod_centro}">${item.nombre_centro}</option>`;
+                                    });
+                                } else {
+                                    output = '<option>::. No hay centros disponibles para este partido .::</option>';
+                                }
+
+                                $centro.html(output);
+                                $centro.selectpicker('refresh');
+                            })
+                            .catch(function (error) {
+                                // handle error
+                                console.log(error);
+                            });
+                        }
+                    });
+                }
+
+                document.querySelector('#cbo-partido').addEventListener('change', function() {
+                    const $centros = document.querySelector('#cod_centro');
+
+                    if($centros.value) {
+                        const $municipio = $('#cod_municipio');
+                        const $centro = $($municipio.data('child'));
+                        const $partido = document.querySelector('#cbo-partido').value;
+
+                        axios.get('{{ url('/admin/custodios/centros') }}/' + $municipio.val() + '/' + $partido) 
+                            .then(function (response) {
+                                let data = response.data;
+                                let output = `<option value="">::. Seleccione .::</option>`;
+
+                                data.forEach(item => {
+                                    output += `<option value="${item.cod_centro}">${item.nombre_centro}</option>`;
+                                });
+
+                                $centro.html(output);
+                                $centro.selectpicker('refresh');
+                            })
+                            .catch(function (error) {
+                                // handle error
+                                console.log(error);
+                            });
+                    }
+                });
+
+                // Formulario
                 const foto_custodio = new KTImageInput('kt_foto_custodio');
                 const foto_dni_custodio = new KTImageInput('kt_foto_dni_custodio');
                 const foto_comp_custodio = new KTImageInput('kt_foto_comp_custodio');
@@ -306,11 +367,15 @@
                 $('.form-ajax').on('submit', function(e) {
                     e.preventDefault();
 
+                    const btnGuardar = document.querySelector('#btn-guardar');
+                    btnGuardar.disabled = true;
+
                     const $form = $(this);
                     const formData = new FormData(document.getElementById($form.attr('id')));
 
                     axios.post($(this).attr('action'), formData)
                     .then(function (response) {
+                        btnGuardar.disabled = false;
                         const data = response.data;
 
                         $('.alert-errores').addClass('d-none');
@@ -322,9 +387,9 @@
                             });
                         } else {
                             Swal.fire({
-                                title: "Exito",
-                                text: data.success,
-                                icon: "success",
+                                title: data.error ? 'Error!' : 'Exito',
+                                text: data.message,
+                                icon: data.error ? 'info' : 'success',
                                 showCancelButton: false,
                                 confirmButtonText: "Aceptar",
                                 reverseButtons: true
@@ -339,121 +404,23 @@
                     .catch(function (error) {
                         // handle error
                         console.log(error);
+                        btnGuardar.disabled = false;
+                        
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Ha ocurrido un error al tratar de crear el registro, por favor intenta de nuevo.',
+                            icon: 'info',
+                            showCancelButton: false,
+                            confirmButtonText: "Aceptar",
+                            reverseButtons: true
+                        }).then(function(result) {
+                            if (result.value) {
+                                if ($form.dataset.return) location.href = $form.dataset.return;
+                                else location.reload();
+                            }
+                        });
                     });
                 });
-
-                // FormValidation.formValidation(
-                //     document.getElementById('form'),
-                //     {
-                //         fields: {
-                //             nombre_custodio: {
-                //                 validators: {
-                //                     notEmpty: {
-                //                         message: 'Nombre es requerido'
-                //                     },
-                //                     regexp: {
-                //                         regexp: /^[A-Za-z ]+$/,
-                //                         message: 'El nombre solo puede contener letras'
-                //                     }
-                //                 }
-                //             },
-                //             tel_movil: {
-                //                 validators: {
-                //                     notEmpty: {
-                //                         message: 'Teléfono celular es requerido'
-                //                     },
-                //                     stringLength: {
-                //                         min: 8,
-                //                         max: 8,
-                //                         message: 'El teléfono celular debe contener 8 dígitos',
-                //                     },
-                //                     regexp: {
-                //                         regexp: /^[0-9]+$/,
-                //                         message: 'Solo puede contener números'
-                //                     }
-                //                 }  
-                //             },
-                //             tel_fijo: {
-                //                 validators: {
-                //                     notEmpty: {
-                //                         message: 'Teléfono fijo es requerido'
-                //                     },
-                //                     stringLength: {
-                //                         min: 8,
-                //                         max: 8,
-                //                         message: 'El teléfono fijo debe contener 8 dígitos',
-                //                     },
-                //                     regexp: {
-                //                         regexp: /^[0-9]+$/,
-                //                         message: 'Solo puede contener números'
-                //                     }
-                //                 }  
-                //             },
-                //             correo1_custodio: {
-                //                 validators: {
-                //                     notEmpty: {
-                //                         message: 'Correo #1 es requerido'
-                //                     },
-                //                     emailAddress: {
-                //                         message: 'Debe ser un correo válido'
-                //                     }
-                //                 }  
-                //             },
-                //             correo2_custodio: {
-                //                 validators: {
-                //                     emailAddress: {
-                //                         message: 'Debe ser un correo válido'
-                //                     }
-                //                 }  
-                //             },
-                //             cod_departamento: {
-                //                 validators: {
-                //                     notEmpty: {
-                //                         message: 'Por favor selecciona una opción'
-                //                     }
-                //                 }
-                //             },
-                //             cod_municipio: {
-                //                 validators: {
-                //                     notEmpty: {
-                //                         message: 'Por favor selecciona una opción'
-                //                     }
-                //                 }
-                //             },
-                //             cod_centro: {
-                //                 validators: {
-                //                     notEmpty: {
-                //                         message: 'Por favor selecciona una opción'
-                //                     }
-                //                 }
-                //             },
-                //             cod_partido: {
-                //                 validators: {
-                //                     notEmpty: {
-                //                         message: 'Por favor selecciona una opción'
-                //                     }
-                //                 }
-                //             },
-                //             dir_custodio: {
-                //                 validators: {
-                //                     notEmpty: {
-                //                         message: 'Dirección es requerida'
-                //                     }
-                //                 }
-                //             }
-                //         },
-
-                //         plugins: {
-                //             trigger: new FormValidation.plugins.Trigger(),
-                //             // Bootstrap Framework Integration
-                //             bootstrap: new FormValidation.plugins.Bootstrap(),
-                //             // Validate fields when clicking the Submit button
-                //             submitButton: new FormValidation.plugins.SubmitButton(),
-                //             // Submit the form when all fields are valid
-                //             defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                //         }
-                //     }
-                // );
             });
         </script>
         @endif

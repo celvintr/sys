@@ -87,7 +87,7 @@
                     // columns definition
                     columns: [
                         {
-                            field: 'cod_rol',
+                            field: 'name',
                             title: 'Nombre del rol',
                             template: function(data) {
                                 var output = `<div class="d-flex align-items-center">${data.name}</div>`;
@@ -100,7 +100,7 @@
                             width: 130,
                             overflow: 'visible',
                             autoHide: false,
-                            template: function() {
+                            template: function(data) {
                                 return `
                                     <div class="dropdown dropdown-inline">
                                         
@@ -108,7 +108,7 @@
                                             
                                         </div>
                                     </div>
-                                    <a href="{{ route('admin.roles.edit') }}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Editar">
+                                    <a href="{{ route('admin.roles.edit') }}/${data.id}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Editar">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -119,7 +119,7 @@
                                             </svg>
                                         </span>
                                     </a>
-                                    <a href="{{ route('admin.roles.destroy') }}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Eliminar">
+                                    <a title="${data.name}" href="javascript:;" data-url="{{ url('admin/roles/eliminar') }}/${data.id}" id="delete-button" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Eliminar">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -133,6 +133,48 @@
                                 `;
                             },
                         }],
+                });
+            });
+
+            jQuery(document).on('click', '#delete-button', function () {
+                Swal.fire({
+                    title: "Seguro que desea eliminar el rol: "+$(this).attr("title"),
+                    text: "Esta acción es irreversible",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Si, Eliminar!",
+                    cancelButtonText: "No, cancelar!",
+                    confirmButtonColor: '#d33'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var role = $(this).data('id');
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            type: "DELETE",
+                            url: $(this).data('url'),
+                            success: function (data) {
+                                Swal.fire({
+                                    title: "Exito",
+                                    text: data.message,
+                                    icon: data.type,
+                                    showCancelButton: false,
+                                    confirmButtonText: "Aceptar",
+                                    reverseButtons: true
+                                }).then(function(result) {
+                                    if (result.value) {
+                                        location.reload();
+                                    }
+                                });
+                            },
+                            error: function (data) {
+                                console.log('Error:', data);
+                            }
+                        });
+                    }
                 });
             });
         </script>

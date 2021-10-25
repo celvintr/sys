@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RolesyPermisosController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\CustodiosController;
 
@@ -82,14 +81,43 @@ Route::middleware(['auth'])->group(function () {
         Route::group(['middleware' => ['role:Operador de sistema']], function () {
             #Custodios
             Route::prefix('custodios')->name('custodios.')->group(function () {
-                #Agregar custodio
+                // Agregar custodio
                 Route::get('/', [CustodiosController::class, 'index'])->name('index');
+                Route::get('/centros/{idMunicipio}/{idPartido}', [CustodiosController::class, 'getCentros'])->name('centros');
                 Route::get('/data', [CustodiosController::class, 'data'])->name('data');
                 Route::get('/agregar', [CustodiosController::class, 'create'])->name('create');
                 Route::post('/dni', [CustodiosController::class, 'dni'])->name('dni');
                 Route::post('/', [CustodiosController::class, 'store'])->name('store');
+    
+                // Delete
+                Route::delete('/delete/{id_custodio}', [CustodiosController::class, 'destroy'])->name('delete');
+    
+                // Update
+                Route::get('/edit/{id_custodio}', [CustodiosController::class, 'edit'])->name('edit');
+                Route::post('/update/{id_custodio}', [CustodiosController::class, 'update'])->name('update');
             });
+    
+       });
+
+
+
+        Route::prefix('custodios')->name('custodios.')->group(function () {
+            // Agregar custodio
+            Route::get('/', [CustodiosController::class, 'index'])->name('index');
+            Route::get('/centros/{idMunicipio}/{idPartido}', [CustodiosController::class, 'getCentros'])->name('centros');
+            Route::get('/data', [CustodiosController::class, 'data'])->name('data');
+            Route::get('/agregar', [CustodiosController::class, 'create'])->name('create');
+            Route::post('/dni', [CustodiosController::class, 'dni'])->name('dni');
+            Route::post('/', [CustodiosController::class, 'store'])->name('store');
+
+            // Delete
+            Route::delete('/delete/{id_custodio}', [CustodiosController::class, 'destroy'])->name('delete');
+
+            // Update
+            Route::get('/edit/{id_custodio}', [CustodiosController::class, 'edit'])->name('edit');
+            Route::post('/update/{id_custodio}', [CustodiosController::class, 'update'])->name('update');
         });
+
 
         Route::get('perfil', [UsuariosController::class, 'perfil'])->name('usuarios.perfil');
         Route::post('perfil', [UsuariosController::class, 'perfilUpdate'])->name('usuarios.perfil.update');

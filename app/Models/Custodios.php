@@ -21,7 +21,7 @@ class Custodios extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'cod_custodio';
+    protected $primaryKey = 'idc_custodio';
 
     /**
      * Indicates if the model should be timestamped.
@@ -60,7 +60,7 @@ class Custodios extends Model
      *
      * @var array
     */
-   protected $appends = ['avatar'];
+   protected $appends = ['avatar', 'foto', 'foto_dni', 'foto_comp'];
 
     /**
      * Obtener avatar
@@ -79,7 +79,7 @@ class Custodios extends Model
      */
     public function getFotoAttribute()
     {
-        return asset('storage/custodios/' . $this->foto_custodio);
+        return asset('storage/' . $this->foto_custodio);
     }
 
     /**
@@ -87,7 +87,7 @@ class Custodios extends Model
      */
     public function getFotoDniAttribute()
     {
-        return asset('storage/custodios/' . $this->foto_dni_custodio);
+        return asset('storage/' . $this->foto_dni_custodio);
     }
 
     /**
@@ -95,6 +95,41 @@ class Custodios extends Model
      */
     public function getFotoCompAttribute()
     {
-        return asset('storage/custodios/' . $this->foto_comp_custodio);
+        return asset('storage/' . $this->foto_comp_custodio);
+    }
+
+    /**
+     * Relacion estado, devuelve la instancia de estado y asi acceder a sus propiedades
+     */
+
+    public function estado()
+    {
+        return $this->belongsTo(EstadoCustodio::class, 'cod_estado', 'cod_estado');
+    }
+
+    /**
+     * Relacion partido, devuelve la instancia de partido y asi acceder a sus propiedades
+     */
+
+    public function partido()
+    {
+        return $this->belongsTo(PartidosPoliticos::class, 'cod_partido', 'cod_partido');
+    }
+
+    /**
+     * Relacion municipio, devuelve la instancia de municipio y asi acceder a sus propiedades
+     */
+
+    public function municipio()
+    {
+        return $this->belongsTo(Municipios::class, 'cod_municipio', 'cod_municipio');
+    }
+
+     /**
+     * Relacion centro de votacion, devuelve la instancia de centro de votacion y asi acceder a sus propiedades
+     */
+    public function centro()
+    {
+        return $this->belongsTo(CentrosVotacion::class, 'cod_centro', 'cod_centro');
     }
 }

@@ -9,7 +9,11 @@ use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
-
+    public function __construct()
+    {
+        //$this->middleware('can:admin.roles.index');
+        //$this->middleware('can:admin.usuarios.edit')->only('edit', 'update');
+    }
     public function index()
     {
         $roles = Role::all();
@@ -72,16 +76,64 @@ class RolesController extends Controller
 
     public function edit(Role $role)
     {
-        return view('roles.EditarRol', compact('role'));
+        $permissions = Permission::all();
+        return view('roles.EditarRol', compact('role', 'permissions'));
     }
 
     public function update(Request $request, Role $role)
     {
-        //
+
+        $val = Validator::make($request->all(), [
+            'name' => 'required',
+
+        ], [], [
+            'name' => 'Nombre de rol',
+
+        ]);
+        if ($val->fails()) {
+            return response()->json(['errors' => $val->errors()->all()]);
+        }
+
+        if (empty($request->permissions)) {
+            return response()->json(['norol' => 'Agregue almenos un permiso al rol']);
+        }
+
+        $Roles = Role::all();
+        $exist = false;
+        foreach ($Roles as $rol) {
+            if ($rol['id'] != $request->id) {
+                if ($rol['name'] == $request->name) {
+                    $exist = true;
+                }
+            }
+
+        }
+
+        if ($exist) {
+            //"]);
+            //$request->session()->flash('existe', "No se encontró este DNI en el censo nacional.");
+            return response()->json(['existe' => 'El nombre del rol ya existe']);
+        } else {
+            $role = Role::find($request->id);
+            $role->name = $request->name;
+            $role->save();
+            $role->syncPermissions($request->permissions);
+            return response()->json(['success' => 'El rol fue actualizado exitosamente']);
+            return redirect()->route('roles.index');
+        }
+
     }
 
-    public function destroy(Role $role)
+    public function destroy($role)
     {
-        //
+
+        $role = Role::find($role);
+        $role->delete();
+
+        return response()->json([
+            'type' => 'success',
+            'message' => $role,
+        ]);
+        return redirect()->route('roles.index');
     }
 }
