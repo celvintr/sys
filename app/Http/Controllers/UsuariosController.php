@@ -314,19 +314,11 @@ class UsuariosController extends Controller
     {
         #Validar campos
         $validator = Validator::make($request->all(), [
-            'nombre_usuario'            => 'required|regex:/^[A-Za-z ]+$/',
             'pass_usuario'              => ($request->update_pass ? 'required|confirmed' : ''),
             'pass_usuario_confirmation' => ($request->update_pass ? 'required' : ''),
-            'cargo_usuario'             => 'required',
-            'tel_usuario'               => 'required|regex:/^[0-9]+$/|max:8',
-            'dir_usuario'               => 'required',
         ], [], [
-            'nombre_usuario'            => 'Nombre',
             'pass_usuario'              => 'Contraseña',
             'pass_usuario_confirmation' => 'Confirmación',
-            'cargo_usuario'             => 'Cargo',
-            'tel_usuario'               => 'Telefono',
-            'dir_usuario'               => 'Direccion',
         ]);
 
         #Si la validacion falla
@@ -336,12 +328,6 @@ class UsuariosController extends Controller
 
         #Crear registro
         $usuario = User::find(Auth::user()->dni_usuario);
-        $usuario->update([
-            'nombre_usuario' => $request->nombre_usuario,
-            'cargo_usuario'  => $request->cargo_usuario,
-            'tel_usuario'    => $request->tel_usuario,
-            'dir_usuario'    => $request->dir_usuario,
-        ]);
 
         #Encriptar password
         if ($request->update_pass) {

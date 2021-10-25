@@ -37,7 +37,7 @@
                                                 <i class="fas fa-user"></i>
                                             </span>
                                         </div>
-                                        <input type="text" name="nombre_usuario" class="form-control" value="{{ Auth::user()->nombre_usuario }}" />
+                                        <input type="text" name="nombre_usuario" class="form-control" value="{{ Auth::user()->nombre_usuario }}" disabled />
                                     </div>
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                                                 <i class="fas fa-mobile-alt"></i>
                                             </span>
                                         </div>
-                                        <input type="text" class="form-control" name="tel_usuario" value="{{ Auth::user()->tel_usuario }}" maxlength="8" />
+                                        <input type="text" class="form-control" name="tel_usuario" value="{{ Auth::user()->tel_usuario }}" maxlength="8" disabled />
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                                                 <i class="fas fa-mobile-alt"></i>
                                             </span>
                                         </div>
-                                        <input type="text" class="form-control" name="cargo_usuario" value="{{ Auth::user()->cargo_usuario }}" />
+                                        <input type="text" class="form-control" name="cargo_usuario" value="{{ Auth::user()->cargo_usuario }}" disabled />
                                     </div>
                                 </div>
                             </div>
@@ -88,22 +88,14 @@
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label for="">Dirección</label>
-                                <textarea name="dir_usuario" class="form-control" rows="10">{{ Auth::user()->dir_usuario }}</textarea>
+                                <textarea name="dir_usuario" class="form-control" rows="10" disabled>{{ Auth::user()->dir_usuario }}</textarea>
                             </div>
                         </div>
 
-                        <div class="form-row" id="wrapper-update-pass">
-                            <div class="col">
-                                <input type="hidden" name="update_pass" value="">
-                                <button type="button" id="btn-update-pass" class="btn btn-light">
-                                    <i class="fas fa-key"></i> Cambiar contraseña
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="form-row d-none" id="wrapper-pass">
+                        <div class="form-row" id="wrapper-pass">
                             <div class="col-lg-6">
                                 <div class="d-flex align-items-center">
+                                    <input type="hidden" name="update_pass" value="1">
                                     <div class="form-group w-100 mr-1">
                                         <label for="">{{ 'Contraseña' }}</label>
                                         <div class="input-group">
@@ -146,7 +138,7 @@
 
                     <div class="card-footer d-flex align-items-center justify-content-center">
                         <button type="submit" class="btn btn-primary mx-1">
-                            <i class="far fa-save"></i> Actualizar mi perfil
+                            <i class="far fa-save"></i> Actualizar Contraseña
                         </button>
                     </div>
                 </div>
@@ -162,18 +154,6 @@
                     $('#password-generated').html('Contraseña generada: <b>' + pass + '</b>');
                     $('#pass_usuario').val(pass);
                     $('#pass_usuario_confirmation').val(pass);
-                });
-
-                $('#btn-update-pass').on('click', function() {
-                    $('#wrapper-update-pass').remove();
-                    $('#wrapper-pass').removeClass('d-none');
-                    $('[name="update_pass"]').val('1');
-                });
-
-                $('[name="tel_usuario"]').inputmask({
-                    "mask": "9",
-                    "repeat": 10,
-                    "greedy": false
                 });
             });
         </script>
