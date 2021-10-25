@@ -1,9 +1,17 @@
 <x-guest-layout>
+    <div class="d-flex flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat" style="background-image: url('{{ asset('metronic/media/bg/bg-3.jpg') }}');">
+        <div class="login-form text-center p-7 position-relative overflow-hidden">
+           
+    
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
-                <x-application-logo width="82" />
-            </a>
+          
+                <div class="d-flex flex-center mb-15">
+                    <a href="/">
+                        <img src="{{ asset('metronic/media/logos/logo-letter-13.png') }}" class="max-h-75px" alt="">
+                    </a>
+                </div>
+           
         </x-slot>
 
         <div class="card-body">
@@ -43,4 +51,5 @@
             </div>
         </div>
     </x-auth-card>
+    </div>
 </x-guest-layout>
