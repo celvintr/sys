@@ -85,7 +85,7 @@
                                         </li>
 
                                         @endcan
-                                        @can('admin.roles.index')
+                                        
                                             <li class="menu-item " aria-haspopup="true">
                                                 <a href="{{ route('admin.roles.index') }}" class="menu-link ">
                                                      <i class="menu-bullet menu-bullet-dot">
@@ -93,7 +93,7 @@
                                                     <span class="menu-text">Roles</span>
                                                 </a>                                           
                                             </li>
-                                        @endcan                                                       
+                                                                                          
                             </ul>
 
          </div>
