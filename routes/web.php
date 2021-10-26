@@ -51,6 +51,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [UsuariosController::class, 'index'])->name('index');
             Route::get('/data', [UsuariosController::class, 'data'])->name('data');
             Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
+            Route::get('/ficha/{dni_usuario}', [UsuariosController::class, 'ficha'])->name('ficha');
+            Route::get('/ficha/imprimir/{dni_usuario}', [UsuariosController::class, 'fichaImprimir'])->name('ficha.imprimir');
             Route::get('/editar/{dni_usuario}', [UsuariosController::class, 'editar'])->name('editar');
             Route::post('/', [UsuariosController::class, 'store'])->name('store');
             Route::put('/{dni_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');

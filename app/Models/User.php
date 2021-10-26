@@ -104,6 +104,22 @@ class User extends Authenticatable
         return $this->belongsTo(PartidosPoliticos::class, 'cod_partido', 'cod_partido');
     }
 
+    /**
+     * Departamento.
+     */
+    public function departamento()
+    {
+        return $this->belongsTo(Departamentos::class, 'cod_departamento', 'cod_departamento');
+    }
+
+    /**
+     * Municipio.
+     */
+    public function municipio()
+    {
+        return $this->belongsTo(Municipios::class, 'cod_municipio', 'cod_municipio');
+    }
+
     public function getAuthPassword()
     {
         return $this->pass_usuario;

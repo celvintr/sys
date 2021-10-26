@@ -188,19 +188,6 @@
                             title: 'Estado',
                             width:100,
                             template: function(data) {
-                                /*var status = {
-                                    1: {
-                                        'title': 'Activo',
-                                        'class': ' label-light-success'
-                                    },
-                                    2: {
-                                        'title': 'Inactivo',
-                                        'class': ' label-light-danger'
-                                    },
-                                };
-
-                                return '<span class="label font-weight-bold label-lg ' + status[data.estado_usuario].class + ' label-inline">' + status[data.estado_usuario].title + '</span>';*/
-
                                 var checked = 'checked="checked"';
                                 if (data.estado_usuario == 2) checked = '';
 
@@ -225,44 +212,17 @@
                             autoHide: false,
                             template: function(data) {
                                 return `
-                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                        <ul class="navi flex-column navi-hover py-2">
-                                            <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">
-                                                Choose an action:
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="la la-print"></i></span>
-                                                    <span class="navi-text">Print</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="la la-copy"></i></span>
-                                                    <span class="navi-text">Copy</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="la la-file-excel-o"></i></span>
-                                                    <span class="navi-text">Excel</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="la la-file-text-o"></i></span>
-                                                    <span class="navi-text">CSV</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="la la-file-pdf-o"></i></span>
-                                                    <span class="navi-text">PDF</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <a href="{{ url('admin/usuarios/editar') }}/${data.dni_usuario}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
+                                    <a href="{{ url('admin/usuarios/ficha') }}/${data.dni_usuario}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Ver ficha">
+                                        <span class="svg-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24"/>
+                                                    <path d="M6,2 L18,2 C19.6568542,2 21,3.34314575 21,5 L21,19 C21,20.6568542 19.6568542,22 18,22 L6,22 C4.34314575,22 3,20.6568542 3,19 L3,5 C3,3.34314575 4.34314575,2 6,2 Z M12,11 C13.1045695,11 14,10.1045695 14,9 C14,7.8954305 13.1045695,7 12,7 C10.8954305,7 10,7.8954305 10,9 C10,10.1045695 10.8954305,11 12,11 Z M7.00036205,16.4995035 C6.98863236,16.6619875 7.26484009,17 7.4041679,17 C11.463736,17 14.5228466,17 16.5815,17 C16.9988413,17 17.0053266,16.6221713 16.9988413,16.5 C16.8360465,13.4332455 14.6506758,12 11.9907452,12 C9.36772908,12 7.21569918,13.5165724 7.00036205,16.4995035 Z" fill="#000000"/>
+                                                </g>
+                                            </svg>
+                                        </span>
+                                    </a>
+                                    <a href="{{ url('admin/usuarios/editar') }}/${data.dni_usuario}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Editar usuario">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -273,7 +233,7 @@
                                             </svg>
                                         </span>
                                     </a>
-                                    <a href="javascript:;" data-url="{{ url('admin/usuarios/eliminar-usuario') }}/${data.dni_usuario}" class="delete-link btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Delete">
+                                    <a href="javascript:;" data-url="{{ url('admin/usuarios/eliminar-usuario') }}/${data.dni_usuario}" class="delete-link btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Eliminar usuario">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -312,7 +272,7 @@
                 });
             });
         </script>
-        
+
         <script>
                 // eliminar usuario desde la lista
             jQuery(document).on('click', '.delete-link', function () {

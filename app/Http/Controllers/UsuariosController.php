@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use PDF;
 
 class UsuariosController extends Controller
 {
@@ -339,5 +340,43 @@ class UsuariosController extends Controller
 
         #Respuesta
         return response()->json(['success' => 'Perfil actualizado exitosamente']);
+    }
+
+    /**
+     * Mostrar ficha
+     */
+    public function ficha($dni_usuario)
+    {
+        #Obtener usuario
+        $form = User::with('rol')->findOrFail($dni_usuario);
+        if (empty($form->rol[0]->id)) {
+            $form->cod_rol = '';
+        } else {
+            $form->cod_rol = $form->rol[0]->id;
+        }
+
+        return view('usuarios.ficha', [
+            'form'  => $form,
+            'title' => 'Ficha del Usuario',
+        ]);
+    }
+
+    /**
+     * Mostrar ficha
+     */
+    public function fichaImprimir($dni_usuario)
+    {
+        #Obtener usuario
+        $form = User::with('rol')->findOrFail($dni_usuario);
+        if (empty($form->rol[0]->id)) {
+            $form->cod_rol = '';
+        } else {
+            $form->cod_rol = $form->rol[0]->id;
+        }
+
+        $pdf = PDF::loadView('usuarios.ficha_pdf', [
+            'data' => $form,
+        ]);
+        return $pdf->download('ficha_'.$dni_usuario.'.pdf');
     }
 }
