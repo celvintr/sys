@@ -35,9 +35,9 @@
                 <td style="vertical-align: center;">{{ $item->correo_usuario }}</td>
                 <td style="vertical-align: center;">{{ $item->cargo_usuario }}</td>
                 <td style="vertical-align: center;">{{ !empty($item->rol[0]->name) ? $item->rol[0]->name : '-' }}</td>
-                <td style="vertical-align: center;">{{ empty($data->partido->nombre_partido) ? '-' : $data->partido->nombre_partido }}</td>
-                <td style="vertical-align: center;">{{ empty($data->departamento->nombre_departamento) ? '-' : $data->departamento->nombre_departamento }}</td>
-                <td style="vertical-align: center;">{{ empty($data->municipio->nombre_municipio) ? '-' : $data->municipio->nombre_municipio }}</td>
+                <td style="vertical-align: center;">{{ empty($item->partido->nombre_partido) ? '-' : $item->partido->nombre_partido }}</td>
+                <td style="vertical-align: center;">{{ empty($item->departamento->nombre_departamento) ? '-' : $item->departamento->nombre_departamento }}</td>
+                <td style="vertical-align: center;">{{ empty($item->municipio->nombre_municipio) ? '-' : $item->municipio->nombre_municipio }}</td>
                 <td style="vertical-align: center;">{{ $item->dir_usuario }}</td>
             </tr>
         @endforeach
