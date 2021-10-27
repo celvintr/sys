@@ -76,7 +76,7 @@
                                                             <i class="fas fa-user"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="text" name="nombre_usuario" class="form-control" value="{{ $form->nombre_usuario }}" />
+                                                    <input type="text" name="nombre_usuario" id="nombre_usuario" class="form-control" value="{{ $form->nombre_usuario }}" />
                                                 </div>
                                             </div>
                                         </div>
@@ -309,7 +309,9 @@
                             console.log(response);
                             var data = response.data;
 
-                            if (data.status == 'OK') {}
+                            if (data.status == 'OK') {
+                                $('#nombre_usuario').val(data.nombre);
+                            }
                             else {
                                 toastr.error(data.message);
                                 $this.val('');
