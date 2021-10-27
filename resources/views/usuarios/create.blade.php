@@ -5,7 +5,7 @@
 
     <div class="row">
         <div class="col">
-            <form method="POST" action="{{ $action }}" class="form form-ajax" id="form" enctype="multipart/form-data" data-return="{{ route('admin.usuarios.index') }}">
+            <form method="POST" action="{{ $action }}" class="form form-ajax" id="form" enctype="multipart/form-data" data-return="{{ $method == 'PUT' ? route('admin.usuarios.index') : route('admin.usuarios.create') }}">
                 @method($method)
 
                 <div class="card card-custom">
@@ -27,7 +27,6 @@
                                         <span class="nav-text">Dirección</span>
                                     </a>
                                 </li>
-
                             </ul>
                         </div>
                     </div>
@@ -272,6 +271,12 @@
                 $('[name="tel_usuario"]').inputmask({
                     "mask": "9",
                     "repeat": 10,
+                    "greedy": false
+                });
+
+                $('[name="dni_usuario"]').inputmask({
+                    "mask": "9",
+                    "repeat": 13,
                     "greedy": false
                 });
 
