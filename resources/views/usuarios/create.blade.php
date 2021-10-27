@@ -21,7 +21,7 @@
                                         <span class="nav-text">Datos Generales</span>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                <li id="tab-direccion" class="nav-item {{ $method == 'POST' ? 'd-none' : '' }}">
                                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
                                         <span class="nav-icon"><i class="fas fa-map-marker-alt"></i></span>
                                         <span class="nav-text">Dirección</span>
@@ -46,7 +46,7 @@
                                                             <i class="fas fa-credit-card"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="text" name="dni_usuario" class="form-control" value="{{ $form->dni_usuario }}" maxlength="13" {{ $method == 'PUT' ? 'disabled' : '' }} />
+                                                    <input type="text" name="dni_usuario" id="dni_usuario" class="form-control" value="{{ $form->dni_usuario }}" maxlength="13" {{ $method == 'PUT' ? 'disabled' : '' }} autofocus />
                                                 </div>
                                             </div>
                                         </div>
@@ -284,6 +284,35 @@
                     }
                     $('#cod_partido').val('');
                     $('#cod_partido').selectpicker('refresh');
+                });
+
+                $('#dni_usuario').blur(function() {
+                    var $this = $(this);
+
+                    if ($this.val().length == 13) {
+                        var formData = new FormData();
+                        formData.append('dni_usuario', $this.val())
+
+                        axios.post("{{ route('admin.usuarios.dni') }}", formData)
+                        .then(function (response) {
+                            console.log(response);
+                            var data = response.data;
+
+                            if (data.status == 'OK') {}
+                            else {
+                                toastr.error(data.message);
+                                $this.val('');
+                                $this.focus();
+                            }
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log(error);
+                        });
+                    }
+                    else {
+                        $this.focus();
+                    }
                 });
             });
         </script>

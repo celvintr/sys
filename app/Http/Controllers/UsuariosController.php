@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\UsuariosExport;
+use App\Models\CensoNacional;
 use App\Models\User;
 use App\Models\Departamentos;
 use App\Models\Municipios;
@@ -405,5 +406,41 @@ class UsuariosController extends Controller
     public function exportExcel(Request $request)
     {
         return Excel::download(new UsuariosExport($request->all()), 'usuarios.xlsx');
+    }
+
+    /**
+     * Consutar DNI usuario
+     */
+    public function dni(Request $request)
+    {
+        $usuario = User::where('dni_usuario', $request->dni_usuario)->first();
+
+        if (empty($usuario->dni_usuario)) {
+            $data = CensoNacional::where('dni', $request->dni)->first();
+
+            if (empty($data->dni)) {
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => 'No se encontró este DNI en el censo nacional.',
+                ]);
+            } else {
+                if ($data->habilitado) {
+                    return response()->json([
+                        'status' => 'OK',
+                        'data'   => $data,
+                    ]);
+                } else {
+                    return response()->json([
+                        'status'  => 'error',
+                        'message' => 'Este DNI se encuentra inhabilitado en el censo nacional.',
+                    ]);
+                }
+            }
+        } else {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'DNI ya registrado en el sistema.',
+            ]);
+        }
     }
 }

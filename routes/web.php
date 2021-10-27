@@ -60,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::put('/{dni_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');
                 Route::post('/estatus', [UsuariosController::class, 'estatus'])->name('estatus');
                 Route::delete('eliminar-usuario/{dni_usuario}', [UsuariosController::class, 'eliminarusuario'])->name('destroy');
+                Route::post('/dni', [UsuariosController::class, 'dni'])->name('dni');
             });
         });
 
