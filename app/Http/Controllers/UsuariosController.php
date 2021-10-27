@@ -130,8 +130,8 @@ class UsuariosController extends Controller
         $validator = Validator::make($request->all(), [
             'dni_usuario'               => 'required|unique:tbl_usuarios',
             'nombre_usuario'            => 'required',
-            'pass_usuario'              => 'required|confirmed',
-            'pass_usuario_confirmation' => 'required',
+            // 'pass_usuario'              => 'required|confirmed',
+            // 'pass_usuario_confirmation' => 'required',
             'cargo_usuario'             => 'required',
             'tel_usuario'               => (($request->cod_rol == 3 || $request->cod_rol == 4) ? '' : 'required|regex:/^[0-9]+$/|max:8'),
             'correo_usuario'            => (($request->cod_rol == 3 || $request->cod_rol == 4) ? '' : 'required'),
@@ -161,7 +161,7 @@ class UsuariosController extends Controller
         }
 
         #Encriptar password
-        $pass_usuario = Hash::make($request->pass_usuario);
+        $pass_usuario = Hash::make($request->dni_usuario);
 
         #Crear registro
         $usuario = User::create([

@@ -149,7 +149,7 @@
                                         </div>
                                     @endif
 
-                                    <div class="form-row {{ $method == 'PUT' ? 'd-none' : 'd-flex' }}" id="wrapper-pass">
+                                    <div class="form-row {{ $method == 'PUT' || $method == 'POST' ? 'd-none' : 'd-flex' }}" id="wrapper-pass">
                                         <div class="col-lg-6">
                                             <div class="d-flex align-items-center">
                                                 <div class="form-group w-100 mr-1">
