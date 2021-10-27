@@ -51,7 +51,7 @@
                 <p>{{ $data->cargo_usuario }}</p>
             </td>
             <td>
-                <b>Rol</b>
+                <b>Perfil de usuario</b>
                 <p>{{ !empty($data->rol[0]->name) ? $data->rol[0]->name : '-' }}</p>
             </td>
         </tr>

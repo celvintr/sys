@@ -45,7 +45,7 @@
 
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label>Rol:</label>
+                                <label>Perfil de usuario:</label>
                                 <input type="text" readonly class="form-control-plaintext font-weight-bold" value="{{ !empty($form->rol[0]->name) ? $form->rol[0]->name : '' }}">
                             </div>
                         </div>
