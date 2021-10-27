@@ -46,7 +46,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
 
         #Usuarios
-        Route::group(['middleware' => ['role:Super Administrador|Operador de Sistema']], function () {
+      //  Route::group(['middleware' => ['role:Super Administrador|Operador de Sistema']], function () {
             Route::prefix('usuarios')->name('usuarios.')->group(function () {
                 #Agregar usaurio
                 Route::get('/', [UsuariosController::class, 'index'])->name('index');
@@ -62,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::delete('eliminar-usuario/{dni_usuario}', [UsuariosController::class, 'eliminarusuario'])->name('destroy');
                 Route::post('/dni', [UsuariosController::class, 'dni'])->name('dni');
             });
-        });
+      //  });
 
         #Estado de Bitacora
         Route::prefix('bitacoras')->name('bitacoras.')->group(function () {
