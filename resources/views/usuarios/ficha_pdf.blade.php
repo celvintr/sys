@@ -14,7 +14,7 @@
     <table>
         <tr>
             <td style="text-align: center;">
-                <img src="{{ public_path('metronic/media/logos/logo-light.png') }}" alt="">
+                <img src="{{ public_path('metronic/media/logos/logo-letter-13.png') }}" alt="">
             </td>
         </tr>
         <tr>
@@ -51,7 +51,7 @@
                 <p>{{ $data->cargo_usuario }}</p>
             </td>
             <td>
-                <b>Rol</b>
+                <b>Perfil de usuario</b>
                 <p>{{ !empty($data->rol[0]->name) ? $data->rol[0]->name : '-' }}</p>
             </td>
         </tr>
