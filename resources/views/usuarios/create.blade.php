@@ -53,6 +53,22 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
+                                                <label>Perfil de usuario:</label>
+                                                <select name="cod_rol" id="cod_rol" class="form-control kt-selectpicker">
+                                                    @if ($form->cod_rol)
+                                                        <option value="">::. Seleccione .::</option>
+                                                    @endif
+                                                    @foreach ($roles as $item)
+                                                        <option value="{{ $item->id }}" {{ $item->id == $form->cod_rol ? 'selected' : '' }}>
+                                                            {{ $item->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
                                                 <label for="">Nombre del usuario:</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
@@ -61,34 +77,6 @@
                                                         </span>
                                                     </div>
                                                     <input type="text" name="nombre_usuario" class="form-control" value="{{ $form->nombre_usuario }}" />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label for="">Teléfono</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="fas fa-mobile-alt"></i>
-                                                        </span>
-                                                    </div>
-                                                    <input type="text" class="form-control" name="tel_usuario" value="{{ $form->tel_usuario }}" maxlength="8" />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label for="">{{ 'Correo' }}</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="far fa-envelope"></i>
-                                                        </span>
-                                                    </div>
-                                                    <input type="email" class="form-control" name="correo_usuario" value="{{ $form->correo_usuario }}" maxlength="50" {{ $method == 'PUT' ? 'disabled' : '' }} />
                                                 </div>
                                             </div>
                                         </div>
@@ -109,17 +97,29 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Perfil de usuario:</label>
-                                                <select name="cod_rol" id="cod_rol" class="form-control kt-selectpicker">
-                                                    @if ($form->cod_rol)
-                                                        <option value="">::. Seleccione .::</option>
-                                                    @endif
-                                                    @foreach ($roles as $item)
-                                                        <option value="{{ $item->id }}" {{ $item->id == $form->cod_rol ? 'selected' : '' }}>
-                                                            {{ $item->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
+                                                <label for="">Teléfono</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-mobile-alt"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="tel_usuario" name="tel_usuario" value="{{ $form->tel_usuario }}" maxlength="8" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="">{{ 'Correo' }}</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="far fa-envelope"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="email" class="form-control" id="correo_usuario" name="correo_usuario" value="{{ $form->correo_usuario }}" maxlength="50" {{ $method == 'PUT' ? 'disabled' : '' }} />
+                                                </div>
                                             </div>
                                         </div>
 
@@ -277,6 +277,17 @@
 
                 $('#cod_rol').on('change', function() {
                     var cod_rol = $(this).val();
+                    if (cod_rol == 3 || cod_rol == 4) {
+                        $('#cod_partido').val('').prop('disabled', true);
+                        $('#cod_partido').selectpicker('refresh');
+                        $('#cod_departamento').val('').prop('disabled', true);
+                        $('#cod_departamento').selectpicker('refresh');
+                        $('#cod_municipio').val('').prop('disabled', true);
+                        $('#cod_municipio').selectpicker('refresh');
+                        $('#tel_usuario').val('').prop('disabled', true);
+                        $('#correo_usuario').val('').prop('disabled', true);
+                    }
+
                     if (cod_rol == 2) {
                         $('#wrapper-partidos').removeClass('d-none');
                     } else {

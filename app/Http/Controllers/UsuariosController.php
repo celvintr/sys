@@ -416,7 +416,7 @@ class UsuariosController extends Controller
         $usuario = User::where('dni_usuario', $request->dni_usuario)->first();
 
         if (empty($usuario->dni_usuario)) {
-            $data = CensoNacional::where('dni', $request->dni)->first();
+            $data = CensoNacional::where('dni', $request->dni_usuario)->first();
 
             if (empty($data->dni)) {
                 return response()->json([
