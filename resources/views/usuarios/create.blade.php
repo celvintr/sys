@@ -310,7 +310,7 @@
                             var data = response.data;
 
                             if (data.status == 'OK') {
-                                $('#nombre_usuario').val(data.nombre);
+                                $('#nombre_usuario').val(data.data.nombre);
                             }
                             else {
                                 toastr.error(data.message);
