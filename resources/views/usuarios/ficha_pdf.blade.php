@@ -14,7 +14,7 @@
     <table>
         <tr>
             <td style="text-align: center;">
-                <img src="{{ public_path('metronic/media/logos/logo-light.png') }}" alt="">
+                <img src="{{ public_path('metronic/media/logos/logo-letter-13.png') }}" alt="">
             </td>
         </tr>
         <tr>

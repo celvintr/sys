@@ -99,7 +99,7 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">
-                                                            <i class="fas fa-mobile-alt"></i>
+                                                            <i class="fas fa-user-md"></i>
                                                         </span>
                                                     </div>
                                                     <input type="text" class="form-control" name="cargo_usuario" value="{{ $form->cargo_usuario }}" />
@@ -109,7 +109,7 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Rol:</label>
+                                                <label>Perfil de usuario:</label>
                                                 <select name="cod_rol" id="cod_rol" class="form-control kt-selectpicker">
                                                     @if ($form->cod_rol)
                                                         <option value="">::. Seleccione .::</option>
