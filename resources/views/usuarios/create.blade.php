@@ -90,7 +90,7 @@
                                                             <i class="fas fa-user-md"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="text" class="form-control" name="cargo_usuario" value="{{ $form->cargo_usuario }}" />
+                                                    <input type="text" class="form-control" name="cargo_usuario" id="cargo_usuario" value="{{ $form->cargo_usuario }}" />
                                                 </div>
                                             </div>
                                         </div>
@@ -231,7 +231,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label for="">Dirección</label>
-                                                <textarea name="dir_usuario" class="form-control" rows="10">{{ $form->dir_usuario }}</textarea>
+                                                <textarea name="dir_usuario" id="dir_usuario" class="form-control" rows="10">{{ $form->dir_usuario }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -317,6 +317,13 @@
                                 toastr.error(data.message);
                                 $this.val('');
                                 $this.focus();
+                                $('#nombre_usuario').val('');
+                                $('#cargo_usuario').val('');
+                                $('#tel_usuario').val('');
+                                $('#cargo_usuario').val('');
+                                $('#pass_usuario').val('');
+                                $('#pass_usuario_confirmation').val('');
+                                $('#dir_usuario').val('');
                                 $('#tab-direccion').addClass('d-none');
                             }
                         })
@@ -327,6 +334,13 @@
                     }
                     else {
                         $this.focus();
+                        $('#nombre_usuario').val('');
+                        $('#cargo_usuario').val('');
+                        $('#tel_usuario').val('');
+                        $('#cargo_usuario').val('');
+                        $('#pass_usuario').val('');
+                        $('#pass_usuario_confirmation').val('');
+                        $('#dir_usuario').val('');
                         $('#tab-direccion').addClass('d-none');
                     }
                 });
