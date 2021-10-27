@@ -53,7 +53,7 @@
                         <div class="col-lg-6 {{ $form->cod_rol == 2 ? '' : 'd-none' }}" id="wrapper-partidos">
                             <div class="form-group">
                                 <label>Partido:</label>
-                                <input type="text" readonly class="form-control-plaintext font-weight-bold" value="{{ $form->cod_partido }}">
+                                <input type="text" readonly class="form-control-plaintext font-weight-bold" value="{{ empty($form->partido->nombre_partido) ? '-' : $form->partido->nombre_partido }}">
                             </div>
                         </div>
                     </div>
@@ -62,14 +62,14 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Departamento:</label>
-                                <input type="text" readonly class="form-control-plaintext font-weight-bold" value="{{ $form->cod_departamento }}">
+                                <input type="text" readonly class="form-control-plaintext font-weight-bold" value="{{ empty($form->departamento->nombre_departamento) ? '-' : $form->departamento->nombre_departamento }}">
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Municipio:</label>
-                                <input type="text" readonly class="form-control-plaintext font-weight-bold" value="{{ $form->cod_municipio }}">
+                                <input type="text" readonly class="form-control-plaintext font-weight-bold" value="{{ empty($form->municipio->nombre_municipio) ? '-' : $form->municipio->nombre_municipio }}">
                             </div>
                         </div>
 
