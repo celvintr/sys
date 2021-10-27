@@ -239,18 +239,25 @@ class UsuariosController extends Controller
      */
     public function actualizar(Request $request, $dni_usuario)
     {
+        $user = User::with('rol')->findOrFail($dni_usuario);
+        if (empty($user->rol[0]->id)) {
+            $user->cod_rol = '';
+        } else {
+            $user->cod_rol = $user->rol[0]->id;
+        }
+
         #Validar campos
         $validator = Validator::make($request->all(), [
-            'nombre_usuario'            => 'required|regex:/^[A-Za-z ]+$/',
+            // 'nombre_usuario'            => 'required|regex:/^[A-Za-z ]+$/',
             'pass_usuario'              => ($request->update_pass ? 'required|confirmed' : ''),
             'pass_usuario_confirmation' => ($request->update_pass ? 'required' : ''),
             'cargo_usuario'             => 'required',
-            'tel_usuario'               => (($request->cod_rol == 3 || $request->cod_rol == 4) ? '' : 'required|regex:/^[0-9]+$/|max:8'),
-            'correo_usuario'            => (($request->cod_rol == 3 || $request->cod_rol == 4) ? '' : 'required'),
-            'cod_departamento'          => (($request->cod_rol == 3 || $request->cod_rol == 4) ? '' : 'required'),
-            'cod_municipio'             => (($request->cod_rol == 3 || $request->cod_rol == 4) ? '' : 'required'),
+            'tel_usuario'               => (($user->cod_rol == 3 || $user->cod_rol == 4) ? '' : 'required|regex:/^[0-9]+$/|max:8'),
+            'correo_usuario'            => (($user->cod_rol == 3 || $user->cod_rol == 4) ? '' : 'required'),
+            'cod_departamento'          => (($user->cod_rol == 3 || $user->cod_rol == 4) ? '' : 'required'),
+            'cod_municipio'             => (($user->cod_rol == 3 || $user->cod_rol == 4) ? '' : 'required'),
             'dir_usuario'               => 'required',
-            'cod_rol'                   => 'required',
+            // 'cod_rol'                   => 'required',
             'cod_partido'               => ($request->cod_rol == 2 ? 'required' : ''),
         ], [], [
             'dni_usuario'               => 'DNI',
@@ -275,13 +282,13 @@ class UsuariosController extends Controller
         #Crear registro
         $usuario = User::find($dni_usuario);
         $usuario->update([
-            'nombre_usuario'   => $request->nombre_usuario,
+            // 'nombre_usuario'   => $request->nombre_usuario,
             'cargo_usuario'    => $request->cargo_usuario,
             'tel_usuario'      => $request->tel_usuario,
             'cod_departamento' => $request->cod_departamento,
             'cod_municipio'    => $request->cod_municipio,
             'dir_usuario'      => $request->dir_usuario,
-            'cod_partido'      => ($request->cod_rol == 2 ? $request->cod_partido : null),
+            // 'cod_partido'      => ($request->cod_rol == 2 ? $request->cod_partido : null),
         ]);
 
         #Encriptar password

@@ -53,7 +53,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Perfil de usuario:</label>
-                                                <select name="cod_rol" id="cod_rol" class="form-control kt-selectpicker">
+                                                <select name="cod_rol" id="cod_rol" class="form-control kt-selectpicker" {{ $method == 'PUT' ? 'disabled' : '' }}>
                                                     @if ($form->cod_rol)
                                                         <option value="">::. Seleccione .::</option>
                                                     @endif
@@ -75,7 +75,7 @@
                                                             <i class="fas fa-user"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="text" name="nombre_usuario" id="nombre_usuario" class="form-control" value="{{ $form->nombre_usuario }}" />
+                                                    <input type="text" name="nombre_usuario" id="nombre_usuario" class="form-control" value="{{ $form->nombre_usuario }}" {{ $method == 'PUT' ? 'disabled' : '' }} />
                                                 </div>
                                             </div>
                                         </div>
@@ -89,7 +89,7 @@
                                                             <i class="fas fa-user-md"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="text" class="form-control" name="cargo_usuario" id="cargo_usuario" value="{{ $form->cargo_usuario }}" />
+                                                    <input type="text" class="form-control" name="cargo_usuario" id="cargo_usuario" value="{{ $form->cargo_usuario }}" {{ ($form->cod_rol == 3 || $form->cod_rol == 4) ? 'disabled' : '' }} />
                                                 </div>
                                             </div>
                                         </div>
@@ -103,7 +103,7 @@
                                                             <i class="fas fa-mobile-alt"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="text" class="form-control" id="tel_usuario" name="tel_usuario" value="{{ $form->tel_usuario }}" maxlength="8" />
+                                                    <input type="text" class="form-control" id="tel_usuario" name="tel_usuario" value="{{ $form->tel_usuario }}" maxlength="8" {{ ($form->cod_rol == 3 || $form->cod_rol == 4) ? 'disabled' : '' }} />
                                                 </div>
                                             </div>
                                         </div>
@@ -117,7 +117,7 @@
                                                             <i class="far fa-envelope"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="email" class="form-control" id="correo_usuario" name="correo_usuario" value="{{ $form->correo_usuario }}" maxlength="50" {{ $method == 'PUT' ? 'disabled' : '' }} />
+                                                    <input type="email" class="form-control" id="correo_usuario" name="correo_usuario" value="{{ $form->correo_usuario }}" maxlength="50" />
                                                 </div>
                                             </div>
                                         </div>
@@ -198,7 +198,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Departamentos:</label>
-                                                <select name="cod_departamento" id="cod_departamento" class="form-control select-departamentos kt-selectpicker" data-child="#cod_municipio" data-size="7" data-live-search="true">
+                                                <select name="cod_departamento" id="cod_departamento" class="form-control select-departamentos kt-selectpicker" data-child="#cod_municipio" data-size="7" data-live-search="true" {{ ($form->cod_rol == 3 || $form->cod_rol == 4) ? 'disabled' : '' }}>
                                                     @if ($form->cod_departamento)
                                                         <option value="">::. Seleccione .::</option>
                                                     @endif
@@ -214,7 +214,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Municipios:</label>
-                                                <select name="cod_municipio" id="cod_municipio" class="form-control select-municipios kt-selectpicker" data-size="7" data-live-search="true">
+                                                <select name="cod_municipio" id="cod_municipio" class="form-control select-municipios kt-selectpicker" data-size="7" data-live-search="true" {{ ($form->cod_rol == 3 || $form->cod_rol == 4) ? 'disabled' : '' }}>
                                                     @if ($form->cod_municipio)
                                                         <option value="">::. Seleccione .::</option>
                                                     @endif
