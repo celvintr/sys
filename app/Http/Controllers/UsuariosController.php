@@ -63,6 +63,15 @@ class UsuariosController extends Controller
             });
         }
 
+        #valido rol
+        if (!empty(Auth::user()->rol[0]->id)) {
+            if (Auth::user()->rol[0]->id != 1) {
+                $query->whereHas('rol', function($q) use ($cod_rol) {
+                    $q->where('role_id', '<>', 1);
+                });
+            }
+        }
+
         #usuarios
         $usuarios = $query->with(['rol', 'partido'])->get();
 
@@ -188,6 +197,17 @@ class UsuariosController extends Controller
             $form->cod_rol = '';
         } else {
             $form->cod_rol = $form->rol[0]->id;
+        }
+
+        #valido rol
+        if ($form->cod_rol == 1) {
+            if (!empty(Auth::user()->rol[0]->id)) {
+                if (Auth::user()->rol[0]->id != 1) {
+                    abort(403, 'No tiene permisos.');
+                }
+            } else {
+                abort(403, 'No tiene permisos.');
+            }
         }
 
         #Obtengo todos los departamentos y municipios

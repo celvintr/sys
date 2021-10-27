@@ -46,19 +46,21 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
 
         #Usuarios
-        Route::prefix('usuarios')->name('usuarios.')->group(function () {
-            #Agregar usaurio
-            Route::get('/', [UsuariosController::class, 'index'])->name('index');
-            Route::get('/data', [UsuariosController::class, 'data'])->name('data');
-            Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
-            Route::get('/ficha/{dni_usuario}', [UsuariosController::class, 'ficha'])->name('ficha');
-            Route::get('/ficha/imprimir/{dni_usuario}', [UsuariosController::class, 'fichaImprimir'])->name('ficha.imprimir');
-            Route::post('/export', [UsuariosController::class, 'exportExcel'])->name('export');
-            Route::get('/editar/{dni_usuario}', [UsuariosController::class, 'editar'])->name('editar');
-            Route::post('/', [UsuariosController::class, 'store'])->name('store');
-            Route::put('/{dni_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');
-            Route::post('/estatus', [UsuariosController::class, 'estatus'])->name('estatus');
-            Route::delete('eliminar-usuario/{dni_usuario}', [UsuariosController::class, 'eliminarusuario'])->name('destroy');
+        Route::group(['middleware' => ['role:Super Administrador|Operador de Sistema']], function () {
+            Route::prefix('usuarios')->name('usuarios.')->group(function () {
+                #Agregar usaurio
+                Route::get('/', [UsuariosController::class, 'index'])->name('index');
+                Route::get('/data', [UsuariosController::class, 'data'])->name('data');
+                Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
+                Route::get('/ficha/{dni_usuario}', [UsuariosController::class, 'ficha'])->name('ficha');
+                Route::get('/ficha/imprimir/{dni_usuario}', [UsuariosController::class, 'fichaImprimir'])->name('ficha.imprimir');
+                Route::post('/export', [UsuariosController::class, 'exportExcel'])->name('export');
+                Route::get('/editar/{dni_usuario}', [UsuariosController::class, 'editar'])->name('editar');
+                Route::post('/', [UsuariosController::class, 'store'])->name('store');
+                Route::put('/{dni_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');
+                Route::post('/estatus', [UsuariosController::class, 'estatus'])->name('estatus');
+                Route::delete('eliminar-usuario/{dni_usuario}', [UsuariosController::class, 'eliminarusuario'])->name('destroy');
+            });
         });
 
         #Estado de Bitacora

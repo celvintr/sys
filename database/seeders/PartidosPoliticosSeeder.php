@@ -15,9 +15,20 @@ class PartidosPoliticosSeeder extends Seeder
     public function run()
     {
         PartidosPoliticos::insert([
-            ['cod_partido' => 1, 'nombre_partido' => 'Partido Libertad y Refundación'],
-            ['cod_partido' => 2, 'nombre_partido' => 'Partido Liberal'],
-            ['cod_partido' => 3, 'nombre_partido' => 'Partido Nacional'],
+            ['nombre_partido' => 'Partido Libertad'],
+            ['nombre_partido' => 'Partido Nacional'],
+            ['nombre_partido' => 'PINU'],
+            ['nombre_partido' => 'DC'],
+            ['nombre_partido' => 'UD'],
+            ['nombre_partido' => 'PAC'],
+            ['nombre_partido' => 'Partido Libertad y Refundación'],
+            ['nombre_partido' => 'AP'],
+            ['nombre_partido' => 'FRENTE'],
+            ['nombre_partido' => 'VAMOS'],
+            ['nombre_partido' => 'NUEVA RUTA'],
+            ['nombre_partido' => 'PSH'],
+            ['nombre_partido' => 'LIDER'],
+            ['nombre_partido' => 'TSH'],
         ]);
     }
 }

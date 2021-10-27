@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $faker = \Faker\Factory::create();
+
         $this->call([
             DepartamentosSeeder::class,
             MunicipiosSeeder::class,
@@ -30,6 +32,11 @@ class DatabaseSeeder extends Seeder
         \App\Models\CentrosVotacion::factory(50)->create();
 
         User::find('0000123456789')->assignRole(1);
+
+        $users = User::where('dni_usuario', '<>', '0000123456789')->get();
+        foreach ($users as $user) {
+            $user->assignRole($faker->numberBetween(2, 4));
+        }
 
         // \App\Models\User::factory(10)->create();
     }
