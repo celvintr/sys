@@ -311,11 +311,13 @@
 
                             if (data.status == 'OK') {
                                 $('#nombre_usuario').val(data.data.nombre);
+                                $('#tab-direccion').removeClass('d-none');
                             }
                             else {
                                 toastr.error(data.message);
                                 $this.val('');
                                 $this.focus();
+                                $('#tab-direccion').addClass('d-none');
                             }
                         })
                         .catch(function (error) {
@@ -325,6 +327,7 @@
                     }
                     else {
                         $this.focus();
+                        $('#tab-direccion').addClass('d-none');
                     }
                 });
             });
