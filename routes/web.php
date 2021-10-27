@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
             Route::get('/ficha/{dni_usuario}', [UsuariosController::class, 'ficha'])->name('ficha');
             Route::get('/ficha/imprimir/{dni_usuario}', [UsuariosController::class, 'fichaImprimir'])->name('ficha.imprimir');
+            Route::post('/export', [UsuariosController::class, 'exportExcel'])->name('export');
             Route::get('/editar/{dni_usuario}', [UsuariosController::class, 'editar'])->name('editar');
             Route::post('/', [UsuariosController::class, 'store'])->name('store');
             Route::put('/{dni_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');

@@ -50,7 +50,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6 {{ $form->cod_rol == 2 ? '' : 'd-none' }}" id="wrapper-partidos">
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 <label>Partido:</label>
                                 <input type="text" readonly class="form-control-plaintext font-weight-bold" value="{{ empty($form->partido->nombre_partido) ? '-' : $form->partido->nombre_partido }}">

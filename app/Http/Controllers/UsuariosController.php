@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsuariosExport;
 use App\Models\User;
 use App\Models\Departamentos;
 use App\Models\Municipios;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 
 class UsuariosController extends Controller
@@ -378,5 +380,10 @@ class UsuariosController extends Controller
             'data' => $form,
         ]);
         return $pdf->download('ficha_'.$dni_usuario.'.pdf');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        return Excel::download(new UsuariosExport($request->all()), 'usuarios.xlsx');
     }
 }

@@ -17,11 +17,15 @@
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Dropdown-->
-                        <div class="dropdown dropdown-inline mr-2">
-                            <!--begin::Dropdown Menu-->
-
-                            <!--end::Dropdown Menu-->
-                        </div>
+                        <form id="form-export" action="{{ route('admin.usuarios.export') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="buscar">
+                            <input type="hidden" name="cod_rol">
+                            <input type="hidden" name="estado_usuario">
+                            <button type="submit" class="btn btn-success font-weight-bolder mx-2">
+                                <i class="fas fa-file-excel"></i> Exportar
+                            </button>
+                        </form>
                         <!--end::Dropdown-->
 
                         <!--begin::Button-->
@@ -270,11 +274,21 @@
                         console.log(error);
                     });
                 });
+
+                $('#filtro_buscar, #filtro_cod_rol, #filtro_estado_usuario').on('input', function() {
+                    var buscar = $('#filtro_buscar').val();
+                    var cod_rol = $('#filtro_cod_rol').val();
+                    var estado_usuario = $('#filtro_estado_usuario').val();
+                    var $form = $('#form-export');
+                    $form.find('[name="buscar"]').val(buscar);
+                    $form.find('[name="cod_rol"]').val(cod_rol);
+                    $form.find('[name="estado_usuario"]').val(estado_usuario);
+                });
             });
         </script>
 
         <script>
-                // eliminar usuario desde la lista
+            // eliminar usuario desde la lista
             jQuery(document).on('click', '.delete-link', function () {
                 Swal.fire({
                     title: "Está seguro?",
