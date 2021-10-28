@@ -68,6 +68,7 @@ class User extends Authenticatable
         'estado_usuario',
         'fecha_registro',
         'dni_usuario_registro',
+        'estado_sesion',
     ];
 
     /**

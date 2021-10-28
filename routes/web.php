@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/api/municipios/{cod_departamento}', [DepartamentosController::class, 'municipios'])->name('api.municipios');
 Route::get('/api/centros/{cod_municipio}', [MunicipiosController::class, 'centros'])->name('api.centros');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'estadosesion'])->group(function () {
     #Dashboard (ESTO VA A CAMBIR EN EL FUTURO POR EL DASHBOAR REAL)
     Route::get('/', function () {
         return view('dashboard');
@@ -109,6 +109,10 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('perfil', [UsuariosController::class, 'perfil'])->name('usuarios.perfil');
         Route::post('perfil', [UsuariosController::class, 'perfilUpdate'])->name('usuarios.perfil.update');
+
+        Route::get('usuarios/password', [UsuariosController::class, 'password'])->name('auth.password');
+        Route::post('usuarios/password/actualizar', [UsuariosController::class, 'passwordUpdate'])->name('auth.password.update');
+
     });
 });
 

@@ -178,6 +178,7 @@ class UsuariosController extends Controller
             'estado_usuario'       => 1,
             'fecha_registro'       => now(),
             'dni_usuario_registro' => Auth::user()->dni_usuario,
+            'estado_sesion'        => 0,
         ]);
 
         // Adding permissions via a role
@@ -450,5 +451,43 @@ class UsuariosController extends Controller
                 'message' => 'DNI ya registrado en el sistema.',
             ]);
         }
+    }
+
+    /**
+     * Actualizar password
+     */
+    public function password()
+    {
+        return view('usuarios.password');
+    }
+
+
+    /**
+     * Guardar nuevo registro
+     */
+    public function passwordUpdate(Request $request)
+    {
+        #Validar campos
+        $validator = Validator::make($request->all(), [
+            'pass_usuario'              => 'required|confirmed',
+            'pass_usuario_confirmation' => 'required',
+        ], [], [
+            'pass_usuario'              => 'Contraseña',
+            'pass_usuario_confirmation' => 'Confirmación',
+        ]);
+
+        #Si la validacion falla
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
+        }
+
+        $pass_usuario = Hash::make($request->pass_usuario);
+        User::find(Auth::user()->dni_usuario)->update([
+            'pass_usuario'  => $pass_usuario,
+            'estado_sesion' => 1,
+        ]);
+
+        #Respuesta
+        return response()->json(['success' => 'Contraseña actualizada exitosamente']);
     }
 }
