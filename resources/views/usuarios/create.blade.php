@@ -291,6 +291,15 @@
                         $('#cod_municipio').selectpicker('refresh');
                         $('#tel_usuario').val('').prop('disabled', true);
                         $('#correo_usuario').val('').prop('disabled', true);
+                    } else { 
+                        $('#cod_partido').val('').prop('disabled', false);
+                        $('#cod_partido').selectpicker('refresh');
+                        $('#cod_departamento').val('').prop('disabled', false);
+                        $('#cod_departamento').selectpicker('refresh');
+                        $('#cod_municipio').val('').prop('disabled', false);
+                        $('#cod_municipio').selectpicker('refresh');
+                        $('#tel_usuario').val('').prop('disabled', false);
+                        $('#correo_usuario').val('').prop('disabled', false);
                     }
 
                     if (cod_rol == 2) {
