@@ -291,7 +291,7 @@
                         $('#cod_municipio').selectpicker('refresh');
                         $('#tel_usuario').val('').prop('disabled', true);
                         $('#correo_usuario').val('').prop('disabled', true);
-                    } else { 
+                    } else {
                         $('#cod_partido').val('').prop('disabled', false);
                         $('#cod_partido').selectpicker('refresh');
                         $('#cod_departamento').val('').prop('disabled', false);
