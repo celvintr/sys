@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartamentosController;
 use App\Http\Controllers\MunicipiosController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\BitacoraCustodiosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,23 +47,21 @@ Route::middleware(['auth', 'estadosesion'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
 
         #Usuarios
-      //  Route::group(['middleware' => ['role:Super Administrador|Operador de Sistema']], function () {
-            Route::prefix('usuarios')->name('usuarios.')->group(function () {
-                #Agregar usaurio
-                Route::get('/', [UsuariosController::class, 'index'])->name('index');
-                Route::get('/data', [UsuariosController::class, 'data'])->name('data');
-                Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
-                Route::get('/ficha/{dni_usuario}', [UsuariosController::class, 'ficha'])->name('ficha');
-                Route::get('/ficha/imprimir/{dni_usuario}', [UsuariosController::class, 'fichaImprimir'])->name('ficha.imprimir');
-                Route::post('/export', [UsuariosController::class, 'exportExcel'])->name('export');
-                Route::get('/editar/{dni_usuario}', [UsuariosController::class, 'editar'])->name('editar');
-                Route::post('/', [UsuariosController::class, 'store'])->name('store');
-                Route::put('/{dni_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');
-                Route::post('/estatus', [UsuariosController::class, 'estatus'])->name('estatus');
-                Route::delete('eliminar-usuario/{dni_usuario}', [UsuariosController::class, 'eliminarusuario'])->name('destroy');
-                Route::post('/dni', [UsuariosController::class, 'dni'])->name('dni');
-            });
-      //  });
+        Route::prefix('usuarios')->name('usuarios.')->group(function () {
+            #Agregar usaurio
+            Route::get('/', [UsuariosController::class, 'index'])->name('index');
+            Route::get('/data', [UsuariosController::class, 'data'])->name('data');
+            Route::get('/agregar', [UsuariosController::class, 'create'])->name('create');
+            Route::get('/ficha/{dni_usuario}', [UsuariosController::class, 'ficha'])->name('ficha');
+            Route::get('/ficha/imprimir/{dni_usuario}', [UsuariosController::class, 'fichaImprimir'])->name('ficha.imprimir');
+            Route::post('/export', [UsuariosController::class, 'exportExcel'])->name('export');
+            Route::get('/editar/{dni_usuario}', [UsuariosController::class, 'editar'])->name('editar');
+            Route::post('/', [UsuariosController::class, 'store'])->name('store');
+            Route::put('/{dni_usuario}', [UsuariosController::class, 'actualizar'])->name('actualizar');
+            Route::post('/estatus', [UsuariosController::class, 'estatus'])->name('estatus');
+            Route::delete('eliminar-usuario/{dni_usuario}', [UsuariosController::class, 'eliminarusuario'])->name('destroy');
+            Route::post('/dni', [UsuariosController::class, 'dni'])->name('dni');
+        });
 
         #Estado de Bitacora
         Route::prefix('bitacoras')->name('bitacoras.')->group(function () {
@@ -103,9 +102,25 @@ Route::middleware(['auth', 'estadosesion'])->group(function () {
             // Update
             Route::get('/edit/{id_custodio}', [CustodiosController::class, 'edit'])->name('edit');
             Route::post('/update/{id_custodio}', [CustodiosController::class, 'update'])->name('update');
+
+            // PDF Custodio
+            Route::get('/pdf/{id_custodio}', [CustodiosController::class, 'pdf'])->name('pdf');
+
+            // EXCEL Custodio
+            Route::get('/excel', [CustodiosController::class, 'descargarExcel'])->name('excel');
         });
 
-        //    });
+        #BitacoraCustodios
+        Route::prefix('bitacora-custodios')->name('bitacora-custodios.')->group(function () {
+            // Index
+            Route::get('/', [BitacoraCustodiosController::class, 'index'])->name('index');
+
+            // PDF Bitacora Custodio
+            Route::get('/pdf/{id_bitacora}', [BitacoraCustodiosController::class, 'pdf'])->name('pdf');
+
+            // EXCEL Bitacora Custodio
+            Route::get('/excel', [BitacoraCustodiosController::class, 'descargarExcel'])->name('excel');
+        });
 
         Route::get('perfil', [UsuariosController::class, 'perfil'])->name('usuarios.perfil');
         Route::post('perfil', [UsuariosController::class, 'perfilUpdate'])->name('usuarios.perfil.update');

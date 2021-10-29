@@ -23,6 +23,8 @@ class RolesController extends Controller
     public function data(Request $request)
     {
         $Roles = Role::all();
+        $roles = json_encode($Roles);
+        $Roles = array_slice(json_decode($Roles, true), 1);
         return response()->json($Roles);
     }
 

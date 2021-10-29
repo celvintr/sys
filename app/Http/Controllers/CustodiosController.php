@@ -12,10 +12,15 @@ use App\Models\EstadoCustodio;
 use App\Models\Municipios;
 use App\Models\CentrosVotacion;
 use App\Models\CustodioCentro;
+use App\Models\TipoCustodio;
+use App\Models\BitacoraCustodio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Exports\CustodiosExport;
 use DB;
+use PDF;
+use Excel;
 
 class CustodiosController extends Controller
 {
@@ -27,13 +32,18 @@ class CustodiosController extends Controller
     public function index()
     {
         $partidos = PartidosPoliticos::all();
-        $estados = EstadoCustodio::all();
+        $estados = EstadoCustodio::all();        
         $mostrar = request()->has('mostrar') ? request('mostrar') : 10;
 
         $queries = [];
         $queries['mostrar'] = $mostrar;
         $columns = ['dni_custodio', 'cod_estado', 'cod_partido'];
+        $dni = request()->has($columns[0]) ? request($columns[0]) : '';
+        $estado = request()->has($columns[1]) ? request($columns[1]) : '';
+        $partido = request()->has($columns[2]) ? request($columns[2]) : '';
+
         $custodios = new Custodios;
+        $totalCustodios = Custodios::all()->count();
 
         foreach($columns as $column) {
             if(request()->has($column)) {
@@ -47,7 +57,11 @@ class CustodiosController extends Controller
         $ctx = [
             'partidos' => $partidos,
             'estados' => $estados,
-            'custodios' => $custodios
+            'custodios' => $custodios,
+            'dni' => $dni,
+            'estado' => $estado,
+            'partido' => $partido,
+            'total' => $totalCustodios
         ];
         
         return view('custodios.index', $ctx);
@@ -79,6 +93,7 @@ class CustodiosController extends Controller
         $form = null;
         $departamentos = Departamentos::all();
         $partidos = PartidosPoliticos::all();
+        $tiposCustodio = TipoCustodio::all();
 
         if (session()->has('dni')) {
             $form = (object) [
@@ -91,6 +106,7 @@ class CustodiosController extends Controller
             'form'          => $form,
             'departamentos' => $departamentos,
             'partidos'      => $partidos,
+            'tiposCustodio' => $tiposCustodio
         ]);
     }
 
@@ -106,15 +122,16 @@ class CustodiosController extends Controller
             'dni_custodio'       => 'required',
             'nombre_custodio'    => 'required|regex:/^[A-Za-z ]+$/',
             'tel_movil'          => 'required|regex:/^[0-9]+$/|max:8',
-            'tel_fijo'           => $request->correo2_custodio != '' ? 'required|regex:/^[0-9]+$/|max:8' : '',
+            'tel_fijo'           => $request->tel_fijo != '' ? 'required|regex:/^[0-9]+$/|max:8' : '',
             'correo1_custodio'   => 'required|email',
             'correo2_custodio'   => $request->correo2_custodio != '' ? 'email' : '',
             'foto_custodio'      => 'required|image',
             'foto_dni_custodio'  => 'required|image',
             'foto_comp_custodio' => 'required|image',
-            'cod_municipio'      => 'required',
+            'cod_municipio'      => $request->cod_tipo_custodio != 2 ? 'required' : '',
             'cod_partido'        => 'required',
-            'cod_centro'         => 'required',
+            'cod_centro'         => $request->cod_tipo_custodio != 2 ? 'required' : '',
+            'cod_tipo_custodio'  => 'required',
         ], [], [
             'dni_custodio'       => 'DNI',
             'nombre_custodio'    => 'Nombre',
@@ -128,6 +145,7 @@ class CustodiosController extends Controller
             'cod_municipio'      => 'Municipio',
             'cod_partido'        => 'Partido político',
             'cod_centro'         => 'Centro de votación',
+            'cod_tipo_custodio'  => 'Tipo de custodio',
         ]);
 
         if($validator->fails()) {
@@ -149,27 +167,72 @@ class CustodiosController extends Controller
             $foto_comp_custodio = $request->file('foto_comp_custodio')->store('custodios', 'uploads');
         }
 
-        // Obtener datos del centro de votacion
-        $datosCentroVotacion = CentrosVotacion::find($request->cod_centro);
-
-        // Obtener cuantos custodios activos hay en el centro, deben ser maximo 5 custodios
-        $cantCustodiosEnElCentro = Custodios::where('cod_centro', $request->cod_centro)->where('cod_estado', 1)->count();
-
-        if($cantCustodiosEnElCentro > $datosCentroVotacion->cant_custodios) {
-            return response()->json([
-                'error' => true,
-                'message' => 'No puedes crear más custodios para este centro. El centro de votación tiene ' . $cantCustodiosEnElCentro . '/' . $datosCentroVotacion->cant_custodios . ' permitidos.'
-            ]);
-        }
-
-        // Obtener la cantidad de custodios activos por cod de partido y con centro del registro actual, solo debe haber uno por centro.
-        $cantCustodiosActivos = Custodios::where('cod_partido', $request->cod_partido)->where('cod_centro', $request->cod_centro)->where('cod_estado', 1)->count();
-        
-        if($cantCustodiosActivos > 0) {
-            return response()->json([
-                'error' => true,
-                'message' => 'No puedes crear más custodios para este centro.'
-            ]);
+        // Si el tipo de custodio es diferente de custodio de transporte, entonces se valida los custodios para el centro
+        if($request->cod_tipo_custodio != 2) {
+            // Obtener datos del centro de votacion
+            $datosCentroVotacion = CentrosVotacion::find($request->cod_centro);
+    
+            // Obtener cuantos custodios activos hay en el centro, deben ser maximo 5 custodios
+            $cantCustodiosEnElCentro = Custodios::where('cod_centro', $request->cod_centro)->where('cod_estado', 1)->count();
+    
+            if($cantCustodiosEnElCentro > $datosCentroVotacion->cant_custodios) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'No puedes crear más custodios para este centro. El centro de votación tiene ' . $cantCustodiosEnElCentro . '/' . $datosCentroVotacion->cant_custodios . ' permitidos.'
+                ]);
+            }
+    
+            // Obtener la cantidad de custodios activos por cod de partido y con centro del registro actual, solo debe haber uno por centro.
+            $cantCustodiosActivos = Custodios::where('cod_partido', $request->cod_partido)->where('cod_centro', $request->cod_centro)->where('cod_estado', 1)->count();
+            
+            if($cantCustodiosActivos > 0) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'No puedes crear más custodios para este centro.'
+                ]);
+            }
+        } else {
+            // Aplicar custodios de transporte solo para partido liberal, nacional y libre
+            if($request->cod_partido == 1 || $request->cod_partido == 2 || $request->cod_partido == 7) {
+                // Obtenemos la cantidad de custodios de transporte en el departamento por el partido, si esto es igual a 2 ya no se puede crear mas custodios de trasporte para ese departamento.
+                $cantCustodiosPartidoDepto = DB::table('tbl_custodios')
+                                            ->join('tbl_municipios', 'tbl_custodios.cod_municipio', 'tbl_municipios.cod_municipio')
+                                            ->where('tbl_municipios.cod_departamento', $request->cod_departamento)
+                                            ->where('tbl_custodios.cod_partido', $request->cod_partido)
+                                            ->where('tbl_custodios.cod_tipo_custodio', 2)
+                                            ->where('tbl_custodios.cod_estado', 1)
+                                            ->count();
+                
+                // Verificiar si la cantidad de custodios por partido en el departamento es igual a 2 que ya no pueda agregar mas
+                if($cantCustodiosPartidoDepto == 2) {
+                    return response()->json([
+                        'error' => true,
+                        'message' => 'No puedes crear más custodios de transporte para este departamento máximo 2/2 permitidos para el partido.'
+                    ]);
+                }
+    
+                // validar la cantidad de custodios para el depto, solo deben ser 6 maximo para el municipio, 2 por partido = 2 libre, 2 liberal y 2 nacional
+                // Obtenemos la cantidad de custodios de transporte en el departamento, si esto es igual a 6 ya no se pueden crear mas custodios de transporte
+                $cantCustodiosPartidoDepto = DB::table('tbl_custodios')
+                                            ->join('tbl_municipios', 'tbl_custodios.cod_municipio', 'tbl_municipios.cod_municipio')
+                                            ->where('tbl_municipios.cod_departamento', $request->cod_departamento)
+                                            ->where('tbl_custodios.cod_tipo_custodio', 2)
+                                            ->where('tbl_custodios.cod_estado', 1)
+                                            ->count();
+                
+                // Verificiar si la cantidad de custodios en el departamento es igual a 6 que ya no pueda agregar mas
+                if($cantCustodiosPartidoDepto == 6) {
+                    return response()->json([
+                        'error' => true,
+                        'message' => 'No puedes crear más custodios de transporte máximo 6/6 permitidos para el departamento.'
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'No puedes crear custodios de transporte para este partido.'
+                ]);
+            }
         }
 
         if($this->validarDNI($request->dni_custodio)) {
@@ -190,27 +253,59 @@ class CustodiosController extends Controller
                 'foto_custodio'        => $foto_custodio,
                 'foto_dni_custodio'    => $foto_dni_custodio,
                 'foto_comp_custodio'   => $foto_comp_custodio,
-                'cod_municipio'        => $request->cod_municipio,
+                'cod_municipio'        => $request->cod_tipo_custodio != 1 ? Municipios::where('cod_departamento', '06')->first()->cod_municipio : $request->cod_municipio,
                 'dir_custodio'         => $request->dir_custodio,
                 'cod_partido'          => $request->cod_partido,
-                'cod_centro'           => $request->cod_centro,
+                'cod_centro'           => $request->cod_tipo_custodio != 1 ? null : $request->cod_centro,
                 'cod_estado'           => 1,
+                'cod_tipo_custodio'    => $request->cod_tipo_custodio,
                 'fecha_registro'       => now(),
                 'dni_usuario_registro' => Auth::user()->dni_usuario,
             ]);
 
-            // Formar el cod centro de votacion = cod municipio - codigo de area - cod sector - cod junta receptopra
-            $codCentroVotacion =  $datosCentroVotacion->cod_municipio . str_pad($datosCentroVotacion->codigo_area, 2, "0", STR_PAD_LEFT) . str_pad($datosCentroVotacion->codigo_sector_electoral, 2, "0", STR_PAD_LEFT) . str_pad($datosCentroVotacion->cod_junta_receptora, 5, "0", STR_PAD_LEFT);
+            if($request->cod_tipo_custodio != 2) {
+                // Formar el cod centro de votacion = cod municipio - codigo de area - cod sector - cod junta receptopra, depende del tipo de custodio
+                $codCentroVotacion =  $datosCentroVotacion->cod_municipio . str_pad($datosCentroVotacion->codigo_area, 2, "0", STR_PAD_LEFT) . str_pad($datosCentroVotacion->codigo_sector_electoral, 2, "0", STR_PAD_LEFT) . str_pad($datosCentroVotacion->cod_junta_receptora, 5, "0", STR_PAD_LEFT);
+            } else {
+                // se le agrega el codigo del departamento, aqui es diferente el codigo de centro de votacion ya que no tenemos un centro y solamente tenemos el cod del departamento
+                $codCentroVotacion = str_pad($request->cod_departamento, 13, "0", STR_PAD_LEFT);
+            }
 
             // Recuperamos lso datos del custodio creado para crearle el cod_custodio
             $newCustodio = Custodios::find($custodio->idc_custodio);
             $newCustodio->cod_custodio = $newCustodio->cod_partido .  $codCentroVotacion . $newCustodio->idc_custodio;
             $newCustodio->save();
 
+            $descripcion = [
+                'ID CORRELATIVO CUSTODIO: ' . $newCustodio->idc_custodio,
+                'COD CUSTODIO: '. $newCustodio->cod_custodio,
+                'NOMBRE: ' . $newCustodio->nombre_custodio,
+                'TEL MOVIL: ' . $newCustodio->tel_movil,
+                'TEL FIJO: ' . ($newCustodio->tel_fijo != '' ? $newCustodio->tel_fijo : 'null'),
+                'CORREO 1: ' . $newCustodio->correo1_custodio,
+                'CORREO 2: ' . ($newCustodio->correo2_custodio != '' ? $newCustodio->correo2_custodio : 'null'),
+                'COD MUNICIPIO: ' . $newCustodio->cod_municipio,
+                'DIRECCION: ' . $newCustodio->dir_custodio,
+                'PARTIDO: ' . $newCustodio->partido->nombre_partido,
+                'CENTRO DE VOTACION: ' . ($newCustodio->cod_tipo_custodio == 1 ? $newCustodio->centro->nombre_centro . ' ' . $newCustodio->centro->nombre_sector_electoral : 'null'),
+                'ESTADO: ' . $newCustodio->estado->nombre_estado,
+                'TIPO CUSTODIO: ' . $newCustodio->tipoCustodio->tipo_custodio,
+                'FECHA REGISTRO: ' . $newCustodio->fecha_registro,
+                'DNI USUARIO REGISTRO: ' . $newCustodio->dni_usuario_registro
+            ];
+
+            // Registrar bitacora
+            BitacoraCustodio::create([
+                'fecha_hora_bitacora' => now(),
+                'dni_usuario_accion' => Auth::user()->dni_usuario,
+                'dni_custodio' => $newCustodio->dni_custodio,
+                'accion' => 'REGISTRO',
+                'descripcion' => implode(", ", $descripcion)
+            ]);
+
             return response()->json([
                 'error' => false,
-                'message' => 'Custodio creado exitosamente',
-                'datos' => $datosCentroVotacion
+                'message' => 'Custodio creado exitosamente'
             ]);
        } catch(Exception $e) {
             return response()->json([
@@ -218,13 +313,6 @@ class CustodiosController extends Controller
                 'message' => 'Ocurrió un error al crear el registro, por favor intenta nuevamente.'
             ]);
        }
-
-        // $custodio_aspirante = CensoAspirante::where('dni', $newCustodio->dni_custodio)->where('es_aspirante', true)->first();
-        
-        // if(!is_null($custodio_aspirante)) {
-        //     $newCustodio->cod_estado = 3;
-        //     $newCustodio->save();
-        // }
     }
 
     /**
@@ -291,9 +379,13 @@ class CustodiosController extends Controller
                     ->get();
                     
 
-        $centrosParaCustodio = Custodios::where('cod_partido', $idPartido)->where('cod_municipio', $idMunicipio)->get();
+        $centrosParaCustodio = Custodios::where('cod_partido', $idPartido)->where('cod_municipio', $idMunicipio)->where('tbl_custodios.cod_tipo_custodio', 1)->where('tbl_custodios.cod_estado', 1)->get();
+        // return dd($centrosParaCustodio);
 
-        // Crear un array para agregar los centros disponibles, es decir que si ya hay un centro con un custodio asignado con dicho partido, este ya ni aparece para agregar otro custodio de se partido a ese centro. 1 custodio por partido y centro
+        /**
+         *  Crear un array para agregar los centros disponibles, es decir que si ya hay un centro con un custodio asignado con dicho partido, 
+         * este ya ni aparece para agregar otro custodio de se partido a ese centro. 1 custodio por partido y centro
+         */ 
         $centrosDisponibles = [];
 
         if(count($centrosParaCustodio) > 0) {
@@ -309,8 +401,6 @@ class CustodiosController extends Controller
         } else {
             return response()->json($centros);
         }
-        
-       
     }
 
     /**
@@ -336,13 +426,20 @@ class CustodiosController extends Controller
             $partidos = PartidosPoliticos::all();
             $estados = EstadoCustodio::all();
             $departamentos = Departamentos::all();
+            $tiposCustodio = TipoCustodio::all();
             $custodio = Custodios::find($id);
-            $centros = CentrosVotacion::where('cod_municipio', $custodio->cod_municipio)->get();
+            $centros = DB::table('tbl_custodio_centro')
+                        ->join('tbl_centros_votacion', 'tbl_custodio_centro.cod_centro', 'tbl_centros_votacion.cod_centro')
+                        ->where('tbl_centros_votacion.cod_municipio', $custodio->cod_municipio)
+                        ->where('tbl_custodio_centro.cod_partido', $custodio->cod_partido)
+                        ->where('tbl_custodio_centro.tiene_custodio', true)
+                        ->get();
             $municipios = Municipios::where('cod_departamento', $custodio->municipio->departamento->cod_departamento)->get();
 
             $ctx = [
                 'partidos' => $partidos,
                 'estados' => $estados,
+                'tiposCustodio' => $tiposCustodio,
                 'departamentos' => $departamentos,
                 'municipios' => $municipios,
                 'centros' => $centros,
@@ -369,6 +466,9 @@ class CustodiosController extends Controller
      */
     public function update(Request $request, $id_custodio)
     {
+        // Obtenemos el custodio
+        $custodio = Custodios::find($id_custodio);
+
         $validator = Validator::make($request->all(), [
             'dni_custodio'       => 'required',
             'nombre_custodio'    => 'required|regex:/^[A-Za-z ]+$/',
@@ -379,9 +479,9 @@ class CustodiosController extends Controller
             'foto_custodio'      => !is_null($request->foto_custodio) ? 'required|image|max:5000' : '',
             'foto_dni_custodio'  => !is_null($request->foto_dni_custodio) ? 'required|image|max:5000' : '',
             'foto_comp_custodio' => !is_null($request->foto_comp_custodio) ? 'required|image|max:5000' : '',
-            'cod_municipio'      => 'required',
+            'cod_municipio'      => $custodio->cod_tipo_custodio != 2 ? 'required' : '',
             'cod_partido'        => 'required',
-            'cod_centro'         => 'required',
+            'cod_centro'         => $custodio->cod_tipo_custodio != 2 ? 'required' : '',
             'cod_estado'         => 'required',
         ], [], [
             'dni_custodio'       => 'DNI',
@@ -396,15 +496,12 @@ class CustodiosController extends Controller
             'cod_municipio'      => 'Municipio',
             'cod_partido'        => 'Partido político',
             'cod_centro'         => 'Centro de votación',
-            'cod_estado'         => 'Estado',
+            'cod_estado'         => 'Estado'
         ]);
 
         if($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all(), 'dni' => $request->dni_custodio]);
         }
-
-        // Obtenemos el custodio
-        $custodio = Custodios::find($id_custodio);
 
         if ($request->hasFile('foto_custodio')) {
             $custodio->foto_custodio = $request->file('foto_custodio')->store('custodios', 'uploads');
@@ -418,26 +515,73 @@ class CustodiosController extends Controller
             $custodio->foto_comp_custodio = $request->file('foto_comp_custodio')->store('custodios', 'uploads');
         }
 
-        // Obtener la cantidad de custodios activos por cod de partido y con centro del registro actual, solo debe haber uno por centro
-        $cantCustodiosActivos = Custodios::where('cod_partido', $request->cod_partido)->where('cod_centro', $request->cod_centro)->where('cod_estado', 1)->count();
+        // Validar si el custodio es de tipo custodio electoral para validar los cupos en el centro y partido, sino se valida por custodio de transporte
+        if($custodio->cod_tipo_custodio == 1) {
+            // Obtener la cantidad de custodios activos por cod de partido y con centro del registro actual, solo debe haber uno por centro
+            $cantCustodiosActivos = Custodios::where('cod_partido', $request->cod_partido)->where('cod_centro', $request->cod_centro)->where('cod_estado', 1)->count();
+    
+            if($custodio->cod_estado != 1 && $request->cod_estado == 1) {
+                if($cantCustodiosActivos > 0) {
+                    return response()->json([
+                        'error' => true,
+                        'message' => 'Error, no puedes activar este custodio porque ya hay uno asignado y activo para este centro, por favor intenta de nuevo.'
+                    ]);
+                }
+            }
+            
+            if(($request->cod_centro != $custodio->cod_centro)) {
+                if($cantCustodiosActivos > 0) {
+                    return response()->json([
+                        'error' => true,
+                        'message' => 'Error, ya hay un custodio asignado y activo para este centro de votación y partido político, por favor intenta de nuevo.'
+                    ]);
+                }
+            }
 
-        if($custodio->cod_estado != 1) {
-            if($cantCustodiosActivos > 0) {
+            if(($request->cod_partido != $custodio->cod_partido)) {
+                if($cantCustodiosActivos > 0) {
+                    return response()->json([
+                        'error' => true,
+                        'message' => 'Error, ya hay un custodio asignado y activo para este partido político y centro de votación, por favor intenta de nuevo.'
+                    ]);
+                }
+            }
+        } else {
+                // Validar custodios de transporte solo para patido liberal, nacional y libre
+            if($request->cod_partido == 1 || $request->cod_partido == 2 || $request->cod_partido == 7) {
+                // Obtenemos la cantidad de custodios para el departamento, solo deben ser 6 maximo para el departamento, 2 libre 2 partido nacional y 2 liberal
+                $cantCustodiosDepartamento = DB::table('tbl_custodios')
+                                            ->join('tbl_municipios', 'tbl_custodios.cod_municipio', 'tbl_municipios.cod_municipio')
+                                            ->where('tbl_municipios.cod_departamento', $request->cod_departamento)
+                                            ->where('tbl_custodios.cod_partido', $request->cod_partido)
+                                            ->where('tbl_custodios.cod_tipo_custodio', 2)
+                                            ->where('tbl_custodios.cod_estado', 1)
+                                            ->count();
+    
+                if($custodio->cod_estado != 1 && $request->cod_estado == 1) {
+                    if($cantCustodiosDepartamento == 2) {
+                        return response()->json([
+                            'error' => true,
+                            'message' => 'Error, no puedes activar este custodio porque ya hay 2/2 custodios de transporte activos para este departamento y partido político, por favor intenta de nuevo.'
+                        ]);
+                    }
+                }
+
+                if($custodio->cod_partido != $request->cod_partido) {
+                    if($cantCustodiosDepartamento == 2) {
+                        return response()->json([
+                            'error' => true,
+                            'message' => 'Error, no puedes cambiar este custodio porque ya hay 2/2 custodios de transporte activos para este partido político y departamento, por favor intenta de nuevo.'
+                        ]);
+                    }
+                }
+            } else {
                 return response()->json([
                     'error' => true,
-                    'message' => 'Error, no puedes activar este custodio porque ya hay uno asignado y activo para este centro, por favor intenta de nuevo.'
+                    'message' => 'Este partido político no permite custodios de transporte.'
                 ]);
             }
-        }
-        
-        if($request->cod_centro != $custodio->cod_centro) {
-            if($cantCustodiosActivos > 0) {
-                return response()->json([
-                    'error' => true,
-                    'message' => 'Error, ya hay un custodio asignado para este centro, por favor intenta de nuevo.'
-                ]);
-            }
-        }
+        } 
 
         if($request->dni_custodio != $custodio->dni_custodio) {
             if($this->validarDNI($request->dni_custodio)) {
@@ -448,24 +592,74 @@ class CustodiosController extends Controller
             }
         }
 
-        $custodio->dni_custodio = $request->dni_custodio;
-        $custodio->nombre_custodio = $request->nombre_custodio;
-        $custodio->tel_movil = $request->tel_movil;
-        $custodio->tel_fijo = $request->tel_fijo;
-        $custodio->correo1_custodio = $request->correo1_custodio;
-        $custodio->correo2_custodio = $request->correo2_custodio;
-        $custodio->cod_municipio = $request->cod_municipio;
-        $custodio->dir_custodio = $request->dir_custodio;
-        $custodio->cod_partido = $request->cod_partido;
-        $custodio->cod_centro = $request->cod_centro;
-        $custodio->cod_estado = $request->cod_estado;
-        $custodio->save();
+        if($custodio->cod_tipo_custodio != 2) {
+            // Obtener datos del centro de votacion
+            $datosCentroVotacion = CentrosVotacion::find($request->cod_centro);
 
-        return response()->json([
-            'error' => false,
-            'message' => 'Custodio actualizado exitosamente',
-            'foto' => $request->foto_dni_custodio
-        ]);
+            // Formar el cod centro de votacion = cod municipio - codigo de area - cod sector - cod junta receptopra, depende del tipo de custodio
+            $codCentroVotacion =  $datosCentroVotacion->cod_municipio . str_pad($datosCentroVotacion->codigo_area, 2, "0", STR_PAD_LEFT) . str_pad($datosCentroVotacion->codigo_sector_electoral, 2, "0", STR_PAD_LEFT) . str_pad($datosCentroVotacion->cod_junta_receptora, 5, "0", STR_PAD_LEFT);
+        } else {
+            // se le agrega el codigo del departamento, aqui es diferente el codigo de centro de votacion ya que no tenemos un centro y solamente tenemos el cod del departamento
+            $codCentroVotacion = str_pad($request->cod_departamento, 13, "0", STR_PAD_LEFT);
+        }
+
+        $codCustodio = $request->cod_partido .  $codCentroVotacion . $custodio->idc_custodio;
+
+        try {
+            // Establecer los nuevos valores
+            $custodio->cod_custodio = $codCustodio;
+            $custodio->dni_custodio = $request->dni_custodio;
+            $custodio->nombre_custodio = $request->nombre_custodio;
+            $custodio->tel_movil = $request->tel_movil;
+            $custodio->tel_fijo = $request->tel_fijo;
+            $custodio->correo1_custodio = $request->correo1_custodio;
+            $custodio->correo2_custodio = $request->correo2_custodio;
+            $custodio->cod_municipio = $custodio->cod_tipo_custodio == 2 ? Municipios::where('cod_departamento', $request->cod_departamento)->first()->cod_municipio : $request->cod_municipio;
+            $custodio->dir_custodio = $request->dir_custodio;
+            $custodio->cod_partido = $request->cod_partido;
+            $custodio->cod_centro = $custodio->cod_tipo_custodio == 2 ? null : $request->cod_centro;
+            $custodio->cod_estado = $request->cod_estado;
+            $custodio->save();
+
+            $newCustodio = Custodios::find($id_custodio);
+
+            $descripcion = [
+                'ID CORRELATIVO CUSTODIO: ' . $newCustodio->idc_custodio,
+                'COD CUSTODIO: '. $newCustodio->cod_custodio,
+                'NOMBRE: ' . $newCustodio->nombre_custodio,
+                'TEL MOVIL: ' . $newCustodio->tel_movil,
+                'TEL FIJO: ' . ($newCustodio->tel_fijo != '' ? $newCustodio->tel_fijo : 'null'),
+                'CORREO 1: ' . $newCustodio->correo1_custodio,
+                'CORREO 2: ' . ($newCustodio->correo2_custodio != '' ? $newCustodio->correo2_custodio : 'null'),
+                'COD MUNICIPIO: ' . $newCustodio->cod_municipio,
+                'DIRECCION: ' . $newCustodio->dir_custodio,
+                'PARTIDO: ' . $newCustodio->partido->nombre_partido,
+                'CENTRO DE VOTACION: ' . ($newCustodio->cod_tipo_custodio == 1 ? $newCustodio->centro->nombre_centro . ' ' . $newCustodio->centro->nombre_sector_electoral : 'null'),
+                'ESTADO: ' . $newCustodio->estado->nombre_estado,
+                'TIPO CUSTODIO: ' . $newCustodio->tipoCustodio->tipo_custodio,
+                'FECHA REGISTRO: ' . $newCustodio->fecha_registro,
+                'DNI USUARIO REGISTRO: ' . $newCustodio->dni_usuario_registro
+            ];
+
+            // Registrar bitacora
+            BitacoraCustodio::create([
+                'fecha_hora_bitacora' => now(),
+                'dni_usuario_accion' => Auth::user()->dni_usuario,
+                'dni_custodio' => $newCustodio->dni_custodio,
+                'accion' => 'EDICION',
+                'descripcion' => implode(", ", $descripcion)
+            ]);
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Custodio actualizado exitosamente'
+            ]);
+        } catch(Exception $ex) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Ocurrió un error al editar el custodio, por favor intenta de nuevo.'
+            ]);
+        }
     }
 
     /**
@@ -480,6 +674,33 @@ class CustodiosController extends Controller
             $custodio = Custodios::find($id_custodio);
             $custodio->delete();
 
+            $descripcion = [
+                'ID CORRELATIVO CUSTODIO: ' . $custodio->idc_custodio,
+                'COD CUSTODIO: '. $custodio->cod_custodio,
+                'NOMBRE: ' . $custodio->nombre_custodio,
+                'TEL MOVIL: ' . $custodio->tel_movil,
+                'TEL FIJO: ' . ($custodio->tel_fijo != '' ? $custodio->tel_fijo : 'null'),
+                'CORREO 1: ' . $custodio->correo1_custodio,
+                'CORREO 2: ' . ($custodio->correo2_custodio != '' ? $custodio->correo2_custodio : 'null'),
+                'COD MUNICIPIO: ' . $custodio->cod_municipio,
+                'DIRECCION: ' . $custodio->dir_custodio,
+                'PARTIDO: ' . $custodio->partido->nombre_partido,
+                'CENTRO DE VOTACION: ' . ($custodio->cod_tipo_custodio == 1 ? $custodio->centro->nombre_centro . ' ' . $custodio->centro->nombre_sector_electoral : 'null'),
+                'ESTADO: ' . $custodio->estado->nombre_estado,
+                'TIPO CUSTODIO: ' . $custodio->tipoCustodio->tipo_custodio,
+                'FECHA REGISTRO: ' . $custodio->fecha_registro,
+                'DNI USUARIO REGISTRO: ' . $custodio->dni_usuario_registro
+            ];
+
+            // Registrar bitacora
+            BitacoraCustodio::create([
+                'fecha_hora_bitacora' => now(),
+                'dni_usuario_accion' => Auth::user()->dni_usuario,
+                'dni_custodio' => $custodio->dni_custodio,
+                'accion' => 'ELIMINACION',
+                'descripcion' => implode(", ", $descripcion)
+            ]);
+
             return response()->json([
                 'error' => false,
                 'message' => 'Custodio eliminado satisfactoriamente'
@@ -491,4 +712,78 @@ class CustodiosController extends Controller
             ]);
         }
     }
+
+    public function pdf($id_custodio) {
+        $custodio = Custodios::find($id_custodio);
+        $ctx = ['custodio' => $custodio];
+        $pdf = PDF::loadView('custodios.custodiopdf', $ctx);
+        $pdf->setPaper('letter', 'letter');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $nombreArchivo = 'Comnprobante ' . $custodio->nombre_custodio . ' - Partido ' . $custodio->partido->nombre_partido . '.pdf';
+
+        $canvas = $dom_pdf->get_canvas();
+        $canvas->page_text(500, 750, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+        // return view('custodios.custodiopdf', ['custodio' => $custodio]);
+        return $pdf->stream($nombreArchivo);
+    }
+
+    public function descargarExcel(Request $request){
+         // se obtienenn los datos
+        $columns = ['dni_custodio', 'cod_estado', 'cod_partido'];
+
+        if($request->dni_custodio != '' && $request->cod_estado == '' && $request->cod_partido == '') {
+            $custodios = Custodios::where('dni_custodio', $request->dni_custodio)->get();
+            $msg = 'POR DNI';
+        }
+
+        if($request->dni_custodio == '' && $request->cod_estado != '' && $request->cod_partido == '') {
+            $custodios = Custodios::where('cod_estado', $request->cod_estado)->get();
+            $msg = 'POR COD ESTADO';
+        }
+
+        if($request->dni_custodio == '' && $request->cod_estado == '' && $request->cod_partido != '') {
+            $custodios = Custodios::where('cod_partido', $request->cod_partido)->get();
+            $msg = 'POR COD PARTDO';
+        }
+
+        if($request->dni_custodio != '' && $request->cod_estado != '' && $request->cod_partido == '') {
+            $custodios = Custodios::where('dni_custodio', $request->dni_custodio)->where('cod_estado', $request->cod_estado)->get();
+            $msg = 'POR DNI y ESTADO';
+        }
+
+        if($request->dni_custodio != '' && $request->cod_estado == '' && $request->cod_partido != '') {
+            $custodios = Custodios::where('dni_custodio', $request->dni_custodio)->where('cod_partido', $request->cod_partido)->get();
+            $msg = 'POR DNI y PARTIDO';
+        }
+
+        if($request->dni_custodio == '' && $request->cod_estado != '' && $request->cod_partido != '') {
+            $custodios = Custodios::where('cod_estado', $request->cod_estado)->where('cod_partido', $request->cod_partido)->get();
+            $msg = 'POR ESTADO Y PARTIDO';
+        }
+
+        if($request->dni_custodio != '' && $request->cod_estado != '' && $request->cod_partido != '') {
+            $custodios = Custodios::where('dni_custodio', $request->dni_custodio)->where('cod_estado', $request->cod_estado)->where('cod_partido', $request->cod_partido)->get();
+            $msg = 'POR DNI, ESTADO Y PARTIDO';
+        }
+
+        if($request->dni_custodio == '' && $request->cod_estado == '' && $request->cod_partido == '') {
+            $custodios = Custodios::all();
+            $msg = 'POR TODO';
+        }
+
+         // Tipo de excel
+         $type = 'xlsx';
+ 
+         // Fecha
+         $now = new \DateTime();
+         $now = $now->format('d-m-Y');
+ 
+         // Nombre del archivo
+         $nombreArchivo = 'Custodios_' . $now . '.' . $type;
+ 
+         // Retorna el archivo de excel
+         return Excel::download(new CustodiosExport($custodios), $nombreArchivo);
+     }
 }

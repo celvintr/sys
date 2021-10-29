@@ -51,6 +51,7 @@ class Custodios extends Model
         'cod_partido',
         'cod_centro',
         'cod_estado',
+        'cod_tipo_custodio',
         'fecha_registro',
         'dni_usuario_registro',
     ];
@@ -131,5 +132,13 @@ class Custodios extends Model
     public function centro()
     {
         return $this->belongsTo(CentrosVotacion::class, 'cod_centro', 'cod_centro');
+    }
+
+    /**
+     * Relacion tipo de custodio, devuelve la instancia de tipo de custodio y asi acceder a sus propiedades
+     */
+    public function tipoCustodio()
+    {
+        return $this->belongsTo(TipoCustodio::class, 'cod_tipo_custodio', 'cod_tipo_custodio');
     }
 }

@@ -5,7 +5,7 @@
 
     <div class="row">
         <div class="col">
-            <form method="POST" action="{{ route('admin.custodios.update', $custodio->idc_custodio) }}" class="form form-ajax" id="form" enctype="multipart/form-data" data-return="{{ route('admin.custodios.index') }}">
+            <form method="POST" action="{{ route('admin.custodios.update', $custodio->idc_custodio) }}" class="form form-custodio" id="form" enctype="multipart/form-data" data-return="{{ route('admin.custodios.index') }}">
                 {{ csrf_field() }}
                 
                 <div class="card card-custom">
@@ -139,6 +139,14 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <label>Tipo de Custodio:</label>
+                                                    <input type="text" name="cod_tipo_custodio" id="cod_tipo_custodio" class="form-control form-control-solid" value="{{ $custodio->tipoCustodio->tipo_custodio }}" readonly />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -149,7 +157,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Departamentos:</label>
-                                                <select name="cod_departamento" id="cod_departamento" class="form-control select-departamentos kt-selectpicker" data-id="{{ $custodio->municipio->departamento->cod_departamento }}" data-child="#cod_municipio" data-size="7" data-live-search="true">
+                                                <select name="cod_departamento" id="cod_departamento" class="form-control cbo-departamentos kt-selectpicker" data-id="{{ $custodio->municipio->departamento->cod_departamento }}" data-child="#cod_municipio" data-size="7" data-live-search="true">
                                                     <option value="">::. Seleccione .::</option>
                                                     @foreach ($departamentos as $item)
                                                         <option value="{{ $item->cod_departamento }}" @if($item->cod_departamento == $custodio->municipio->departamento->cod_departamento) selected @endif>{{ $item->nombre_departamento }}</option>
@@ -159,7 +167,7 @@
                                         </div>
 
                                         <div class="col-lg-6">
-                                            <div class="form-group">
+                                            <div class="form-group" id="contenedor-centros" @if($custodio->cod_tipo_custodio == 2) style="display: none;" @endif>
                                                 <label>Municipios:</label>
                                                 <select name="cod_municipio" id="cod_municipio" class="form-control select-municipios kt-selectpicker" data-child="#cod_centro" data-size="7" data-live-search="true">
                                                     <option value="">::. Seleccione .::</option>
@@ -171,12 +179,12 @@
                                         </div>
 
                                         <div class="col-lg-6">
-                                            <div class="form-group">
+                                            <div class="form-group" id="contenedor-centros" @if($custodio->cod_tipo_custodio == 2) style="display: none;" @endif>
                                                 <label>Centro de Votación:</label>
                                                 <select name="cod_centro" id="cod_centro" class="form-control cbo-centros kt-selectpicker" data-size="7" data-live-search="true">
                                                     <option value="">::. Seleccione .::</option>
                                                     @foreach($centros as $centro)
-                                                        <option value="{{ $centro->cod_centro }}" @if($centro->cod_centro == $custodio->cod_centro) selected @endif>{{ $centro->nombre_centro }}</option>
+                                                        <option value="{{ $centro->cod_centro }}" @if($centro->cod_centro == $custodio->cod_centro) selected @endif>{{ $centro->nombre_centro }} - {{ $centro->nombre_sector_electoral }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -293,23 +301,56 @@
             $(document).ready(function() {
                 $('.kt-selectpicker').selectpicker();
 
+                if ($('.cbo-departamentos').length && $('.select-municipios').length) {
+                    $('.cbo-departamentos').on('change', function(e) {
+                        var $departamento = $(this);
+                        var $municipio = $($departamento.data('child'));
+                        const tipoCustodio = document.querySelector('#cbo-tipo-custodio').value;
+
+                        $municipio.html(`<option>::. Seleccione .::</option>`);
+                        $municipio.selectpicker('refresh');
+
+                        if ($departamento.val() && parseInt(tipoCustodio) === 1) {
+                            axios.get('{{ url('/api/municipios') }}/' + $departamento.val())
+                            .then(function (response) {
+                                var data = response.data;
+                                var output = ``;
+                                data.forEach(item => {
+                                    output += `<option value="${item.cod_municipio}">${item.nombre_municipio}</option>`;
+                                });
+                                $municipio.html(output);
+                                $municipio.selectpicker('refresh');
+                                $municipio.trigger('change');
+                            })
+                            .catch(function (error) {
+                                // handle error
+                                console.log(error);
+                            });
+                        }
+                    });
+                }
+
                 if ($('.select-municipios').length && $('.cbo-centros').length) {
                     $('.select-municipios').on('change', function(e) {
                         const $municipio = $(this);
                         const $centro = $($municipio.data('child'));
                         const $partido = document.querySelector('#cbo-partido').value;
+                        const tipoCustodio = document.querySelector('#cod_tipo_custodio').value;
 
-                        $centro.html(`<option>::. Seleccione .::</option>`);
-                        $centro.selectpicker('refresh');
-
-                        if ($municipio.val()) {
+                        if ($municipio.val() && parseInt(tipoCustodio) !== 2) {
                             axios.get('{{ url('/admin/custodios/centros') }}/' + $municipio.val() + '/' + $partido) 
                             .then(function (response) {
                                 let data = response.data;
-                                let output = ``;
-                                data.forEach(item => {
-                                    output += `<option value="${item.cod_centro}">${item.nombre_centro}</option>`;
-                                });
+                                let output = `<option>::. Seleccione un centro .::</option>`;
+
+                                if(data.length > 0) {
+                                    data.forEach(item => {
+                                        output += `<option value="${item.cod_centro}">${item.nombre_centro} - ${item.nombre_sector_electoral}</option>`;
+                                    });
+                                } else {
+                                    output = '<option>::. No hay centros disponibles para este partido .::</option>';
+                                }
+
                                 $centro.html(output);
                                 $centro.selectpicker('refresh');
                             })
@@ -329,29 +370,39 @@
                         const $centro = $($municipio.data('child'));
                         const $partido = document.querySelector('#cbo-partido').value;
 
-                        axios.get('{{ url('/admin/custodios/centros') }}/' + $municipio.val() + '/' + $partido) 
-                            .then(function (response) {
-                                let data = response.data;
-                                let output = `<option value="">::. Seleccione .::</option>`;
+                        $centro.html(`<option value="">::. Seleccione un centro .::</option>`);
+                        $centro.selectpicker('refresh');
 
-                                data.forEach(item => {
-                                    output += `<option value="${item.cod_centro}">${item.nombre_centro}</option>`;
+                        if($partido !== '') {
+                            axios.get('{{ url('/admin/custodios/centros') }}/' + $municipio.val() + '/' + $partido) 
+                                .then(function (response) {
+                                    let data = response.data;
+                                    let output = `<option value="">::. Seleccione un centro .::</option>`;
+                                    console.log(data)
+                                    data.forEach(item => {
+                                        output += `<option value="${item.cod_centro}">${item.nombre_centro} - ${item.nombre_sector_electoral}</option>`;
+                                    });
+                                    $centro.html(output);
+                                    $centro.selectpicker('refresh');
+                                })
+                                .catch(function (error) {
+                                    // handle error
+                                    console.log(error);
                                 });
-                                $centro.html(output);
-                                $centro.selectpicker('refresh');
-                            })
-                            .catch(function (error) {
-                                // handle error
-                                console.log(error);
-                            });
+                        } else {
+                            let output = `<option value="">::. Seleccione un centro .::</option>`;
+                            $centro.html(output);
+                            $centro.selectpicker('refresh');
+                        }
                     }
-                })
+                });
+
                 // Formulario
                 const foto_custodio = new KTImageInput('kt_foto_custodio');
                 const foto_dni_custodio = new KTImageInput('kt_foto_dni_custodio');
                 const foto_comp_custodio = new KTImageInput('kt_foto_comp_custodio');
 
-                $('.form-ajax').on('submit', function(e) {
+                $('.form-custodio').on('submit', function(e) {
                     e.preventDefault();
 
                     const btnGuardar = document.querySelector('#btn-guardar');
