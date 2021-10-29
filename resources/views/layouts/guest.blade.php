@@ -102,5 +102,7 @@
         <script src="{{ asset('metronic/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
         <script src="{{ asset('metronic/js/scripts.bundle.js') }}"></script>
         <!--end::Global Theme Bundle-->
+
+        @stack('scripts')
     </body>
 </html>

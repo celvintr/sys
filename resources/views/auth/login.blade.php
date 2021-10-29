@@ -58,7 +58,7 @@
                                     @csrf
 
                                     <div class="form-group mb-5">
-                                        <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="DNI" name="dni_usuario" maxlength="13" autocomplete="off" value="{{ old('dni_usuario') }}" autofocus />
+                                        <input class="form-control h-auto form-control-solid py-4 px-8 mask-dni" type="text" placeholder="DNI" name="dni_usuario" maxlength="13" autocomplete="off" value="{{ old('dni_usuario') }}" autofocus />
                                     </div>
 
                                     <div class="form-group mb-5">
@@ -80,7 +80,11 @@
                                     @csrf
 
                                     <div class="form-group mb-5">
-                                        <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="DNI" name="dni_custodio" maxlength="13" autocomplete="off" value="{{ old('dni_custodio') }}" autofocus />
+                                        <input class="form-control h-auto form-control-solid py-4 px-8 mask-dni" type="text" placeholder="DNI" name="dni_custodio" id="dni_custodio" maxlength="13" autocomplete="off" value="{{ old('dni_custodio') }}" autofocus />
+                                    </div>
+
+                                    <div class="form-group mb-5">
+                                        <input class="form-control h-auto form-control-solid py-4 px-8 mask-date" type="text" placeholder="Fecha de nacimiento" name="fechanac_custodio" id="fechanac_custodio" maxlength="10" autocomplete="off" value="{{ old('fechanac_custodio') }}" />
                                     </div>
 
                                     <button id="kt_login_custodio_submit" class="btn btn-success font-weight-bold px-9 py-4 my-3 mx-4">Buscar DNI</button>
@@ -94,5 +98,29 @@
             </div>
         </div>
         <!--end::Login-->
+
+        @push('scripts')
+            <script>
+                $(document).ready(function() {
+                    $('.mask-date').datepicker({
+                        rtl: KTUtil.isRTL(),
+                        todayHighlight: true,
+                        orientation: "bottom left",
+                        format: 'dd/mm/yyyy',
+                        templates: {
+                            leftArrow: '<i class="la la-angle-left"></i>',
+                            rightArrow: '<i class="la la-angle-right"></i>'
+                        }
+                    });
+
+                    $(".mask-date").inputmask("99/99/9999", {
+                        "placeholder": "dd/mm/yyyy",
+                        autoUnmask: true
+                    });
+
+                    $('.mask-dni').inputmask("9999999999999");
+                });
+            </script>
+        @endpush
     </div>
 </x-guest-layout>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Custodios;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -17,10 +18,14 @@ class IncidenciasController extends Controller
      */
     public function dni(Request $request)
     {
+        $request->fechanac_custodio = Carbon::createFromFormat('d/m/Y', $request->fechanac_custodio)->format('Y-m-d');
+
         $validated = $request->validate([
-            'dni_custodio' => 'required',
+            'dni_custodio'      => 'required',
+            'fechanac_custodio' => 'required|date',
         ], [], [
-            'dni_custodio' => 'DNI Custodio',
+            'dni_custodio'      => 'DNI Custodio',
+            'fechanac_custodio' => 'Fecha de nacimiento',
         ]);
 
         $custodio = Custodios::where('dni_custodio', $request->dni_custodio)->first();
@@ -34,8 +39,14 @@ class IncidenciasController extends Controller
                 'dni_custodio' => 'Incidencias ya enviada',
             ]);
         }
+        //  esta linea va a ser sustituida por la consulta en el campo de fecha OJO
+        elseif ($request->fechanac_custodio != now()->format('Y-m-d')) {
+            throw ValidationException::withMessages([
+                'fechanac_custodio' => 'Validación falló',
+            ]);
+        }
 
-        $request->session()->flash('dni_custodio', $custodio->dni_custodio);
+        session(['custodio' => $custodio]);
 
         return redirect()->route('incidencias.form');
     }
@@ -47,13 +58,11 @@ class IncidenciasController extends Controller
      */
     public function form()
     {
-        if (!session()->has('dni_custodio') && !old('dni_custodio')) {
+        if (!session()->has('custodio')) {
             return redirect()->route('login');
         }
 
-        $dni_custodio = (session()->has('dni_custodio') ? session('dni_custodio') : old('dni_custodio'));
-
-        $custodio = Custodios::where('dni_custodio', $dni_custodio)->firstOrFail();
+        $custodio = session('custodio');
 
         return view('incidencias.form', compact('custodio'));
     }
