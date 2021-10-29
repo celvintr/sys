@@ -35,23 +35,59 @@
                             <x-auth-validation-errors class="mb-3" :errors="$errors" />
                         </div>
 
-                        <form method="POST" action="{{ route('login') }}" class="form" id="kt_login_signin_form">
-                            @csrf
 
-                            <div class="form-group mb-5">
-                                <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="DNI" name="dni_usuario" maxlength="13" autocomplete="off" value="{{ old('dni_usuario') }}" autofocus />
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link {{ old('dni_custodio') ? '' : 'active' }}" id="home-tab" data-toggle="tab" href="#home">
+                                    <span class="nav-icon"><i class="flaticon2-lock"></i></span>
+                                    <span class="nav-text">Login</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ old('dni_custodio') ? 'active' : '' }}" id="profile-tab" data-toggle="tab" href="#profile" aria-controls="profile">
+                                    <span class="nav-icon"><i class="flaticon2-user"></i></span>
+                                    <span class="nav-text">Custodio</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content mt-5" id="myTabContent">
+                            <div class="tab-pane fade {{ old('dni_custodio') ? '' : 'show active' }}" id="home" role="tabpanel" aria-labelledby="home-tab" style="height: 225px;">
+
+                                <form method="POST" action="{{ route('login') }}" class="form" id="kt_login_signin_form">
+                                    @csrf
+
+                                    <div class="form-group mb-5">
+                                        <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="DNI" name="dni_usuario" maxlength="13" autocomplete="off" value="{{ old('dni_usuario') }}" autofocus />
+                                    </div>
+
+                                    <div class="form-group mb-5">
+                                        <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Contraseña" name="pass_usuario" autocomplete="current-password" />
+                                    </div>
+
+                                    <div class="d-flex justify-content-end my-4">
+                                        <a href="{{ route('forget.password.get') }}" class="text-dark">Olvidó su contraseña?</a>
+                                    </div>
+
+                                    <button id="kt_login_signin_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Iniciar Sesión</button>
+                                </form>
+
                             </div>
 
-                            <div class="form-group mb-5">
-                                <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Contraseña" name="pass_usuario" autocomplete="current-password" />
-                            </div>
+                            <div class="tab-pane fade {{ old('dni_custodio') ? 'show active' : '' }}" id="profile" role="tabpanel" aria-labelledby="profile-tab" style="height: 225px;">
 
-                            <div class="d-flex justify-content-end my-4">
-                                <a href="{{ route('forget.password.get') }}" class="text-dark">Olvidó su contraseña?</a>
-                            </div>
+                                <form method="POST" action="{{ route('incidencias.dni') }}" class="form" id="kt_login_custodio_form">
+                                    @csrf
 
-                            <button id="kt_login_signin_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Iniciar Sesión</button>
-                        </form>
+                                    <div class="form-group mb-5">
+                                        <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="DNI" name="dni_custodio" maxlength="13" autocomplete="off" value="{{ old('dni_custodio') }}" autofocus />
+                                    </div>
+
+                                    <button id="kt_login_custodio_submit" class="btn btn-success font-weight-bold px-9 py-4 my-3 mx-4">Buscar DNI</button>
+                                </form>
+
+                            </div>
+                        </div>
                     </div>
                     <!--end::Login Sign in form-->
                 </div>

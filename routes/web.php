@@ -7,6 +7,7 @@ use App\Http\Controllers\MunicipiosController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\BitacoraCustodiosController;
+use App\Http\Controllers\IncidenciasController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -134,6 +135,12 @@ Route::middleware(['auth', 'estadosesion'])->group(function () {
         Route::post('usuarios/password/actualizar', [UsuariosController::class, 'passwordUpdate'])->name('auth.password.update');
 
     });
+});
+
+Route::prefix('incidencias')->name('incidencias.')->group(function () {
+    Route::post('/dni', [IncidenciasController::class, 'dni'])->name('dni');
+    Route::get('/', [IncidenciasController::class, 'form'])->name('form');
+    Route::post('/', [IncidenciasController::class, 'guardar'])->name('guardar');
 });
 
 require __DIR__ . '/auth.php';
