@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartamentosController;
 use App\Http\Controllers\MunicipiosController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\BitacoraCustodiosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -106,9 +107,25 @@ Route::middleware(['auth', 'estadosesion'])->group(function () {
             // Update
             Route::get('/edit/{id_custodio}', [CustodiosController::class, 'edit'])->name('edit');
             Route::post('/update/{id_custodio}', [CustodiosController::class, 'update'])->name('update');
+
+            // PDF Custodio
+            Route::get('/pdf/{id_custodio}', [CustodiosController::class, 'pdf'])->name('pdf');
+
+            // EXCEL Custodio
+            Route::get('/excel', [CustodiosController::class, 'descargarExcel'])->name('excel');
         });
 
-        //    });
+        #BitacoraCustodios
+        Route::prefix('bitacora-custodios')->name('bitacora-custodios.')->group(function () {
+            // Index
+            Route::get('/', [BitacoraCustodiosController::class, 'index'])->name('index');
+
+            // PDF Bitacora Custodio
+            Route::get('/pdf/{id_bitacora}', [BitacoraCustodiosController::class, 'pdf'])->name('pdf');
+
+            // EXCEL Bitacora Custodio
+            Route::get('/excel', [BitacoraCustodiosController::class, 'descargarExcel'])->name('excel');
+        });
 
         Route::get('perfil', [UsuariosController::class, 'perfil'])->name('usuarios.perfil');
         Route::post('perfil', [UsuariosController::class, 'perfilUpdate'])->name('usuarios.perfil.update');

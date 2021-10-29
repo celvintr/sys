@@ -144,11 +144,11 @@
         @endcan  
         @can('admin.bitacora-estados.index') 
                 <li class="menu-item " aria-haspopup="true">
-                    <a href="#" class="menu-link ">
+                    <a href="{{ route('admin.bitacora-custodios.index') }}" class="menu-link ">
                         <i class="menu-bullet menu-bullet-dot">
                         <span></span>
                     </i>
-                        <span class="menu-text">Bitácora de estados</span></a>
+                        <span class="menu-text">Bitácora de estados de custodios</span></a></li>
         </li>
         @endcan 
         @can('admin.custodios.create') 
@@ -160,7 +160,7 @@
                             </a>
                         </li>
                         @endcan
-                        @can('admin.custodios.consultar') 
+                        {{-- @can('admin.custodios.consultar') 
                         <li class="menu-item " aria-haspopup="true">
                             <a href="#" class="menu-link ">
                                 <i class="menu-bullet menu-bullet-dot">
@@ -168,7 +168,7 @@
                                 <span class="menu-text">Consulta de Custodio</span>
                             </a>
                         </li>
-                        @endcan 
+                        @endcan  --}}
 </ul>
 </div>
 </li>
@@ -216,13 +216,6 @@
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span></i>
                                     <span class="menu-text">Registro de Custodio</span>
-                                </a>
-                            </li>
-                            <li class="menu-item " aria-haspopup="true">
-                                <a href="#" class="menu-link ">
-                                    <i class="menu-bullet menu-bullet-dot">
-                                        <span></span></i>
-                                    <span class="menu-text">Consulta de Custodio</span>
                                 </a>
                             </li>
                             <li class="menu-item menu-item-submenu menu-item-open" aria-haspopup="true" data-menu-toggle="hover"><a href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"><!--begin::Svg Icon | path:assets/media/svg/icons/Home/Book-open.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
