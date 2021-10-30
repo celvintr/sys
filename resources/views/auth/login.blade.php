@@ -119,6 +119,7 @@
                     });
 
                     $('.mask-dni').inputmask("9999999999999");
+                   
                 });
             </script>
         @endpush

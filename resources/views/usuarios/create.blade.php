@@ -45,7 +45,7 @@
                                                             <i class="fas fa-credit-card"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="text" name="dni_usuario" id="dni_usuario" class="form-control" value="{{ $form->dni_usuario }}" maxlength="13" {{ $method == 'PUT' ? 'disabled' : '' }} autofocus />
+                                                    <input type="text" name="dni_usuario" id="dni_usuario" class="form-control mask-dni" value="{{ $form->dni_usuario }}" maxlength="13" {{ $method == 'PUT' ? 'disabled' : '' }} autofocus />
                                                 </div>
                                             </div>
                                         </div>
@@ -103,7 +103,7 @@
                                                             <i class="fas fa-mobile-alt"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="text" class="form-control" id="tel_usuario" name="tel_usuario" value="{{ $form->tel_usuario }}" maxlength="8" {{ ($form->cod_rol == 3 || $form->cod_rol == 4) ? 'disabled' : '' }} />
+                                                    <input type="text" class="form-control mask-tel" id="tel_usuario" name="tel_usuario" value="{{ $form->tel_usuario }}" maxlength="8" {{ ($form->cod_rol == 3 || $form->cod_rol == 4) ? 'disabled' : '' }} />
                                                 </div>
                                             </div>
                                         </div>
@@ -267,19 +267,11 @@
                     $('#wrapper-pass').removeClass('d-none');
                     $('[name="update_pass"]').val('1');
                 });
+ 
 
-                $('[name="tel_usuario"]').inputmask({
-                    "mask": "9",
-                    "repeat": 10,
-                    "greedy": false
-                });
-
-                $('[name="dni_usuario"]').inputmask({
-                    "mask": "9",
-                    "repeat": 13,
-                    "greedy": false
-                });
-
+                 $('.mask-dni').inputmask("9999999999999");         
+                $('.mask-tel').inputmask("99999999");
+               
                 $('#cod_rol').on('change', function() {
                     var cod_rol = $(this).val();
                     if (cod_rol == 3 || cod_rol == 4) {
