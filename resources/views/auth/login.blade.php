@@ -114,8 +114,7 @@
                     });
 
                     $(".mask-date").inputmask("99/99/9999", {
-                        "placeholder": "dd/mm/yyyy",
-                        autoUnmask: true
+                        "placeholder": "dd/mm/aaaa"
                     });
 
                     $('.mask-dni').inputmask("9999999999999");
