@@ -61,15 +61,9 @@
                                         <input class="form-control h-auto form-control-solid py-4 px-8 mask-dni" type="text" placeholder="DNI" name="dni_usuario" maxlength="13" autocomplete="off" value="{{ old('dni_usuario') }}" autofocus />
                                     </div>
 
-                                    <div class="form-group mb-5">
-                                    
-                                       
-                                        <div class='card'>
-                                             
+                                    <div class="form-group mb-5">        
                                             <div class='input-group'>
-                                            <div class='input-group-prepend'>
                                              
-                                            </div>
                                             <input type='password' id='password' name="pass_usuario" placeholder="Contraseña"  class='form-control h-auto form-control-solid py-4 px-8'/>
                                             <input type='text' class='form-control h-auto form-control-solid py-4 px-8 hidden' id='passwordContent' disabled/>
                                             <div class='input-group-append'>
@@ -79,12 +73,7 @@
                                             </div>
                                             </div>
                                             </div>
-                                            </div>
-                                       
-                                   
-                                   
-                                   
-                                 
+                                    
                                     <div class="d-flex justify-content-end my-4">
                                         <a href="{{ route('forget.password.get') }}" class="text-dark">Olvidó su contraseña?</a>
                                     </div>
