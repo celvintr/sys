@@ -61,10 +61,19 @@
                                         <input class="form-control h-auto form-control-solid py-4 px-8 mask-dni" type="text" placeholder="DNI" name="dni_usuario" maxlength="13" autocomplete="off" value="{{ old('dni_usuario') }}" autofocus />
                                     </div>
 
-                                    <div class="form-group mb-5">
-                                        <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Contraseña" name="pass_usuario" autocomplete="current-password" />
-                                    </div>
-
+                                    <div class="form-group mb-5">        
+                                            <div class='input-group'>
+                                             
+                                            <input type='password' id='password' name="pass_usuario" placeholder="Contraseña"  class='form-control h-auto form-control-solid py-4 px-8'/>
+                                            <input type='text' class='form-control h-auto form-control-solid py-4 px-8 hidden' id='passwordContent' disabled/>
+                                            <div class='input-group-append'>
+                                                <span class='input-group-text' onclick='showHidePassword("#password","#passwordContent")'>
+                                                    <i class='fa fa-eye'></i>
+                                                </span>
+                                            </div>
+                                            </div>
+                                            </div>
+                                    
                                     <div class="d-flex justify-content-end my-4">
                                         <a href="{{ route('forget.password.get') }}" class="text-dark">Olvidó su contraseña?</a>
                                     </div>
@@ -118,8 +127,28 @@
                     });
 
                     $('.mask-dni').inputmask("9999999999999");
+                   
                 });
+
+                // Ver pass input
+                function showHidePassword(passSelector, textSelector) {
+                    if ($(passSelector).hasClass("hidden")) {
+                        $(passSelector).val($(textSelector).val());
+                        $(textSelector).addClass("hidden");
+                        $(passSelector).toggleClass("hidden");
+                    }
+                    else {
+                        $(textSelector).val($(passSelector).val());
+                        $(passSelector).addClass("hidden");
+                        $(textSelector).toggleClass("hidden");
+                    }
+                }
             </script>
+            <style>
+                .hidden{
+                    display:none !important;
+                    }
+            </style>        
         @endpush
     </div>
 </x-guest-layout>
