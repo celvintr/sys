@@ -34,7 +34,7 @@ class IncidenciasController extends Controller
                 'dni_custodio' => 'DNI no encontrado',
             ]);
         }
-        elseif ($custodio->estado == 1) {
+        elseif ($custodio->hoja_incidencia == 1) {
             throw ValidationException::withMessages([
                 'dni_custodio' => 'Incidencias ya enviada',
             ]);
