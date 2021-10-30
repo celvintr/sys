@@ -25,8 +25,7 @@ class BitacoraCustodiosController extends Controller
         $desde = request('fecha_desde') ? request('fecha_desde') : date('Y-m-d');
         $hasta = request('fecha_hasta') ? request('fecha_hasta') : date('Y-m-d');
 
-        $bitacoras = new BitacoraCustodio;
-        $totalBitacoras = BitacoraCustodio::all()->count();
+        $bitacoras = new BitacoraCustodio;        
 
         if($dni && $desde && $hasta) {
             $bitacoras = $bitacoras::where('dni_custodio', $dni)->whereDate('fecha_hora_bitacora', '>=', $desde)->whereDate('fecha_hora_bitacora', '<=', $hasta);
@@ -41,6 +40,7 @@ class BitacoraCustodiosController extends Controller
             $queries['fecha_hasta'] = request('fecha_hasta');
         }
 
+        $totalBitacoras = $bitacoras->count();
         $bitacoras = $bitacoras->paginate($mostrar)->appends($queries);
         
         $ctx = [

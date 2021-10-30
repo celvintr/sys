@@ -131,11 +131,19 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Partido Político:</label>
-                                                <select name="cod_partido" id="cbo-partido" class="form-control kt-selectpicker">
-                                                    <option value="">::. Seleccione .::</option>
-                                                    @foreach ($partidos as $item)
-                                                        <option value="{{ $item->cod_partido }}" @if($item->cod_partido == $custodio->cod_partido) selected @endif>{{ $item->nombre_partido }}</option>
-                                                    @endforeach
+                                                <select name="cod_partido" id="cbo-partido" class="form-control kt-selectpicker"  @if(!is_null($user->cod_partido)) disabled @endif>
+                                                    @if(!is_null($user->cod_partido))
+                                                        @foreach ($partidos as $item)
+                                                            @if($item->cod_partido == $user->cod_partido)
+                                                                <option value="{{ $item->cod_partido }}" @if($item->cod_partido == $custodio->cod_partido) selected @endif>{{ $item->nombre_partido }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        <option value="">::. Seleccione .::</option>
+                                                        @foreach ($partidos as $item)
+                                                            <option value="{{ $item->cod_partido }}" @if($item->cod_partido == $custodio->cod_partido) selected @endif>{{ $item->nombre_partido }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                         </div>
@@ -157,10 +165,10 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Departamentos:</label>
-                                                <select name="cod_departamento" id="cod_departamento" class="form-control cbo-departamentos kt-selectpicker" data-id="{{ $custodio->municipio->departamento->cod_departamento }}" data-child="#cod_municipio" data-size="7" data-live-search="true">
+                                                <select name="cod_departamento" id="cod_departamento" class="form-control cbo-departamentos kt-selectpicker" data-id="{{ $custodio->cod_departamento }}" data-child="#cod_municipio" data-size="7" data-live-search="true">
                                                     <option value="">::. Seleccione .::</option>
                                                     @foreach ($departamentos as $item)
-                                                        <option value="{{ $item->cod_departamento }}" @if($item->cod_departamento == $custodio->municipio->departamento->cod_departamento) selected @endif>{{ $item->nombre_departamento }}</option>
+                                                        <option value="{{ $item->cod_departamento }}" @if($item->cod_departamento == $custodio->cod_departamento) selected @endif>{{ $item->nombre_departamento }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -184,7 +192,7 @@
                                                 <select name="cod_centro" id="cod_centro" class="form-control cbo-centros kt-selectpicker" data-size="7" data-live-search="true">
                                                     <option value="">::. Seleccione .::</option>
                                                     @foreach($centros as $centro)
-                                                        <option value="{{ $centro->cod_centro }}" @if($centro->cod_centro == $custodio->cod_centro) selected @endif>{{ $centro->nombre_centro }} - {{ $centro->nombre_sector_electoral }}</option>
+                                                        <option value="{{ $centro->cod_centro }}" @if($centro->cod_centro == $custodio->cod_centro) selected @endif>{{ $centro->nombre_centro }} - {{ $centro->nombre_sector_electoral }} - Área {{ $centro->codigo_area }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -345,7 +353,7 @@
 
                                 if(data.length > 0) {
                                     data.forEach(item => {
-                                        output += `<option value="${item.cod_centro}">${item.nombre_centro} - ${item.nombre_sector_electoral}</option>`;
+                                        output += `<option value="${item.cod_centro}">${item.nombre_centro} - ${item.nombre_sector_electoral} - Área ${item.codigo_area}</option>`;
                                     });
                                 } else {
                                     output = '<option>::. No hay centros disponibles para este partido .::</option>';
@@ -380,7 +388,7 @@
                                     let output = `<option value="">::. Seleccione un centro .::</option>`;
                                     console.log(data)
                                     data.forEach(item => {
-                                        output += `<option value="${item.cod_centro}">${item.nombre_centro} - ${item.nombre_sector_electoral}</option>`;
+                                        output += `<option value="${item.cod_centro}">${item.nombre_centro} - ${item.nombre_sector_electoral} - Área ${item.codigo_area}</option>`;
                                     });
                                     $centro.html(output);
                                     $centro.selectpicker('refresh');
@@ -410,12 +418,13 @@
 
                     const $form = document.getElementById('form');
                     const formData = new FormData($form);
-                   
+                    formData.append('cod_partido', document.querySelector('#cbo-partido').value);
+                    
                     axios.post($form.action, formData)
                     .then(function (response) {
                         btnGuardar.disabled = false;
                         const data = response.data;
-                        console.log(data)
+
                         $('.alert-errores').addClass('d-none');
                         $('.alert-errores').html('');
                         if (data.errors) {
@@ -441,7 +450,7 @@
                     })
                     .catch(function (error) {
                         // handle error
-                        console.log(error);
+                        btnGuardar.disabled = false;
                         Swal.fire({
                             title: 'Error!',
                             text: 'Ha ocurrido un error al tratar de editar el registro, por favor intenta de nuevo.',

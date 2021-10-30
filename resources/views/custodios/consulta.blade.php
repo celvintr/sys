@@ -22,14 +22,14 @@
                 <div class="card-header flex-wrap border-0 pt-6 pb-0">
                     <div class="card-title">
                         <h3 class="card-label">
-                            Registro de Custodios
-                            <span class="d-block text-muted pt-2 font-size-sm">Módulo para el control y registro de custodios</span>
+                            Consulta de Custodios
+                            <span class="d-block text-muted pt-2 font-size-sm">Módulo para consulta de custodios</span>
                         </h3>
                     </div>
                     
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        <a href="{{ route('admin.custodios.index') }}" class="btn btn-secondary font-weight-bolder mr-2">Limpiar filtros</a>
+                        <a href="{{ route('admin.custodios.consulta') }}" class="btn btn-secondary font-weight-bolder mr-2">Limpiar filtros</a>
                         @if(count($custodios) > 0)
                             <div class="dropdown dropdown-inline mr-2">
                                 <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -62,7 +62,7 @@
                                             Seleccione:
                                         </li>                          
                                         <li class="navi-item">
-                                            <a href="{{ route('admin.custodios.excel') }}?dni_custodio={{ $dni }}&cod_partido={{ $partido }}&cod_estado={{ $estado }}" id="btn-excel" class="navi-link">
+                                            <a href="{{ route('admin.custodios.excel.consulta') }}?cod_departamento={{ $departamento }}&cod_municipio={{ $municipio }}&cod_partido={{ $partido }}" id="btn-excel" class="navi-link">
                                                 <span class="navi-icon"><i
                                                         class="la la-file-excel-o"></i></span>
                                                 <span class="navi-text">Excel</span>
@@ -74,23 +74,6 @@
                                 <!--end::Dropdown Menu-->
                             </div>
                         @endif
-                        <a href="{{ route('admin.custodios.create') }}" class="btn btn-primary font-weight-bolder">
-                            <span class="svg-icon svg-icon-md">
-                                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                    height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24" />
-                                        <circle fill="#000000" cx="9" cy="15" r="6" />
-                                        <path
-                                            d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
-                                            fill="#000000" opacity="0.3" />
-                                    </g>
-                                </svg>
-                                <!--end::Svg Icon-->
-                            </span> Nuevo Registro
-                        </a>
                         <!--end::Button-->
                     </div>
                 </div>
@@ -100,55 +83,65 @@
                 <div class="card-body">
                     <!--begin: Datatable-->
                     <div class="row">
-                        <div class="col-md-4">
-                            <div class="input-icon">
-                                <input type="text" class="form-control" placeholder="Search DNI..." id="input-dni" value="{{ request()->has('dni_custodio') ? request('dni_custodio') : ''   }}">
-                                <span><i class="flaticon2-search-1 text-muted"></i></span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="d-flex align-items-center">
-                                <label class="mr-3 mb-0 d-none d-md-block">Partido Político:</label>
-                                <select class="form-control  kt-selectpicker" id="cbo-partido" tabindex="null" @if(!is_null($user->cod_partido)) disabled @endif>
-                                    @if(!empty($partidos))
-                                        @if(!is_null($user->cod_partido))
-                                            @foreach($partidos as $partido)
-                                                @if($partido->cod_partido == $user->cod_partido)
-                                                    <option value="{{ $partido->cod_partido }}" selected>{{ $partido->nombre_partido }}</option>
+                        <div class="col-lg-10">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center">
+                                        <label class="mr-3 mb-0 d-none d-md-block">Departamento:</label>
+                                        <select class="form-control mb-2 kt-selectpicker" id="cbo-departamento" tabindex="null">
+                                            <option value="">::. Todos .::</option>
+                                            @foreach($departamentos as $depto)
+                                                <option value="{{ $depto->cod_departamento }}" @if(request()->has('cod_departamento') && request('cod_departamento') == $depto->cod_departamento) selected @endif>{{ $depto->nombre_departamento }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center">
+                                        <label class="mr-3 mb-0 d-none d-md-block">Municipio:</label>
+                                        <select class="form-control mb-2 kt-selectpicker" id="cbo-municipio" tabindex="null">
+                                            <option value="">::. Todos .::</option>
+                                            @if(count($municipios) > 0)
+                                                @foreach($municipios as $municipio)
+                                                    <option value="{{ $municipio->cod_municipio }}" @if(request()->has('cod_municipio') && request('cod_municipio') == $municipio->cod_municipio) selected @endif>{{ $municipio->nombre_municipio }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center">
+                                        <label class="mr-3 mb-0 d-none d-md-block">Partido Político:</label>
+                                        <select class="form-control mb-2 kt-selectpicker" id="cbo-partido" tabindex="null" @if(!is_null($user->cod_partido)) disabled @endif>
+                                            @if(!empty($partidos))
+                                                @if(!is_null($user->cod_partido))
+                                                    @foreach($partidos as $partido)
+                                                        @if($partido->cod_partido == $user->cod_partido)
+                                                            <option value="{{ $partido->cod_partido }}" selected>{{ $partido->nombre_partido }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <option value="">::. Todos .::</option>
+                                                    @foreach($partidos as $partido)
+                                                        <option value="{{ $partido->cod_partido }}" @if(request()->has('cod_partido') && request('cod_partido') == $partido->cod_partido) selected @endif>{{ $partido->nombre_partido }}</option>
+                                                    @endforeach
                                                 @endif
-                                            @endforeach
-                                        @else
-                                            <option value="">Todos</option>
-                                            @foreach($partidos as $partido)
-                                                <option value="{{ $partido->cod_partido }}" @if(request()->has('cod_partido') && request('cod_partido') == $partido->cod_partido) selected @endif>{{ $partido->nombre_partido }}</option>
-                                            @endforeach
-                                        @endif
-                                    @else"
-                                        <option value="">No hay opciones</option>
-                                    @endif
-                                </select>
+                                            @else"
+                                                <option value="">No hay opciones</option>
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div> 
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="d-flex align-items-center">
-                                <label class="mr-3 mb-0 d-none d-md-block">Estado:</label>
-                                <select class="form-control  kt-selectpicker" id="cbo-estado" tabindex="null">
-                                    <option value="">Todos</option>
-                                    @if(!empty($estados))
-                                        @foreach($estados as $estado)
-                                            <option value="{{ $estado->cod_estado }}" @if(request()->has('cod_estado') && request('cod_estado') == $estado->cod_estado) selected @endif>{{ $estado->nombre_estado }}</option>
-                                        @endforeach
-                                    @else"
-                                        <option value="">No hay opciones</option>
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
+                        </div> 
+                        <div class="col-lg-2">
+                            <button class="btn btn-primary font-weight-bolder" id="btn-search">Buscar</button>
+                        </div>                   
                     </div>
                     <br />
                     <div class="datatable-bordered datatable-head-custom" id="table_custodios">
                         <div class="table-responsive">
-                            <input type="hidden" id="url" value="{{ route('admin.custodios.index') }}" />
+                            <input type="hidden" id="url" value="{{ route('admin.custodios.consulta') }}" />
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
@@ -327,225 +320,86 @@
             </div>
             <!--end::Card-->
         </div>
-        <!-- Modal-->
-        <div class="modal fade" id="modal-eliminar-custodio" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Custodio</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <i aria-hidden="true" class="ki ki-close"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro que quieres eliminar este registro?
-                    </div>
-                    <div class="modal-footer">
-                        <form action="" class="formEliminar" method="POST" style="display: inline-block; float: right;" data-return="{{ route('admin.custodios.index') }}">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                            <input type="hidden" id="idCustodio" value="" name="idCustodio">
-                            <button type="submit" class="btn btn-danger font-weight-bold">Si, quiero eliminar.</button>
-                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Cerrar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     @push('scripts')
         <script>
             $(document).ready(function() {
-                // var datatable = $('#table_custodios').KTDatatable({});
+                $('#cbo-departamento').on('change', function(e) {
+                    var $departamento = $(this);
+                    var $municipio = $('#cbo-municipio');
+                    $municipio.html(`<option>::. Seleccione .::</option>`);
+                    $municipio.selectpicker('refresh');
 
-                // Modal
-                $('#modal-eliminar-custodio').on('show.bs.modal', function(e) {				
-                    $(this).find('#idCustodio').attr('value', $(e.relatedTarget).data('id'));
-                    $('.debug-url').html('Delete URL: <strong>' + $(this).find('.formEliminar').attr('action') + '</strong>');
-                });
-
-                const $form = document.querySelector('.formEliminar');
-
-                $form.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const id = document.querySelector('#idCustodio').value;
-                    
-                    $('#modal-eliminar-custodio').modal('hide');
-
-                    axios.delete("{{ url('/admin/custodios/delete') }}/" + id)
-                    .then(function (response) {
-                        const data = response.data;
-
-                        $('.alert-errores').addClass('d-none');
-                        $('.alert-errores').html('');
-                        if (data.errors) {
-                            $.each(data.errors, function(key, value){
-                                $('.alert-errores').removeClass('d-none');
-                                $('.alert-errores').append(`<p>${value}</p>`);
+                    if ($departamento.val()) {
+                        axios.get('{{ url('/api/municipios') }}/' + $departamento.val())
+                        .then(function (response) {
+                            var data = response.data;
+                            var output = ``;
+                            data.forEach(item => {
+                                output += `<option value="${item.cod_municipio}">${item.nombre_municipio}</option>`;
                             });
-                        } else {
-                            Swal.fire({
-                                title: data.error ? 'Error!' : 'Exito',
-                                text: data.message,
-                                icon: data.error ? 'info' : 'success',
-                                showCancelButton: false,
-                                confirmButtonText: "Aceptar",
-                                reverseButtons: true
-                            }).then(function(result) {
-                                if (result.value) {
-                                    if ($form.dataset.return) location.href = $form.dataset.return;
-                                    else location.reload();
-                                }
-                            });
-                        }
-                    })
-                    .catch(function (error) {
-                        // handle error
-                        console.log(error);
-                        Swal.fire({
-                            title: 'Error!',
-                            text: 'Ha ocurrido un error al tratar de eliminar el custodio, por favor intenta de nuevo.',
-                            icon: 'info',
-                            showCancelButton: false,
-                            confirmButtonText: "Aceptar",
-                            reverseButtons: true
-                        }).then(function(result) {
-                            if (result.value) {
-                                if ($form.dataset.return) location.href = $form.dataset.return;
-                                else location.reload();
-                            }
+                            $municipio.html(output);
+                            $municipio.selectpicker('refresh');
+                            $municipio.trigger('change');
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log(error);
+                            alert('Ha ocurrido un error al obtener los municipios, por favor intenta de nuevo.')
                         });
-                    });
+                    } 
                 });
 
-                // Busquedas
-                const $inputDni = document.querySelector('#input-dni');
-                const $cboPartido = document.querySelector('#cbo-partido');
-                const $cboEstado = document.querySelector('#cbo-estado');
-                const $cboMostrar = document.querySelector('#cbo-mostrar');
-                const $url = document.querySelector('#url').value;
-                let keycode = '';
-                let dni = '';
-                let estado = '';
-                let partido = '';
-
-                $inputDni.addEventListener('keypress', function(e) {
-                    keycode = (e.keyCode ? e.keyCode : e.which);
-                    dni = $inputDni.value;
-                    estado = $cboEstado.value;
-                    partido = $cboPartido.value;
-                    mostrar = $cboMostrar.value;
+                document.querySelector('#btn-search').addEventListener('click', function() {
+                    const departamento = document.querySelector('#cbo-departamento').value;
+                    const municipio = document.querySelector('#cbo-municipio').value;
+                    const partido = document.querySelector('#cbo-partido').value;
+                    const $cboMostrar = document.querySelector('#cbo-mostrar').value;
                     
-                    validarFiltros(keycode, dni, partido, estado, mostrar);
+
+                    validarFiltrosSelects(departamento, municipio, partido, $cboMostrar);
                 });
 
-                $cboPartido.addEventListener('change', function(e) {
-                    dni = $inputDni.value;
-                    estado = $cboEstado.value;
-                    partido = $cboPartido.value;
-                    mostrar = $cboMostrar.value;
-                    
-                    validarFiltrosSelects(dni, partido, estado, mostrar);
-                });
+                const validarFiltrosSelects = (departamento, municipio, partido, mostrar) => {
+                    const $url = document.querySelector('#url').value;
 
-                $cboEstado.addEventListener('change', function(e) {
-                    dni = $inputDni.value;
-                    estado = $cboEstado.value;
-                    partido = $cboPartido.value;
-                    mostrar = $cboMostrar.value;
-                    
-                    validarFiltrosSelects(dni, partido, estado, mostrar);
-                });
-                    
-                $cboMostrar.addEventListener('change', function(e) {
-                    dni = $inputDni.value;
-                    estado = $cboEstado.value;
-                    partido = $cboPartido.value;
-                    mostrar = $cboMostrar.value;
-
-                    validarFiltrosSelects(dni, partido, estado, mostrar);
-                });
-
-                const validarFiltros = (keycode, dni, partido, estado, mostrar) => {
-                    if(keycode === 13 && dni !== '' && partido === '' && estado === '') {
-                        location.href = `${$url}?dni_custodio=${dni}&mostrar=${mostrar}`;
+                    if(departamento !== '' && partido === '' && municipio === '') {
+                        location.href = `${$url}?cod_departamento=${departamento}&mostrar=${mostrar}`;
                         return;
                     }
 
-                    if(keycode === 13 && dni === '' && partido !== '' && estado === '') {
+                    if(departamento === '' && partido !== '' && municipio === '') {
                         location.href = `${$url}?cod_partido=${partido}&mostrar=${mostrar}`;
                         return;
                     }
 
-                    if(keycode === 13 && dni === '' && partido === '' && estado !== '') {
-                        location.href = `${$url}?cod_estado=${estado}&mostrar=${mostrar}`;
+                    if(departamento === '' && partido === '' && municipio !== '') {
+                        location.href = `${$url}?cod_municipio=${municipio}&mostrar=${mostrar}`;
                         return;
                     }
 
-                    if(keycode === 13 && dni !== '' && partido !== '' && estado === '') {
-                        location.href = `${$url}?dni_custodio=${dni}&cod_partido=${partido}&mostrar=${mostrar}`;
+                    if(departamento !== '' && partido !== '' && municipio === '') {
+                        location.href = `${$url}?cod_departamento=${departamento}&cod_partido=${partido}&mostrar=${mostrar}`;
                         return;
                     }
 
-                    if(keycode === 13 && dni !== '' && partido === '' && estado !== '') {
-                        location.href = `${$url}?dni_custodio=${dni}&cod_estado=${estado}&mostrar=${mostrar}`;
+                    if(departamento !== '' && partido === '' && municipio !== '') {
+                        location.href = `${$url}?cod_departamento=${departamento}&cod_municipio=${municipio}&mostrar=${mostrar}`;
                         return;
                     }
 
-                    if(keycode === 13 && dni === '' && partido !== '' && estado !== '') {
-                        location.href = `${$url}?cod_partido=${partido}&cod_estado=${estado}&mostrar=${mostrar}`;
+                    if(departamento === '' && partido !== '' && municipio !== '') {
+                        location.href = `${$url}?cod_partido=${partido}&cod_municipio=${municipio}&mostrar=${mostrar}`;
                         return;
                     }
 
-                    if(keycode === 13 && dni !== '' && partido !== '' && estado !== '') {
-                        location.href = `${$url}?dni_custodio=${dni}&cod_partido=${partido}&cod_estado=${estado}&mostrar=${mostrar}`;
+                    if(departamento !== '' && partido !== '' && municipio !== '') {
+                        location.href = `${$url}?cod_departamento=${departamento}&cod_partido=${partido}&cod_municipio=${municipio}&mostrar=${mostrar}`;
                         return;
                     }
                     
-                    if(keycode === 13 && dni === '' && partido === '' && estado === '') {
-                        location.href = `${$url}?mostrar=${mostrar}`;
-                        return;
-                    }
-                }
-
-                const validarFiltrosSelects = (dni, partido, estado, mostrar) => {
-                    if(dni !== '' && partido === '' && estado === '') {
-                        location.href = `${$url}?dni_custodio=${dni}&mostrar=${mostrar}`;
-                        return;
-                    }
-
-                    if(dni === '' && partido !== '' && estado === '') {
-                        location.href = `${$url}?cod_partido=${partido}&mostrar=${mostrar}`;
-                        return;
-                    }
-
-                    if(dni === '' && partido === '' && estado !== '') {
-                        location.href = `${$url}?cod_estado=${estado}&mostrar=${mostrar}`;
-                        return;
-                    }
-
-                    if(dni !== '' && partido !== '' && estado === '') {
-                        location.href = `${$url}?dni_custodio=${dni}&cod_partido=${partido}&mostrar=${mostrar}`;
-                        return;
-                    }
-
-                    if(dni !== '' && partido === '' && estado !== '') {
-                        location.href = `${$url}?dni_custodio=${dni}&cod_estado=${estado}&mostrar=${mostrar}`;
-                        return;
-                    }
-
-                    if(dni === '' && partido !== '' && estado !== '') {
-                        location.href = `${$url}?cod_partido=${partido}&cod_estado=${estado}&mostrar=${mostrar}`;
-                        return;
-                    }
-
-                    if(dni !== '' && partido !== '' && estado !== '') {
-                        location.href = `${$url}?dni_custodio=${dni}&cod_partido=${partido}&cod_estado=${estado}&mostrar=${mostrar}`;
-                        return;
-                    }
-                    
-                    if(dni === '' && partido === '' && estado === '') {
+                    if(departamento === '' && partido === '' && municipio === '') {
                         location.href = `${$url}?mostrar=${mostrar}`;
                         return;
                     }

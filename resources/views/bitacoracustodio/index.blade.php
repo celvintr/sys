@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5"> Bitacora de Custodios </h5>
+        <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5"> Bitácora de Custodios </h5>
     </x-slot>
     <div class="row">
         <div class="col-md-12">
@@ -22,8 +22,8 @@
                 <div class="card-header flex-wrap border-0 pt-6 pb-0">
                     <div class="card-title">
                         <h3 class="card-label">
-                            Bitacora de Custodios
-                            <span class="d-block text-muted pt-2 font-size-sm">Módulo para el control y seguimiento de esttado de custodios</span>
+                            Bitácora de Custodios
+                            <span class="d-block text-muted pt-2 font-size-sm">Módulo para el control y seguimiento de estado de custodios</span>
                         </h3>
                     </div>
                     

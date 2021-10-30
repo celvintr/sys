@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Datos del Custodio</title>
+    <title>Comprobante del Custodio</title>
     <style>
         .page-break {
             page-break-after: always;
@@ -120,6 +120,7 @@
                 <div class="">
                     <p class="mg-bt-none font-sz"><span><strong>Fecha y Hora:</strong> {{ now() }}</span></p>
                     <p class="mg-bt-none font-sz"><span><strong>Código de custodio electoral:</strong> {{ $custodio->cod_custodio }}</span></p>
+                    <p class="mg-bt-none font-sz"><span><strong>Estado del custodio:</strong> {{ $custodio->estado->nombre_estado }}</span></p>
                 </div>
                 <div class="info-personal">
                     <h2>Información personal</h2>
@@ -137,7 +138,7 @@
                         <li class="font-sz">Dirección: {{ $custodio->dir_custodio }}</li>
                         @if($custodio->cod_tipo_custodio == 2)
                         <li class="font-sz">Tipo de custodio: {{ $custodio->tipoCustodio->tipo_custodio }}</li>
-                        <li class="font-sz">Departamento: {{ $custodio->municipio->departamento->nombre_departamento }}</li>
+                        <li class="font-sz">Departamento: {{ $custodio->departamento->nombre_departamento }}</li>
                         @endif
                     </ul>
                 </div>
@@ -148,10 +149,10 @@
                 @if($custodio->cod_tipo_custodio != 2)
                 <h2>Información Centro de Votación</h2>
                 <ul>
-                    <li class="font-sz">Departamento: {{ $custodio->municipio->departamento->nombre_departamento }}</li>
+                    <li class="font-sz">Departamento: {{ $custodio->departamento->nombre_departamento }}</li>
                     <li class="font-sz">Municipio: {{ $custodio->municipio->nombre_municipio }}</li>
                     <li class="font-sz">Nombre centro de votación: {{ $custodio->centro->nombre_sector_electoral }}</li>
-                    <li class="font-sz">Sector electoral: {{ $custodio->partido->nombre_partido }}</li>
+                    <li class="font-sz">Área: {{ $custodio->centro->codigo_area }}</li>
                 </ul>
                 @endif
             </div>

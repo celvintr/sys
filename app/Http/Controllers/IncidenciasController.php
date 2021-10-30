@@ -90,10 +90,8 @@ class IncidenciasController extends Controller
         ]);
 
         Custodios::where('dni_custodio', $request->dni_custodio)->update([
-            'nombre_custodio'  => $request->nombre_custodio,
-            'correo1_custodio' => $request->correo1_custodio,
-            'tel_movil'        => $request->tel_movil,
-            'estado'           => 1,
+        //
+            'hoja_incidencia'           => 1,
         ]);
 
         $request->session()->flash('status', 'Incidencias enviada');

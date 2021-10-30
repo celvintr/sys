@@ -461,6 +461,7 @@ class UsuariosController extends Controller
         return view('usuarios.password');
     }
 
+
     /**
      * Guardar nuevo registro
      */
@@ -488,10 +489,5 @@ class UsuariosController extends Controller
 
         #Respuesta
         return response()->json(['success' => 'Contraseña actualizada exitosamente']);
-    }
-
-    public function buscar()
-    {
-
     }
 }

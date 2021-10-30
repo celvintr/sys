@@ -63,11 +63,6 @@ Route::middleware(['auth', 'estadosesion'])->group(function () {
             Route::delete('eliminar-usuario/{dni_usuario}', [UsuariosController::class, 'eliminarusuario'])->name('destroy');
             Route::post('/dni', [UsuariosController::class, 'dni'])->name('dni');
         });
-        Route::group(['middleware' => ['role:3|4']], function () {
-            Route::prefix('usuarios')->name('usuarios.')->group(function () {
-                Route::get('/buscar', [UsuariosController::class, 'buscar'])->name('buscar');
-            });
-        });
 
         #Estado de Bitacora
         Route::prefix('bitacoras')->name('bitacoras.')->group(function () {
@@ -101,6 +96,8 @@ Route::middleware(['auth', 'estadosesion'])->group(function () {
             Route::get('/agregar', [CustodiosController::class, 'create'])->name('create');
             Route::post('/dni', [CustodiosController::class, 'dni'])->name('dni');
             Route::post('/', [CustodiosController::class, 'store'])->name('store');
+            Route::get('/show/{id_custodio}', [CustodiosController::class, 'show'])->name('show');
+            Route::get('/consultas', [CustodiosController::class, 'consulta'])->name('consulta');
 
             // Delete
             Route::delete('/delete/{id_custodio}', [CustodiosController::class, 'destroy'])->name('delete');
@@ -114,6 +111,7 @@ Route::middleware(['auth', 'estadosesion'])->group(function () {
 
             // EXCEL Custodio
             Route::get('/excel', [CustodiosController::class, 'descargarExcel'])->name('excel');
+            Route::get('/excel/consulta', [CustodiosController::class, 'descargarConsultaExcel'])->name('excel.consulta');
         });
 
         #BitacoraCustodios
@@ -137,6 +135,7 @@ Route::middleware(['auth', 'estadosesion'])->group(function () {
     });
 });
 
+// incidencias custodios
 Route::prefix('incidencias')->name('incidencias.')->group(function () {
     Route::post('/dni', [IncidenciasController::class, 'dni'])->name('dni');
     Route::get('/', [IncidenciasController::class, 'form'])->name('form');

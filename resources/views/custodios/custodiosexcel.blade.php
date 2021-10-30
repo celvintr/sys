@@ -26,6 +26,7 @@
             <th style="background-color:#f6f6f6; border: 1px solid #000000;"><b>NOMBRE_DEPARTAMENTO</b></th>
             <th style="background-color:#f6f6f6; border: 1px solid #000000;"><b>COD_MUNICIPIO</b></th>
             <th style="background-color:#f6f6f6; border: 1px solid #000000;"><b>NOMBRE_MUNICIPIO</b></th>
+            <th style="background-color:#f6f6f6; border: 1px solid #000000;"><b>AREA</b></th>
             <th style="background-color:#f6f6f6; border: 1px solid #000000;"><b>COD_CENTRO</b></th>
             <th style="background-color:#f6f6f6; border: 1px solid #000000;"><b>NOMBRE_CENTRO</b></th>
             <th style="background-color:#f6f6f6; border: 1px solid #000000;"><b>COD_PARTIDO</b></th>
@@ -51,10 +52,11 @@
                 <td style="vertical-align: center; border: 1px solid #000000;">{{ $item->correo1_custodio }}</td>
                 <td style="vertical-align: center; border: 1px solid #000000;">{{ $item->correo2_custodio != null ? $item->correo2_custodio : 'NULL' }}</td>
                 <td style="vertical-align: center; border: 1px solid #000000;">{{ $item->dir_custodio }}</td>
-                <td style="vertical-align: center; border: 1px solid #000000;">{{ $item->municipio->departamento->cod_departamento }}</td>
-                <td style="vertical-align: center; border: 1px solid #000000;">{{ $item->municipio->departamento->nombre_departamento }}</td>
-                <td style="vertical-align: center; border: 1px solid #000000;">{{ $item->municipio->cod_municipio }}</td>
-                <td style="vertical-align: center; border: 1px solid #000000;">{{ $item->municipio->nombre_municipio }}</td>
+                <td style="vertical-align: center; border: 1px solid #000000;">{{ $item->departamento->cod_departamento }}</td>
+                <td style="vertical-align: center; border: 1px solid #000000;">{{ $item->departamento->nombre_departamento }}</td>
+                <td style="vertical-align: center; border: 1px solid #000000;">{{ !is_null($item->cod_municipio) ? $item->municipio->cod_municipio : 'NULL' }}</td>
+                <td style="vertical-align: center; border: 1px solid #000000;">{{ !is_null($item->cod_municipio) ? $item->municipio->nombre_municipio : 'NULL' }}</td>
+                <td style="vertical-align: center; border: 1px solid #000000;">{{ !is_null($item->cod_municipio) ? $item->centro->codigo_area : 'NULL' }}</td>
                 <td style="vertical-align: center; border: 1px solid #000000;">{{ $item->cod_centro != null ? $item->centro->cod_centro : 'NULL' }}</td>
                 <td style="vertical-align: center; border: 1px solid #000000;">{{ $item->cod_centro != null ? $item->centro->nombre_centro : 'NULL' }}</td>
                 <td style="vertical-align: center; border: 1px solid #000000;">{{ $item->partido->cod_partido }}</td>

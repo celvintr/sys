@@ -46,6 +46,7 @@ class Custodios extends Model
         'foto_custodio',
         'foto_dni_custodio',
         'foto_comp_custodio',
+        'cod_departamento',
         'cod_municipio',
         'dir_custodio',
         'cod_partido',
@@ -54,6 +55,7 @@ class Custodios extends Model
         'cod_tipo_custodio',
         'fecha_registro',
         'dni_usuario_registro',
+        'hoja_incidencia',
         'fecha_nacimiento',
     ];
 
@@ -64,9 +66,9 @@ class Custodios extends Model
     */
    protected $appends = ['avatar', 'foto', 'foto_dni', 'foto_comp'];
 
-    protected $casts = [
-        'fecha_nacimiento' => 'datetime',
-    ];
+   protected $casts = [
+    'fecha_nacimiento' => 'datetime',
+];
 
     /**
      * Obtener avatar
@@ -120,6 +122,15 @@ class Custodios extends Model
     public function partido()
     {
         return $this->belongsTo(PartidosPoliticos::class, 'cod_partido', 'cod_partido');
+    }
+
+    /**
+     * Relacion municipio, devuelve la instancia de municipio y asi acceder a sus propiedades
+     */
+
+    public function departamento()
+    {
+        return $this->belongsTo(Departamentos::class, 'cod_departamento', 'cod_departamento');
     }
 
     /**

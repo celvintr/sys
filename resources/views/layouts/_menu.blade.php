@@ -160,15 +160,15 @@
                             </a>
                         </li>
                         @endcan
-                        {{-- @can('admin.custodios.consultar') 
+                        @can('admin.custodios.consultar') 
                         <li class="menu-item " aria-haspopup="true">
-                            <a href="#" class="menu-link ">
+                            <a href="{{ route('admin.custodios.consulta') }}" class="menu-link ">
                                 <i class="menu-bullet menu-bullet-dot">
                                     <span></span></i>
                                 <span class="menu-text">Consulta de Custodio</span>
                             </a>
                         </li>
-                        @endcan  --}}
+                        @endcan 
 </ul>
 </div>
 </li>
@@ -255,7 +255,7 @@
                                 <a href="#" class="menu-link ">
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span></i>
-                                    <span class="menu-text">Cosunlta de Custodio</span>
+                                    <span class="menu-text">Consulta de Custodio</span>
                                 </a>
                             </li>
     </ul>
