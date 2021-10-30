@@ -93,7 +93,7 @@
                                     </div>
 
                                     <div class="form-group mb-5">
-                                        <input class="form-control h-auto form-control-solid py-4 px-8 mask-date" type="text" placeholder="Fecha de nacimiento" name="fechanac_custodio" id="fechanac_custodio" maxlength="10" autocomplete="off" value="{{ old('fechanac_custodio') }}" />
+                                        <input class="form-control h-auto form-control-solid py-4 px-8 mask-date" type="text" placeholder="Fecha de nacimiento" name="fecha_nacimiento" id="fecha_nacimiento" maxlength="10" autocomplete="off" value="{{ old('fecha_nacimiento') }}" />
                                     </div>
 
                                     <button id="kt_login_custodio_submit" class="btn btn-success font-weight-bold px-9 py-4 my-3 mx-4">Buscar DNI</button>

@@ -18,14 +18,15 @@ class IncidenciasController extends Controller
      */
     public function dni(Request $request)
     {
-        $request->fechanac_custodio = Carbon::createFromFormat('d/m/Y', $request->fechanac_custodio)->format('Y-m-d');
+        // $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->format('Y-m-d');
+        // dd($fecha_nacimiento);
 
         $validated = $request->validate([
             'dni_custodio'      => 'required',
-            'fechanac_custodio' => 'required|date',
+            'fecha_nacimiento' => 'required|date_format:d/m/Y',
         ], [], [
             'dni_custodio'      => 'DNI Custodio',
-            'fechanac_custodio' => 'Fecha de nacimiento',
+            'fecha_nacimiento' => 'Fecha de nacimiento',
         ]);
 
         $custodio = Custodios::where('dni_custodio', $request->dni_custodio)->first();
@@ -40,9 +41,10 @@ class IncidenciasController extends Controller
             ]);
         }
         //  esta linea va a ser sustituida por la consulta en el campo de fecha OJO
-        elseif ($request->fechanac_custodio != now()->format('Y-m-d')) {
+        //  aqui me imaginocs vamos a validar que la fecha este en el registro que conicida con el DNI es temporal esto aqui...
+        elseif ($request->fecha_nacimiento != $custodio->fecha_nacimiento->format('d/m/Y')) {
             throw ValidationException::withMessages([
-                'fechanac_custodio' => 'Validación falló',
+                'fecha_nacimiento' => 'Fecha de nacimiento no coincide',
             ]);
         }
 

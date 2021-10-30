@@ -54,6 +54,7 @@ class Custodios extends Model
         'cod_tipo_custodio',
         'fecha_registro',
         'dni_usuario_registro',
+        'fecha_nacimiento',
     ];
 
     /**
@@ -62,6 +63,10 @@ class Custodios extends Model
      * @var array
     */
    protected $appends = ['avatar', 'foto', 'foto_dni', 'foto_comp'];
+
+    protected $casts = [
+        'fecha_nacimiento' => 'datetime',
+    ];
 
     /**
      * Obtener avatar
