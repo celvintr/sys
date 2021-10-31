@@ -268,6 +268,7 @@
                     axios.post("{{ route('admin.usuarios.estatus') }}", formData)
                     .then(function (response) {
                         toastr.success(response.data.success);
+                        datatable.reload();
                     })
                     .catch(function (error) {
                         // handle error
