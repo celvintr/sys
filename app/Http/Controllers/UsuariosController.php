@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\UsuariosExport;
-use App\Models\CensoNacional;
+use App\Models\CNE;
 use App\Models\User;
 use App\Models\Departamentos;
 use App\Models\Municipios;
@@ -425,15 +425,15 @@ class UsuariosController extends Controller
         $usuario = User::where('dni_usuario', $request->dni_usuario)->first();
 
         if (empty($usuario->dni_usuario)) {
-            $data = CensoNacional::where('dni', $request->dni_usuario)->first();
+            $data = CNE::where('numero_identidad', $request->dni_usuario)->first();
 
-            if (empty($data->dni)) {
+            if (empty($data->numero_identidad)) {
                 return response()->json([
                     'status'  => 'error',
                     'message' => 'No se encontró este DNI en el censo nacional.',
                 ]);
             } else {
-                if ($data->habilitado) {
+                if ($data->habil_inhabil == 'H01') {
                     return response()->json([
                         'status' => 'OK',
                         'data'   => $data,

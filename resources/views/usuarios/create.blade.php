@@ -267,11 +267,11 @@
                     $('#wrapper-pass').removeClass('d-none');
                     $('[name="update_pass"]').val('1');
                 });
- 
 
-                 $('.mask-dni').inputmask("9999999999999");         
+
+                 $('.mask-dni').inputmask("9999999999999");
                 $('.mask-tel').inputmask("99999999");
-               
+
                 $('#cod_rol').on('change', function() {
                     var cod_rol = $(this).val();
                     if (cod_rol == 3 || cod_rol == 4) {
@@ -316,7 +316,7 @@
                             var data = response.data;
 
                             if (data.status == 'OK') {
-                                $('#nombre_usuario').val(data.data.nombre);
+                                $('#nombre_usuario').val(data.data.nombre_completo);
                                 $('#tab-direccion').removeClass('d-none');
                             }
                             else {
