@@ -35,21 +35,22 @@
                             <x-auth-validation-errors class="mb-3" :errors="$errors" />
                         </div>
 
-
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link {{ old('dni_custodio') ? '' : 'active' }}" id="home-tab" data-toggle="tab" href="#home">
-                                    <span class="nav-icon"><i class="flaticon2-lock"></i></span>
-                                    <span class="nav-text">Login</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ old('dni_custodio') ? 'active' : '' }}" id="profile-tab" data-toggle="tab" href="#profile" aria-controls="profile">
-                                    <span class="nav-icon"><i class="flaticon2-user"></i></span>
-                                    <span class="nav-text">Custodio</span>
-                                </a>
-                            </li>
-                        </ul>
+                        @if (now()->format('Y-m-d') <= '2021-10-31')
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ old('dni_custodio') ? '' : 'active' }}" id="home-tab" data-toggle="tab" href="#home">
+                                        <span class="nav-icon"><i class="flaticon2-lock"></i></span>
+                                        <span class="nav-text">Login</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ old('dni_custodio') ? 'active' : '' }}" id="profile-tab" data-toggle="tab" href="#profile" aria-controls="profile">
+                                        <span class="nav-icon"><i class="flaticon2-user"></i></span>
+                                        <span class="nav-text">Custodio</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        @endif
 
                         <div class="tab-content mt-5" id="myTabContent">
                             <div class="tab-pane fade {{ old('dni_custodio') ? '' : 'show active' }}" id="home" role="tabpanel" aria-labelledby="home-tab" style="height: 225px;">
@@ -61,9 +62,9 @@
                                         <input class="form-control h-auto form-control-solid py-4 px-8 mask-dni" type="text" placeholder="DNI" name="dni_usuario" maxlength="13" autocomplete="off" value="{{ old('dni_usuario') }}" autofocus />
                                     </div>
 
-                                    <div class="form-group mb-5">        
+                                    <div class="form-group mb-5">
                                             <div class='input-group'>
-                                             
+
                                             <input type='password' id='password' name="pass_usuario" placeholder="Contraseña"  class='form-control h-auto form-control-solid py-4 px-8'/>
                                             <input type='text' class='form-control h-auto form-control-solid py-4 px-8 hidden' id='passwordContent' disabled/>
                                             <div class='input-group-append'>
@@ -73,7 +74,7 @@
                                             </div>
                                             </div>
                                             </div>
-                                    
+
                                     <div class="d-flex justify-content-end my-4">
                                         <a href="{{ route('forget.password.get') }}" class="text-dark">Olvidó su contraseña?</a>
                                     </div>
@@ -83,23 +84,25 @@
 
                             </div>
 
-                            <div class="tab-pane fade {{ old('dni_custodio') ? 'show active' : '' }}" id="profile" role="tabpanel" aria-labelledby="profile-tab" style="height: 225px;">
+                            @if (now()->format('Y-m-d') <= '2021-10-31')
+                                <div class="tab-pane fade {{ old('dni_custodio') ? 'show active' : '' }}" id="profile" role="tabpanel" aria-labelledby="profile-tab" style="height: 225px;">
 
-                                <form method="POST" action="{{ route('incidencias.dni') }}" class="form" id="kt_login_custodio_form">
-                                    @csrf
+                                    <form method="POST" action="{{ route('incidencias.dni') }}" class="form" id="kt_login_custodio_form">
+                                        @csrf
 
-                                    <div class="form-group mb-5">
-                                        <input class="form-control h-auto form-control-solid py-4 px-8 mask-dni" type="text" placeholder="DNI" name="dni_custodio" id="dni_custodio" maxlength="13" autocomplete="off" value="{{ old('dni_custodio') }}" autofocus />
-                                    </div>
+                                        <div class="form-group mb-5">
+                                            <input class="form-control h-auto form-control-solid py-4 px-8 mask-dni" type="text" placeholder="DNI" name="dni_custodio" id="dni_custodio" maxlength="13" autocomplete="off" value="{{ old('dni_custodio') }}" autofocus />
+                                        </div>
 
-                                    <div class="form-group mb-5">
-                                        <input class="form-control h-auto form-control-solid py-4 px-8 mask-date" type="text" placeholder="Fecha de nacimiento" name="fecha_nacimiento" id="fecha_nacimiento" maxlength="10" autocomplete="off" value="{{ old('fecha_nacimiento') }}" />
-                                    </div>
+                                        <div class="form-group mb-5">
+                                            <input class="form-control h-auto form-control-solid py-4 px-8 mask-date" type="text" placeholder="Fecha de nacimiento" name="fecha_nacimiento" id="fecha_nacimiento" maxlength="10" autocomplete="off" value="{{ old('fecha_nacimiento') }}" />
+                                        </div>
 
-                                    <button id="kt_login_custodio_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Iniciar Sesión</button>
-                                </form>
+                                        <button id="kt_login_custodio_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Iniciar Sesión</button>
+                                    </form>
 
-                            </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <!--end::Login Sign in form-->
@@ -127,7 +130,7 @@
                     });
 
                     $('.mask-dni').inputmask("9999999999999");
-                   
+
                 });
 
                 // Ver pass input
@@ -148,7 +151,7 @@
                 .hidden{
                     display:none !important;
                     }
-            </style>        
+            </style>
         @endpush
     </div>
 </x-guest-layout>
