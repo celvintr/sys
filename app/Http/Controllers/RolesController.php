@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
@@ -64,13 +63,7 @@ class RolesController extends Controller
         if ($exist) {
             return response()->json(['exist_rol' => 'El nombre del rol ya existe']);
         } else {
-            // $role = Role::create($request->all());
-            $new = Roles::create([
-                'id' => 0,
-                'name' => $request->name,
-                'guard_name' => 'web',
-            ]);
-            $role = Role::find($new->id);
+            $role = Role::create($request->all());
             $role->permissions()->sync($request->permissions);
             return response()->json(['success' => 'Rol agregado exitosamente']);
             return redirect()->route('admin.roles.index');
