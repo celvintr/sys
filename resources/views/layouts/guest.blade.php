@@ -103,6 +103,8 @@
         <script src="{{ asset('metronic/js/scripts.bundle.js') }}"></script>
         <!--end::Global Theme Bundle-->
 
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
         @stack('scripts')
     </body>
 </html>
