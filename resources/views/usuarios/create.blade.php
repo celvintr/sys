@@ -53,15 +53,20 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Perfil de usuario:</label>
+                                                
                                                 <select name="cod_rol" id="cod_rol" class="form-control kt-selectpicker" {{ $method == 'PUT' ? 'disabled' : '' }}>
-                                                    @if ($form->cod_rol)
-                                                        <option value="">::. Seleccione .::</option>
-                                                    @endif
-                                                    @foreach ($roles as $item)
-                                                        <option value="{{ $item->id }}" {{ $item->id == $form->cod_rol ? 'selected' : '' }}>
-                                                            {{ $item->name }}
-                                                        </option>
-                                                    @endforeach
+                                                    <?php if (Auth::user()->rol[0]->id==1){
+                                                        ?>
+                                                            <option value="2">Admin partido</option>
+                                                            
+                                                        <?php 
+                                                     }else{
+                                                        ?>
+                                                            <option value="3">Digitador</option>
+                                                            
+                                                        <?php
+                                                     }
+                                                     ?>  
                                                 </select>
                                             </div>
                                         </div>
@@ -75,23 +80,13 @@
                                                             <i class="fas fa-user"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="text" name="nombre_usuario" id="nombre_usuario" class="form-control" value="{{ $form->nombre_usuario }}" {{ $method == 'PUT' ? 'disabled' : '' }} />
+                                                    <input readonly type="text" name="nombre_usuario" id="nombre_usuario" class="form-control" value="{{ $form->nombre_usuario }}" {{ $method == 'PUT' ? 'disabled' : '' }} />
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label for="">Cargo</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="fas fa-user-md"></i>
-                                                        </span>
-                                                    </div>
-                                                    <input type="text" class="form-control" name="cargo_usuario" id="cargo_usuario" value="{{ $form->cargo_usuario }}" {{ ($form->cod_rol == 3 || $form->cod_rol == 4) ? 'disabled' : '' }} />
-                                                </div>
-                                            </div>
+                                            
                                         </div>
 
                                         <div class="col-lg-6">
@@ -122,8 +117,9 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-6 {{ $form->cod_rol == 2 ? '' : 'd-none' }}" id="wrapper-partidos">
-                                            <div class="form-group">
+                                        
+                                        <?php if (Auth::user()->rol[0]->id==1){
+                                            ?>
                                                 <label>Partido:</label>
                                                 <select name="cod_partido" id="cod_partido" class="form-control kt-selectpicker">
                                                     <option value="">::. Seleccione .::</option>
@@ -133,8 +129,18 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                            </div>
-                                        </div>
+                                                
+                                            <?php 
+                                            
+                                         }else{
+                                            ?>
+                                                
+                                            <?php
+                                         }
+                                         ?>  
+                                                
+                                            
+                                        
                                     </div>
 
                                     @if ($method == 'PUT')

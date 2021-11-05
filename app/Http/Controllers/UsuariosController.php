@@ -4,20 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Exports\UsuariosExport;
 use App\Models\CNE;
-use App\Models\User;
 use App\Models\Departamentos;
 use App\Models\Municipios;
 use App\Models\PartidosPoliticos;
-use Spatie\Permission\Models\Role;
+use App\Models\User;
+use App\Models\Custodios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
+use Spatie\Permission\Models\Role;
+USE DB;
 
 class UsuariosController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:admin.usuarios.index')->only('index');
+        $this->middleware('can:admin.usuarios.index')->only('data');
+        $this->middleware('can:admin.usuarios.create')->only('create');
+        $this->middleware('can:admin.usuarios.edit')->only('editar');
+        $this->middleware('can:admin.usuarios.ficha')->only('ficha');
+
+    }
     /**
      * Mostrar listado.
      */
@@ -44,7 +55,7 @@ class UsuariosController extends Controller
 
         #filtro lista
         if ($buscar) {
-            $query->where(function($q) use ($buscar) {
+            $query->where(function ($q) use ($buscar) {
                 $q->where('nombre_usuario', 'LIKE', '%' . $buscar . '%');
                 $q->orWhere('dni_usuario', 'LIKE', '%' . $buscar . '%');
                 $q->orWhere('cargo_usuario', 'LIKE', '%' . $buscar . '%');
@@ -59,7 +70,7 @@ class UsuariosController extends Controller
             $query->where('estado_usuario', $estado_usuario);
         }
         if ($cod_rol) {
-            $query->whereHas('rol', function($q) use ($cod_rol) {
+            $query->whereHas('rol', function ($q) use ($cod_rol) {
                 $q->where('role_id', $cod_rol);
             });
         }
@@ -67,12 +78,72 @@ class UsuariosController extends Controller
         #valido rol
         if (!empty(Auth::user()->rol[0]->id)) {
             if (Auth::user()->rol[0]->id != 1) {
-                $query->whereHas('rol', function($q) use ($cod_rol) {
+                $query->whereHas('rol', function ($q) use ($cod_rol) {
                     $q->where('role_id', '<>', 1);
                 });
             }
         }
 
+        #usuarios por roll y partido
+        if (Auth::user()->rol[0]->id == 2 ) {
+            $query->whereHas('partido', function($q) {
+                $q->where('cod_partido', Auth::user()->cod_partido);
+            });
+        }
+
+        #usuarios
+        $usuarios = $query->with(['rol', 'partido'])->get();
+
+        return response()->json($usuarios);
+    }
+
+    public function dataPartidos(Request $request)
+    {
+        #obtener el filtro del datatable
+        $buscar = (!empty($request->all()['query']['buscar']) ? $request->all()['query']['buscar'] : null);
+        $estado_usuario = (!empty($request->all()['query']['estado_usuario']) ? $request->all()['query']['estado_usuario'] : null);
+        $cod_rol = (!empty($request->all()['query']['cod_rol']) ? $request->all()['query']['cod_rol'] : null);
+
+        #usuarios
+        $query = User::query();
+
+        #filtro lista
+        if ($buscar) {
+            $query->where(function ($q) use ($buscar) {
+                $q->where('nombre_usuario', 'LIKE', '%' . $buscar . '%');
+                $q->orWhere('dni_usuario', 'LIKE', '%' . $buscar . '%');
+                $q->orWhere('cargo_usuario', 'LIKE', '%' . $buscar . '%');
+                $q->orWhere('correo_usuario', 'LIKE', '%' . $buscar . '%');
+                $q->orWhere('tel_usuario', 'LIKE', '%' . $buscar . '%');
+            });
+        }
+        if ($estado_usuario) {
+            $query->where('estado_usuario', $estado_usuario);
+        }
+        if ($estado_usuario) {
+            $query->where('estado_usuario', $estado_usuario);
+        }
+        if ($cod_rol) {
+            $query->whereHas('rol', function ($q) use ($cod_rol) {
+                $q->where('role_id', $cod_rol);
+            });
+        }
+
+        #valido rol
+        if (!empty(Auth::user()->rol[0]->id)) {
+            if (Auth::user()->rol[0]->id != 1) {
+                $query->whereHas('rol', function ($q) use ($cod_rol) {
+                    $q->where('role_id', '<>', 1);
+                });
+            }
+        }
+
+        #usuarios por roll y partido
+        if (Auth::user()->rol[0]->id == 2 ) {
+            $query->whereHas('partido', function($q) {
+                $q->where('cod_partido', Auth::user()->cod_partido);
+            });
+        }
         #usuarios
         $usuarios = $query->with(['rol', 'partido'])->get();
 
@@ -95,29 +166,29 @@ class UsuariosController extends Controller
         $partidos = PartidosPoliticos::all();
 
         $form = (object) [
-            'dni_usuario'      => '',
-            'nombre_usuario'   => '',
-            'pass_usuario'     => '',
-            'cargo_usuario'    => '',
-            'tel_usuario'      => '',
-            'correo_usuario'   => '',
+            'dni_usuario' => '',
+            'nombre_usuario' => '',
+            'pass_usuario' => '',
+            'cargo_usuario' => '',
+            'tel_usuario' => '',
+            'correo_usuario' => '',
             'cod_departamento' => '',
-            'cod_municipio'    => '',
-            'dir_usuario'      => '',
-            'cod_rol'          => '',
-            'cod_partido'      => '',
+            'cod_municipio' => '',
+            'dir_usuario' => '',
+            'cod_rol' => '',
+            'cod_partido' => '',
         ];
 
         return view('usuarios.create', [
             'departamentos' => $departamentos,
-            'municipios'    => $municipios,
-            'roles'         => $roles,
-            'partidos'      => $partidos,
-            'form'          => $form,
-            'title'         => 'Agregar Usuario',
-            'btn'           => 'Guardar',
-            'method'        => 'POST',
-            'action'        => route('admin.usuarios.store'),
+            'municipios' => $municipios,
+            'roles' => $roles,
+            'partidos' => $partidos,
+            'form' => $form,
+            'title' => 'Agregar Usuario',
+            'btn' => 'Guardar',
+            'method' => 'POST',
+            'action' => route('admin.usuarios.store'),
         ]);
     }
 
@@ -128,32 +199,37 @@ class UsuariosController extends Controller
     {
         #Validar campos
         $validator = Validator::make($request->all(), [
-            'dni_usuario'               => 'required|unique:tbl_usuarios',
-            'nombre_usuario'            => 'required',
+            'dni_usuario' => 'required|unique:tbl_usuarios',
+            'nombre_usuario' => 'required',
             // 'pass_usuario'              => 'required|confirmed',
             // 'pass_usuario_confirmation' => 'required',
-            'cargo_usuario'             => 'required',
-            'tel_usuario'               => (($request->cod_rol == 3 || $request->cod_rol == 4) ? '' : 'required|regex:/^[0-9]+$/|max:8'),
-            'correo_usuario'            => (($request->cod_rol == 3 || $request->cod_rol == 4) ? '' : 'required'),
-            'cod_departamento'          => (($request->cod_rol == 3 || $request->cod_rol == 4) ? '' : 'required'),
-            'cod_municipio'             => (($request->cod_rol == 3 || $request->cod_rol == 4) ? '' : 'required'),
-            'dir_usuario'               => 'required',
-            'cod_rol'                   => 'required',
-            'cod_partido'               => ($request->cod_rol == 2 ? 'required' : ''),
+            
+            'tel_usuario' => 'required|regex:/^[0-9]+$/|max:8',
+            'correo_usuario' => 'required',
+            'cod_departamento' => 'required',
+            'cod_municipio' => 'required',
+            'dir_usuario' => 'required',
+            'cod_rol' => 'required',
+            
         ], [], [
-            'dni_usuario'               => 'DNI',
-            'nombre_usuario'            => 'Nombre',
-            'pass_usuario'              => 'Contraseña',
+            'dni_usuario' => 'DNI',
+            'nombre_usuario' => 'Nombre',
+            'pass_usuario' => 'Contraseña',
             'pass_usuario_confirmation' => 'Confirmación',
-            'cargo_usuario'             => 'Cargo',
-            'tel_usuario'               => 'Telefono',
-            'correo_usuario'            => 'Correo',
-            'cod_rol'                   => 'Rol',
-            'cod_departamento'          => 'Departamento',
-            'cod_municipio'             => 'Municipio',
-            'dir_usuario'               => 'Direccion',
-            'cod_partido'               => 'Partido',
+            
+            'tel_usuario' => 'Telefono',
+            'correo_usuario' => 'Correo',
+            'cod_rol' => 'Rol',
+            'cod_departamento' => 'Departamento',
+            'cod_municipio' => 'Municipio',
+            'dir_usuario' => 'Direccion',
+            
         ]);
+
+        //$existe = Custodios::where('dni_custodio', $request->dni_usuario)->first();
+        //if (!is_null($existe)){
+          //  return response()->json(['success' => 'USUARIO YA ES CUSTODIO']);
+        //}
 
         #Si la validacion falla
         if ($validator->fails()) {
@@ -163,22 +239,28 @@ class UsuariosController extends Controller
         #Encriptar password
         $pass_usuario = Hash::make($request->dni_usuario);
 
+        if (Auth::user()->rol[0]->id==1){
+            $v3=$request->cod_partido;
+        }else{
+            $v3=Auth::user()->cod_partido;
+        }
+
         #Crear registro
         $usuario = User::create([
-            'dni_usuario'          => $request->dni_usuario,
-            'nombre_usuario'       => $request->nombre_usuario,
-            'pass_usuario'         => $pass_usuario,
-            'cargo_usuario'        => $request->cargo_usuario,
-            'tel_usuario'          => $request->tel_usuario,
-            'correo_usuario'       => $request->correo_usuario,
-            'cod_departamento'     => $request->cod_departamento,
-            'cod_municipio'        => $request->cod_municipio,
-            'dir_usuario'          => $request->dir_usuario,
-            'cod_partido'          => ($request->cod_rol == 2 ? $request->cod_partido : null),
-            'estado_usuario'       => 1,
-            'fecha_registro'       => now(),
+            'dni_usuario' => $request->dni_usuario,
+            'nombre_usuario' => $request->nombre_usuario,
+            'pass_usuario' => $pass_usuario,
+            'cargo_usuario' => '',
+            'tel_usuario' => $request->tel_usuario,
+            'correo_usuario' => $request->correo_usuario,
+            'cod_departamento' => $request->cod_departamento,
+            'cod_municipio' => $request->cod_municipio,
+            'dir_usuario' => $request->dir_usuario,
+            'cod_partido' => $v3,
+            'estado_usuario' => 1,
+            'fecha_registro' => now(),
             'dni_usuario_registro' => Auth::user()->dni_usuario,
-            'estado_sesion'        => 0,
+            'estado_sesion' => 0,
         ]);
 
         // Adding permissions via a role
@@ -186,6 +268,7 @@ class UsuariosController extends Controller
 
         #Respuesta
         return response()->json(['success' => 'Usuario creado exitosamente']);
+        
     }
 
     /**
@@ -224,14 +307,14 @@ class UsuariosController extends Controller
 
         return view('usuarios.create', [
             'departamentos' => $departamentos,
-            'municipios'    => $municipios,
-            'roles'         => $roles,
-            'partidos'      => $partidos,
-            'form'          => $form,
-            'title'         => 'Actualizar Usuario',
-            'btn'           => 'Actualizar',
-            'method'        => 'PUT',
-            'action'        => route('admin.usuarios.actualizar', $dni_usuario),
+            'municipios' => $municipios,
+            'roles' => $roles,
+            'partidos' => $partidos,
+            'form' => $form,
+            'title' => 'Actualizar Usuario',
+            'btn' => 'Actualizar',
+            'method' => 'PUT',
+            'action' => route('admin.usuarios.actualizar', $dni_usuario),
         ]);
     }
 
@@ -250,29 +333,29 @@ class UsuariosController extends Controller
         #Validar campos
         $validator = Validator::make($request->all(), [
             // 'nombre_usuario'            => 'required|regex:/^[A-Za-z ]+$/',
-            'pass_usuario'              => ($request->update_pass ? 'required|confirmed' : ''),
+            'pass_usuario' => ($request->update_pass ? 'required|confirmed' : ''),
             'pass_usuario_confirmation' => ($request->update_pass ? 'required' : ''),
-            'cargo_usuario'             => 'required',
-            'tel_usuario'               => (($user->cod_rol == 3 || $user->cod_rol == 4) ? '' : 'required|regex:/^[0-9]+$/|max:8'),
-            'correo_usuario'            => (($user->cod_rol == 3 || $user->cod_rol == 4) ? '' : 'required'),
-            'cod_departamento'          => (($user->cod_rol == 3 || $user->cod_rol == 4) ? '' : 'required'),
-            'cod_municipio'             => (($user->cod_rol == 3 || $user->cod_rol == 4) ? '' : 'required'),
-            'dir_usuario'               => 'required',
+            'cargo_usuario' => 'required',
+            'tel_usuario' => (($user->cod_rol == 3 || $user->cod_rol == 4) ? '' : 'required|regex:/^[0-9]+$/|max:8'),
+            'correo_usuario' => (($user->cod_rol == 3 || $user->cod_rol == 4) ? '' : 'required'),
+            'cod_departamento' => (($user->cod_rol == 3 || $user->cod_rol == 4) ? '' : 'required'),
+            'cod_municipio' => (($user->cod_rol == 3 || $user->cod_rol == 4) ? '' : 'required'),
+            'dir_usuario' => 'required',
             // 'cod_rol'                   => 'required',
-            'cod_partido'               => ($request->cod_rol == 2 ? 'required' : ''),
+            'cod_partido' => ($request->cod_rol == 2 ? 'required' : ''),
         ], [], [
-            'dni_usuario'               => 'DNI',
-            'nombre_usuario'            => 'Nombre',
-            'pass_usuario'              => 'Contraseña',
+            'dni_usuario' => 'DNI',
+            'nombre_usuario' => 'Nombre',
+            'pass_usuario' => 'Contraseña',
             'pass_usuario_confirmation' => 'Confirmación',
-            'cargo_usuario'             => 'Cargo',
-            'tel_usuario'               => 'Telefono',
-            'correo_usuario'            => 'Correo',
-            'cod_rol'                   => 'Rol',
-            'cod_departamento'          => 'Departamento',
-            'cod_municipio'             => 'Municipio',
-            'dir_usuario'               => 'Direccion',
-            'cod_partido'               => 'Partido',
+            'cargo_usuario' => 'Cargo',
+            'tel_usuario' => 'Telefono',
+            'correo_usuario' => 'Correo',
+            'cod_rol' => 'Rol',
+            'cod_departamento' => 'Departamento',
+            'cod_municipio' => 'Municipio',
+            'dir_usuario' => 'Direccion',
+            'cod_partido' => 'Partido',
         ]);
 
         #Si la validacion falla
@@ -284,11 +367,11 @@ class UsuariosController extends Controller
         $usuario = User::find($dni_usuario);
         $usuario->update([
             // 'nombre_usuario'   => $request->nombre_usuario,
-            'cargo_usuario'    => $request->cargo_usuario,
-            'tel_usuario'      => $request->tel_usuario,
+            'cargo_usuario' => $request->cargo_usuario,
+            'tel_usuario' => $request->tel_usuario,
             'cod_departamento' => $request->cod_departamento,
-            'cod_municipio'    => $request->cod_municipio,
-            'dir_usuario'      => $request->dir_usuario,
+            'cod_municipio' => $request->cod_municipio,
+            'dir_usuario' => $request->dir_usuario,
             // 'cod_partido'      => ($request->cod_rol == 2 ? $request->cod_partido : null),
         ]);
 
@@ -347,10 +430,10 @@ class UsuariosController extends Controller
     {
         #Validar campos
         $validator = Validator::make($request->all(), [
-            'pass_usuario'              => ($request->update_pass ? 'required|confirmed' : ''),
+            'pass_usuario' => ($request->update_pass ? 'required|confirmed' : ''),
             'pass_usuario_confirmation' => ($request->update_pass ? 'required' : ''),
         ], [], [
-            'pass_usuario'              => 'Contraseña',
+            'pass_usuario' => 'Contraseña',
             'pass_usuario_confirmation' => 'Confirmación',
         ]);
 
@@ -388,7 +471,7 @@ class UsuariosController extends Controller
         }
 
         return view('usuarios.ficha', [
-            'form'  => $form,
+            'form' => $form,
             'title' => 'Ficha del Usuario',
         ]);
     }
@@ -396,7 +479,7 @@ class UsuariosController extends Controller
     /**
      * Mostrar ficha
      */
-    public function fichaImprimir($dni_usuario)
+   /* public function fichaImprimir($dni_usuario)
     {
         #Obtener usuario
         $form = User::with('rol')->findOrFail($dni_usuario);
@@ -409,8 +492,8 @@ class UsuariosController extends Controller
         $pdf = PDF::loadView('usuarios.ficha_pdf', [
             'data' => $form,
         ]);
-        return $pdf->download('ficha_'.$dni_usuario.'.pdf');
-    }
+        return $pdf->download('ficha_' . $dni_usuario . '.pdf');
+    }*/
 
     public function exportExcel(Request $request)
     {
@@ -429,25 +512,25 @@ class UsuariosController extends Controller
 
             if (empty($data->numero_identidad)) {
                 return response()->json([
-                    'status'  => 'error',
+                    'status' => 'error',
                     'message' => 'No se encontró este DNI en el censo nacional.',
                 ]);
             } else {
-                if ($data->habil_inhabil == 'H01') {
+                if ($data->codigo_habil_inhabil == 'H01') {
                     return response()->json([
                         'status' => 'OK',
-                        'data'   => $data,
+                        'data' => $data,
                     ]);
                 } else {
                     return response()->json([
-                        'status'  => 'error',
+                        'status' => 'error',
                         'message' => 'Este DNI se encuentra inhabilitado en el censo nacional.',
                     ]);
                 }
             }
         } else {
             return response()->json([
-                'status'  => 'error',
+                'status' => 'error',
                 'message' => 'DNI ya registrado en el sistema.',
             ]);
         }
@@ -461,7 +544,6 @@ class UsuariosController extends Controller
         return view('usuarios.password');
     }
 
-
     /**
      * Guardar nuevo registro
      */
@@ -469,10 +551,10 @@ class UsuariosController extends Controller
     {
         #Validar campos
         $validator = Validator::make($request->all(), [
-            'pass_usuario'              => 'required|confirmed',
+            'pass_usuario' => 'required|confirmed',
             'pass_usuario_confirmation' => 'required',
         ], [], [
-            'pass_usuario'              => 'Contraseña',
+            'pass_usuario' => 'Contraseña',
             'pass_usuario_confirmation' => 'Confirmación',
         ]);
 
@@ -483,7 +565,7 @@ class UsuariosController extends Controller
 
         $pass_usuario = Hash::make($request->pass_usuario);
         User::find(Auth::user()->dni_usuario)->update([
-            'pass_usuario'  => $pass_usuario,
+            'pass_usuario' => $pass_usuario,
             'estado_sesion' => 1,
         ]);
 
