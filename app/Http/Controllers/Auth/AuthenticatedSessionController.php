@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Stevebauman\Location\Facades\Location;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -20,6 +21,13 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
+        if ($position = Location::get()) {
+            // Successfully retrieved position.
+            if ($position->countryCode != 'US') abort(404);
+        } else {
+            // Failed retrieving position.
+        }
+
         return view('auth.login');
     }
 
