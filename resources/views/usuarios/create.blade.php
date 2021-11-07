@@ -53,20 +53,20 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Perfil de usuario:</label>
-                                                
+
                                                 <select name="cod_rol" id="cod_rol" class="form-control kt-selectpicker" {{ $method == 'PUT' ? 'disabled' : '' }}>
                                                     <?php if (Auth::user()->rol[0]->id==1){
                                                         ?>
                                                             <option value="2">Admin partido</option>
-                                                            
-                                                        <?php 
+
+                                                        <?php
                                                      }else{
                                                         ?>
                                                             <option value="3">Digitador</option>
-                                                            
+
                                                         <?php
                                                      }
-                                                     ?>  
+                                                     ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -86,7 +86,7 @@
                                         </div>
 
                                         <div class="col-lg-6">
-                                            
+
                                         </div>
 
                                         <div class="col-lg-6">
@@ -117,7 +117,7 @@
                                             </div>
                                         </div>
 
-                                        
+
                                         <?php if (Auth::user()->rol[0]->id==1){
                                             ?>
                                                 <label>Partido:</label>
@@ -129,30 +129,30 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                
-                                            <?php 
-                                            
+
+                                            <?php
+
                                          }else{
                                             ?>
-                                                
+
                                             <?php
                                          }
-                                         ?>  
-                                                
-                                            
-                                        
+                                         ?>
+
+
+
                                     </div>
 
                                     @if ($method == 'PUT')
                                         <div class="form-row" id="wrapper-update-pass">
                                             <div class="col">
-                                                <input type="hidden" name="update_pass" value="">
                                                 <button type="button" id="btn-update-pass" class="btn btn-light">
                                                     <i class="fas fa-key"></i> Cambiar contraseña
                                                 </button>
                                             </div>
                                         </div>
                                     @endif
+                                    <input type="hidden" name="update_pass" value="">
 
                                     <div class="form-row {{ $method == 'PUT' || $method == 'POST' ? 'd-none' : 'd-flex' }}" id="wrapper-pass">
                                         <div class="col-lg-6">
