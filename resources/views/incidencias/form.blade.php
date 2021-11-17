@@ -129,6 +129,12 @@
                         </fieldset>
                     </div>
 
+
+                    <div style="width:100%;padding-top:30px;color:#F19600"><h3>:: Centro de Acopio Municipal
+                        ::</h3></div>
+
+
+                        
                     <div style="padding-top:10px;width:100%"><p style="font-weight:bold">3. {{$preguntas['2']->pregunta}}</p></div>
                     <div style="" class="col-9 col-form-label">
                         <fieldset id="group2">
@@ -146,8 +152,6 @@
                             </div>
                         </fieldset>
                     </div>
-
-                    <div style="width:100%;padding-top:30px;color:#F19600"><h3>:: Acreditación y Hojas de Incidencia ::</h3></div>
 
                     <div style="padding-top:10px;width:100%"><p style="font-weight:bold">4. {{$preguntas['3']->pregunta}}</p></div>
                     <div style="" class="col-9 col-form-label">
@@ -181,291 +185,11 @@
                         </div>
                     </div>
 
-                    <!-- RECEPCION MESA ELECTORAL-->
-                    <div style="width:100%;padding-top:30px;color:#F19600"><h3>:: Recepción de la Maleta Electoral ::</h3></div>
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">6. {{$preguntas['5']->pregunta}}</p></div>
-                    <div style="" class="col-9 col-form-label">
-                        <div class="radio-inline">
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                Si
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                No
-                            </label>
-                        </div>
-                    </div>
+                    
 
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">7. {{$preguntas['6']->pregunta}}</p></div>
-                    <div style="" class="col-9 col-form-label">
-                        <div class="radio-inline">
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                Si
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                No
-                            </label>
-                        </div>
-                    </div>
+                    
 
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">8. {{$preguntas['7']->pregunta}}</p></div>
-                    <div style="" class="col-9 col-form-label">
-                        <div class="radio-inline">
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                Si
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">9. {{$preguntas['8']->pregunta}}</p></div>
-                    <div style="" class="col-9 col-form-label">
-                        <div class="radio-inline">
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                Si
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">10. {{$preguntas['9']->pregunta}}</p></div>
-                    <div style="" class="col-9 col-form-label">
-                        <div class="radio-inline">
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                Si
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">11. {{$preguntas['10']->pregunta}}</p></div>
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <div class="col-lg-4">
-                                <div style="padding-bottom:15px" class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-primary" type="button">A)</button>
-                                    </div>
-                                    <input type="text" class="form-control" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div style="padding-bottom:15px" class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-primary" type="button">B)</button>
-                                    </div>
-                                    <input type="text" class="form-control" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div style="padding-bottom:15px" class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-primary" type="button">C)</button>
-                                    </div>
-                                    <input type="text" class="form-control" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div style="padding-bottom:15px" class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-primary" type="button">D)</button>
-                                    </div>
-                                    <input type="text" class="form-control" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div style="padding-bottom:15px" class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-primary" type="button">E)</button>
-                                    </div>
-                                    <input type="text" class="form-control" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-primary" type="button">F)</button>
-                                    </div>
-                                    <input type="text" class="form-control" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Kit de bioseguridad-->
-                    <div style="width:100%;padding-top:30px;color:#F19600"><h3>:: Kit de Bioseguridad ::</h3></div>
-
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">12. {{$preguntas['11']->pregunta}}</p></div>
-                    <div style="" class="col-9 col-form-label">
-                        <div class="radio-inline">
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                Si
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">13. {{$preguntas['12']->pregunta}}</p></div>
-                    <div style="" class="col-9 col-form-label">
-                        <div class="radio-inline">
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                Si
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">14. {{$preguntas['13']->pregunta}}</p></div>
-                    <div style="" class="col-9 col-form-label">
-                        <div class="radio-inline">
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                Si
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">15. {{$preguntas['14']->pregunta}}</p></div>
-                    <div style="" class="col-9 col-form-label">
-                        <div class="radio-inline">
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                Si
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">16. {{$preguntas['15']->pregunta}}</p></div>
-                    <div style="" class="col-9 col-form-label">
-                        <div class="radio-inline">
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                Si
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">17. {{$preguntas['16']->pregunta}}</p></div>
-                    <div style="" class="col-9 col-form-label">
-                        <div style="width:80%"><textarea name="dir_usuario" class="form-control" rows="6"></textarea></div>
-                    </div>
-
-                    <!--CALL CENTER-->
-                    <div style="width:100%;padding-top:30px;color:#F19600"><h3>:: Call Center ::</h3></div>
-
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">18. {{$preguntas['17']->pregunta}}</p></div>
-                    <div style="" class="col-9 col-form-label">
-                        <div class="radio-inline">
-                            <label class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                Si
-                            </label>
-                            <div style="width:200px"  class="input-group">
-                                <div class="input-group-prepend">
-                                    <button class="btn btn-primary" type="button">¿Cuántas veces?</button>
-                                </div>
-                                <input type="text" class="form-control" placeholder="">
-                            </div>
-                            <label style="padding-left:40px" class="radio">
-                                <input type="radio" name="radios5">
-                                <span></span>
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">19. {{$preguntas['18']->pregunta}}</p></div>
-                    <div class="col-9 col-form-label">
-                        <div style="width:170px;padding-right:20px"  class="input-group">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-primary" type="button">Minutos:</button>
-                            </div>
-                            <input type="text" class="form-control" placeholder="">
-                        </div>
-                    </div>
-
-                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">20. {{$preguntas['19']->pregunta}}</p></div>
-                    <div class="col-9 col-form-label">
-                        <div style="padding-right:20px"  class="input-group">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-primary" type="button">1. </button>
-                            </div>
-                            <input type="text" class="form-control" placeholder="">
-                        </div>
-                    </div>
-                    <div class="col-9 col-form-label">
-                        <div style="padding-right:20px"  class="input-group">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-primary" type="button">2. </button>
-                            </div>
-                            <input type="text" class="form-control" placeholder="">
-                        </div>
-                    </div>
-                    <div class="col-9 col-form-label">
-                        <div style="padding-right:20px"  class="input-group">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-primary" type="button">3. </button>
-                            </div>
-                            <input type="text" class="form-control" placeholder="">
-                        </div>
-                    </div>
-                </div>
+                    
             </div>
         </div>
     </div>
