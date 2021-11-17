@@ -50,6 +50,8 @@ class IncidenciasController extends Controller
 
         session(['custodio' => $custodio]);
 
+        $preguntas = DB::table('tbl_preg')->get();
+
         return redirect()->route('incidencias.form');
     }
 

@@ -35,7 +35,7 @@
                             <x-auth-validation-errors class="mb-3" :errors="$errors" />
                         </div>
 
-                        @if (now()->format('Y-m-d') <= '2021-10-31')
+                        @if (now()->format('Y-m-d') >= '2021-11-16')
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link {{ old('dni_custodio') ? '' : 'active' }}" id="home-tab" data-toggle="tab" href="#home">
@@ -84,7 +84,7 @@
 
                             </div>
 
-                            @if (now()->format('Y-m-d') <= '2021-10-31')
+                            @if (now()->format('Y-m-d') >= '2021-11-16')
                                 <div class="tab-pane fade {{ old('dni_custodio') ? 'show active' : '' }}" id="profile" role="tabpanel" aria-labelledby="profile-tab" style="height: 225px;">
 
                                     <form method="POST" action="{{ route('incidencias.dni') }}" class="form" id="kt_login_custodio_form">
