@@ -26,7 +26,7 @@
                             <span class="d-block text-muted pt-2 font-size-sm">Módulo para el control y registro de custodios</span>
                         </h3>
                     </div>
-                    
+
                     <div class="card-toolbar">
                         <!--begin::Button-->
                         <a href="{{ route('admin.custodios.index') }}" class="btn btn-secondary font-weight-bolder mr-2">Limpiar filtros</a>
@@ -52,7 +52,7 @@
                                         <!--end::Svg Icon-->
                                     </span> Exportar
                                 </button>
-        
+
                                 <!--begin::Dropdown Menu-->
                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                     <!--begin::Navigation-->
@@ -60,7 +60,7 @@
                                         <li
                                             class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">
                                             Seleccione:
-                                        </li>                          
+                                        </li>
                                         <li class="navi-item">
                                             <a href="{{ route('admin.custodios.excel') }}?dni_custodio={{ $dni }}&cod_partido={{ $partido }}&cod_estado={{ $estado }}" id="btn-excel" class="navi-link">
                                                 <span class="navi-icon"><i
@@ -204,7 +204,7 @@
                                                         <a href="mailto:${data.correo2_custodio}" class="text-muted font-weight-bold text-hover-primary">{{ $custodio->correo2_custodio }}</a>
                                                     </div>
                                                     @endif
-                                                </td> 
+                                                </td>
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <div class="ml-4">
@@ -212,7 +212,7 @@
                                                             <p class="text-muted font-weight-bold text-hover-primary mb-0"><span class="text-dark-75 font-weight-bolder font-size-lg mb-0">Centro:</span> {{ $custodio->centro->nombre_centro }} - {{ $custodio->centro->nombre_sector_electoral }} - Área {{ $custodio->centro->codigo_area }}</p>
                                                             <p class="text-muted font-weight-bold text-hover-primary mb-0"><span class="text-dark-75 font-weight-bolder font-size-lg mb-0">Municipio:</span> {{ $custodio->municipio->nombre_municipio }}</p>
                                                             @endif
-                                                            <p class="text-muted font-weight-bold text-hover-primary mb-0"><span class="text-dark-75 font-weight-bolder font-size-lg mb-0">Departamento:</span> {{ $custodio->departamento->nombre_departamento }}</p>
+                                                            <p class="text-muted font-weight-bold text-hover-primary mb-0"><span class="text-dark-75 font-weight-bolder font-size-lg mb-0">Departamento:</span> {{ !empty($custodio->departamento->nombre_departamento) ? $custodio->departamento->nombre_departamento : '-' }}</p>
                                                             <p class="text-muted font-weight-bold text-hover-primary mb-0"><span class="text-dark-75 font-weight-bolder font-size-lg mb-0">Partido:</span> {{ $custodio->partido->nombre_partido }}</p>
                                                             <p class="text-muted font-weight-bold text-hover-primary mb-0"><span class="text-dark-75 font-weight-bolder font-size-lg mb-0">Tipo de Custodio:</span> {{ $custodio->tipoCustodio->tipo_custodio }}</p>
                                                         </div>
@@ -360,7 +360,7 @@
                 // var datatable = $('#table_custodios').KTDatatable({});
 
                 // Modal
-                $('#modal-eliminar-custodio').on('show.bs.modal', function(e) {				
+                $('#modal-eliminar-custodio').on('show.bs.modal', function(e) {
                     $(this).find('#idCustodio').attr('value', $(e.relatedTarget).data('id'));
                     $('.debug-url').html('Delete URL: <strong>' + $(this).find('.formEliminar').attr('action') + '</strong>');
                 });
@@ -370,7 +370,7 @@
                 $form.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const id = document.querySelector('#idCustodio').value;
-                    
+
                     $('#modal-eliminar-custodio').modal('hide');
 
                     axios.delete("{{ url('/admin/custodios/delete') }}/" + id)
@@ -436,7 +436,7 @@
                     estado = $cboEstado.value;
                     partido = $cboPartido.value;
                     mostrar = $cboMostrar.value;
-                    
+
                     validarFiltros(keycode, dni, partido, estado, mostrar);
                 });
 
@@ -445,7 +445,7 @@
                     estado = $cboEstado.value;
                     partido = $cboPartido.value;
                     mostrar = $cboMostrar.value;
-                    
+
                     validarFiltrosSelects(dni, partido, estado, mostrar);
                 });
 
@@ -454,10 +454,10 @@
                     estado = $cboEstado.value;
                     partido = $cboPartido.value;
                     mostrar = $cboMostrar.value;
-                    
+
                     validarFiltrosSelects(dni, partido, estado, mostrar);
                 });
-                    
+
                 $cboMostrar.addEventListener('change', function(e) {
                     dni = $inputDni.value;
                     estado = $cboEstado.value;
@@ -502,7 +502,7 @@
                         location.href = `${$url}?dni_custodio=${dni}&cod_partido=${partido}&cod_estado=${estado}&mostrar=${mostrar}`;
                         return;
                     }
-                    
+
                     if(keycode === 13 && dni === '' && partido === '' && estado === '') {
                         location.href = `${$url}?mostrar=${mostrar}`;
                         return;
@@ -544,7 +544,7 @@
                         location.href = `${$url}?dni_custodio=${dni}&cod_partido=${partido}&cod_estado=${estado}&mostrar=${mostrar}`;
                         return;
                     }
-                    
+
                     if(dni === '' && partido === '' && estado === '') {
                         location.href = `${$url}?mostrar=${mostrar}`;
                         return;
