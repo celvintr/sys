@@ -138,16 +138,23 @@
                         <div style="" class="col-9 col-form-label">
                             <fieldset id="group2">
                                 <div class="radio-inline">
-                                    <label class="radio">
-                                        <input type="radio" name="group[{{ $preguntas[2]->cod_preg }}]" value="Si" required>
-                                        <span></span>
-                                        Si
-                                    </label>
-                                    <label class="radio">
-                                        <input type="radio" name="group[{{ $preguntas[2]->cod_preg }}]" value="No" required>
-                                        <span></span>
-                                        No
-                                    </label>
+                                   
+                                       
+                                        <div class="form-group row">
+                                            <label class="col-form-label text-right col-lg-3 col-sm-12"> Seleccione la fecha y hora</label>
+                                            <div class="col-lg-4 col-md-9 col-sm-12">
+                                                <div class="input-group date" id="kt_datetimepicker_1" data-target-input="nearest">
+                                                    <input type="text" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_1"/>
+                                                    <div class="input-group-append" data-target="#kt_datetimepicker_1" data-toggle="datetimepicker">
+                                                        <span class="input-group-text">
+                                                            <i class="ki ki-calendar"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                     
                                 </div>
                             </fieldset>
                         </div>
@@ -192,4 +199,12 @@
             </form>
         </div>
     </div>
+
+    
+@push('scripts')
+<script>
+$('#kt_datetimepicker_1').datetimepicker();
+
+</script>
+    @endpush
 </x-guest-layout>
