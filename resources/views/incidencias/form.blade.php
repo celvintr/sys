@@ -159,6 +159,8 @@
                             </fieldset>
                         </div>
 
+                        
+
                         <div style="padding-top:10px;width:100%"><p style="font-weight:bold">4. {{$preguntas['3']->pregunta}}</p></div>
                         <div style="" class="col-9 col-form-label">
                             <div class="radio-inline">
@@ -190,6 +192,45 @@
                                 </label>
                             </div>
                         </div>
+                        <div style="width:100%;padding-top:30px;color:#F19600"><h3>:: Recepción de la Maleta Electoral en el Centro de Acopio Municipal::</h3></div>
+
+                        <div style="padding-top:10px;width:100%"><p style="font-weight:bold">6. {{$preguntas['5']->pregunta}}</p></div>
+                        <div style="" class="col-9 col-form-label">
+                            <div class="radio-inline">
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[3]->cod_preg }}]" value="Si" required>
+                                    <span></span>
+                                    Si
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[3]->cod_preg }}]" value="No" required>
+                                    <span></span>
+                                    No
+                                </label>
+                            </div>
+                        </div>
+
+                        
+
+                        <div style="padding-top:10px;width:100%"><p style="font-weight:bold">7. {{$preguntas['6']->pregunta}}</p></div>
+                        <div style="" class="col-9 col-form-label">
+                            <div class="radio-inline">
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[3]->cod_preg }}]" value="Si" required>
+                                    <span></span>
+                                    Si
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[3]->cod_preg }}]" value="No" required>
+                                    <span></span>
+                                    No
+                                </label>
+                            </div>
+                        </div>
+
+                         
+
+
                     </div>
                 </div>
 
