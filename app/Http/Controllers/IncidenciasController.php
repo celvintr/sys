@@ -16,9 +16,10 @@ use App\Models\Municipios;
 use App\Models\CentrosVotacion;
 use App\Models\CustodioCentro;
 use App\Models\TipoCustodio;
-  use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
- use DB;
+
 class IncidenciasController extends Controller
 {
 
@@ -62,7 +63,7 @@ class IncidenciasController extends Controller
 
         session(['custodio' => $custodio]);
 
-        
+
 
         return redirect()->route('incidencias.form');
     }
@@ -80,7 +81,7 @@ class IncidenciasController extends Controller
 
         $custodio = session('custodio');
         $preguntas = DB::table('tbl_preg')->orderBy('id', 'asc')->get();
-        return view('incidencias.form', compact('custodio'));
+        return view('incidencias.form', compact('custodio', 'preguntas'));
     }
 
     /**
