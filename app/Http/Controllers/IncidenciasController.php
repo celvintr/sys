@@ -16,9 +16,9 @@ use App\Models\Municipios;
 use App\Models\CentrosVotacion;
 use App\Models\CustodioCentro;
 use App\Models\TipoCustodio;
-  use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
- use DB;
+use DB;
 class IncidenciasController extends Controller
 {
 
@@ -62,7 +62,7 @@ class IncidenciasController extends Controller
 
         session(['custodio' => $custodio]);
 
-        
+
 
         return redirect()->route('incidencias.form');
     }
@@ -80,7 +80,7 @@ class IncidenciasController extends Controller
 
         $custodio = session('custodio');
         $preguntas = DB::table('tbl_preg')->orderBy('id', 'asc')->get();
-        return view('incidencias.form', compact('custodio'));
+        return view('incidencias.form', compact('custodio','preguntas'));
     }
 
     /**
@@ -91,21 +91,16 @@ class IncidenciasController extends Controller
      */
     public function guardar(Request $request)
     {
-        $validated = $request->validate([
-            'dni_custodio'     => 'required',
-            'nombre_custodio'  => 'required',
-            'correo1_custodio' => 'required',
-            'tel_movil'        => 'required',
-        ], [], [
-            'dni_custodio'     => 'DNI Custodio',
-            'nombre_custodio'  => 'Nombre',
-            'correo1_custodio' => 'Correo',
-            'tel_movil'        => 'Número de teléfono',
-        ]);
+        foreach ($request->group as $key => $value) {
+            DB::table('tbl_resp')->insert([
+                'idc_custodio' => $request->idc_custodio,
+                'cod_preg'     => $key,
+                'respuesta'    => is_array($value) ? json_encode($value) : $value,
+            ]);
+        }
 
         Custodios::where('dni_custodio', $request->dni_custodio)->update([
-        //
-            'hoja_incidencia'           => 1,
+            'hoja_incidencia' => 1,
         ]);
 
         $request->session()->flash('status', 'Incidencias enviada');
