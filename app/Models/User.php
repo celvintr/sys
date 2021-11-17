@@ -126,6 +126,11 @@ class User extends Authenticatable
         return $this->pass_usuario;
     }
 
+    public function getNombrePartido()
+    {
+        return $this->pass_usuario;
+    }
+
     public function getAvatarAttribute()
     {
         if (empty($this->foto_usuario)) {
