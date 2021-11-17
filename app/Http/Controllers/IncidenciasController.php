@@ -6,7 +6,19 @@ use App\Models\Custodios;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-
+use App\Models\Departamentos;
+use App\Models\DNI;
+use App\Models\CensoAspirante;
+use App\Models\CensoNacional;
+use App\Models\PartidosPoliticos;
+use App\Models\EstadoCustodio;
+use App\Models\Municipios;
+use App\Models\CentrosVotacion;
+use App\Models\CustodioCentro;
+use App\Models\TipoCustodio;
+  use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+ use DB;
 class IncidenciasController extends Controller
 {
 
@@ -50,7 +62,7 @@ class IncidenciasController extends Controller
 
         session(['custodio' => $custodio]);
 
-        $preguntas = DB::table('tbl_preg')->get();
+        
 
         return redirect()->route('incidencias.form');
     }
@@ -67,7 +79,7 @@ class IncidenciasController extends Controller
         }
 
         $custodio = session('custodio');
-
+        $preguntas = DB::table('tbl_preg')->orderBy('id', 'asc')->get();
         return view('incidencias.form', compact('custodio'));
     }
 
