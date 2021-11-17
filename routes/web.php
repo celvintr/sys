@@ -113,6 +113,11 @@ Route::middleware(['auth', 'estadosesion'])->group(function () {
             Route::get('/excel', [CustodiosController::class, 'descargarExcel'])->name('excel');
             Route::get('/excel/consulta', [CustodiosController::class, 'descargarConsultaExcel'])->name('excel.consulta');
         });
+        #Custodios
+        Route::prefix('incidencias')->name('incidencias.')->group(function () {
+            // Agregar custodio
+            Route::get('/', [CustodiosController::class, 'incidencias'])->name('incidencias');
+        });
 
         #BitacoraCustodios
         Route::prefix('bitacora-custodios')->name('bitacora-custodios.')->group(function () {

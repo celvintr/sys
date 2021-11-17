@@ -99,7 +99,7 @@ class IncidenciasController extends Controller
             ]);
         }
 
-        Custodios::where('dni_custodio', $request->dni_custodio)->update([
+        Custodios::where('idc_custodio', $request->idc_custodio)->update([
             'hoja_incidencia' => 1,
         ]);
 
