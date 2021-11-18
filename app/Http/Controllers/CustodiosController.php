@@ -988,6 +988,7 @@ class CustodiosController extends Controller
             }
         }
         $custodios = $custodios->where('cod_estado', 1);
+        $custodios = $custodios->where('hoja_incidencia', 1);
 
         $totalCustodios = $custodios->count();
         $custodios = $custodios->paginate($mostrar)->appends($queries);
