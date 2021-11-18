@@ -121,6 +121,15 @@ Route::middleware(['auth', 'estadosesion'])->group(function () {
             Route::get('/', [CustodiosController::class, 'incidencias'])->name('incidencias');
         });
 
+        Route::prefix('pendientes')->name('pendientes.')->group(function () {
+           
+
+            # Cust faltantes
+            Route::get('/', [CustodiosFaltantes::class, 'index'])->name('index');
+            Route::get('/data', [CustodiosFaltantes::class, 'data'])->name('data');
+            //Route::get('/pendientes/excel', [CustodiosController::class, 'pendientes-data'])->name('pendientes-excel');
+        });
+
         #BitacoraCustodios
         Route::prefix('bitacora-custodios')->name('bitacora-custodios.')->group(function () {
             // Index

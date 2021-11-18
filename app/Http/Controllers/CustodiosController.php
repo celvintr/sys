@@ -1010,9 +1010,9 @@ class CustodiosController extends Controller
     /**
      * Mostrar hoja
      */
-    public function incidencias_pdf($idc_custodio)
+    public function incidencias_pdf($dni_custodio)
     {
-        $custodio = Custodios::find($idc_custodio);
+        $custodio = Custodios::find($dni_custodio);
 
         $data = DB::table('tbl_resp')
             ->select('tbl_preg.id', 'tbl_preg.pregunta', 'tbl_resp.respuesta')
