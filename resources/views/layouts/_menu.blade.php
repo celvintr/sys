@@ -40,9 +40,9 @@
                             </i>
                             <span class="menu-text">Configuración</span>
                             <span class="menu-label">
-                                
+
                                 <i class="menu-arrow"></i>
-                            
+
                             </a>
                                 <div class="menu-submenu " kt-hidden-height="120" style="">
                                     <i class="menu-arrow"></i>
@@ -68,7 +68,7 @@
                             </i>
                             <span class="menu-text">Seguridad</span>
                             <span class="menu-label">
-                               
+
                                 <i class="menu-arrow"></i></a>
                                 <div class="menu-submenu " kt-hidden-height="120" style="">
                                     <i class="menu-arrow"></i>
@@ -85,15 +85,15 @@
                                         </li>
 
                                         @endcan
-                                        
+
                                             <li class="menu-item " aria-haspopup="true">
                                                 <a href="{{ route('admin.roles.index') }}" class="menu-link ">
                                                      <i class="menu-bullet menu-bullet-dot">
                                                         <span></span></i>
                                                     <span class="menu-text">Roles</span>
-                                                </a>                                           
+                                                </a>
                                             </li>
-                                                                                          
+
                             </ul>
 
          </div>
@@ -107,7 +107,7 @@
                 <span class="menu-text">Medios de Prueba</span>
             </a>
             </li>
-            @endcan   
+            @endcan
     </li>
 
 
@@ -139,10 +139,10 @@
                 <span></span>
             </i>
                 <span class="menu-text">Mantenimiento de estados</span></a>
-            
+
         </li>
-        @endcan  
-        @can('admin.bitacora-estados.index') 
+        @endcan
+        @can('admin.bitacora-estados.index')
                 <li class="menu-item " aria-haspopup="true">
                     <a href="{{ route('admin.bitacora-custodios.index') }}" class="menu-link ">
                         <i class="menu-bullet menu-bullet-dot">
@@ -150,8 +150,8 @@
                     </i>
                         <span class="menu-text">Bitácora de estados de custodios</span></a></li>
         </li>
-        @endcan 
-        @can('admin.custodios.create') 
+        @endcan
+        @can('admin.custodios.create')
                         <li class="menu-item " aria-haspopup="true">
                             <a href="{{ route('admin.custodios.create') }}" class="menu-link ">
                                 <i class="menu-bullet menu-bullet-dot">
@@ -160,7 +160,7 @@
                             </a>
                         </li>
                         @endcan
-                        @can('admin.custodios.consultar') 
+                        @can('admin.custodios.consultar')
                         <li class="menu-item " aria-haspopup="true">
                             <a href="{{ route('admin.custodios.consulta') }}" class="menu-link ">
                                 <i class="menu-bullet menu-bullet-dot">
@@ -168,7 +168,16 @@
                                 <span class="menu-text">Consulta de Custodio</span>
                             </a>
                         </li>
-                        @endcan 
+                        @endcan
+                        {{--  @can('admin.custodios.incidencias')  --}}
+                        <li class="menu-item " aria-haspopup="true">
+                            <a href="{{ route('admin.custodios.incidencias') }}" class="menu-link ">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span></i>
+                                <span class="menu-text">Hojas de Incidencia</span>
+                            </a>
+                        </li>
+                        {{--  @endcan  --}}
 </ul>
 </div>
 </li>

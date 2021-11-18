@@ -987,6 +987,7 @@ class CustodiosController extends Controller
                 $queries[$column] = request($column);
             }
         }
+        $custodios = $custodios->where('cod_estado', 1);
 
         $totalCustodios = $custodios->count();
         $custodios = $custodios->paginate($mostrar)->appends($queries);
@@ -1003,5 +1004,25 @@ class CustodiosController extends Controller
         ];
 
         return view('custodios.incidencias', $ctx);
+    }
+
+    /**
+     * Mostrar hoja
+     */
+    public function incidencias_pdf($idc_custodio)
+    {
+        $custodio = Custodios::find($idc_custodio);
+
+        $data = DB::table('tbl_resp')
+            ->select('tbl_preg.id', 'tbl_preg.pregunta', 'tbl_resp.respuesta')
+            ->join('tbl_preg', 'tbl_preg.cod_preg', '=', 'tbl_resp.cod_preg')
+            ->orderBy('id', 'asc')
+            ->get();
+
+        $pdf = PDF::loadView('custodios.hoja_incidencia_pdf', [
+            'data' => $data,
+            'custodio' => $custodio,
+        ]);
+        return $pdf->stream('hoja_incidencia_' . $custodio->dni_custodio . '.pdf');
     }
 }

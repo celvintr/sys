@@ -98,6 +98,8 @@ Route::middleware(['auth', 'estadosesion'])->group(function () {
             Route::post('/', [CustodiosController::class, 'store'])->name('store');
             Route::get('/show/{id_custodio}', [CustodiosController::class, 'show'])->name('show');
             Route::get('/consultas', [CustodiosController::class, 'consulta'])->name('consulta');
+            Route::get('/incidencias', [CustodiosController::class, 'incidencias'])->name('incidencias');
+            Route::get('/incidencias/pdf/{idc_custodio}', [CustodiosController::class, 'incidencias_pdf'])->name('incidencias.pdf');
 
             // Delete
             Route::delete('/delete/{id_custodio}', [CustodiosController::class, 'destroy'])->name('delete');

@@ -40,13 +40,13 @@
                 <div class="card-body">
                     <!--begin: Datatable-->
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="input-icon">
                                 <input type="text" class="form-control" placeholder="Search DNI..." id="input-dni" value="{{ request()->has('dni_custodio') ? request('dni_custodio') : ''   }}">
                                 <span><i class="flaticon2-search-1 text-muted"></i></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="d-flex align-items-center">
                                 <label class="mr-3 mb-0 d-none d-md-block">Partido Político:</label>
                                 <select class="form-control  kt-selectpicker" id="cbo-partido" tabindex="null" @if(!is_null($user->cod_partido)) disabled @endif>
@@ -69,21 +69,6 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="d-flex align-items-center">
-                                <label class="mr-3 mb-0 d-none d-md-block">Estado:</label>
-                                <select class="form-control  kt-selectpicker" id="cbo-estado" tabindex="null">
-                                    <option value="">Todos</option>
-                                    @if(!empty($estados))
-                                        @foreach($estados as $estado)
-                                            <option value="{{ $estado->cod_estado }}" @if(request()->has('cod_estado') && request('cod_estado') == $estado->cod_estado) selected @endif>{{ $estado->nombre_estado }}</option>
-                                        @endforeach
-                                    @else
-                                        <option value="">No hay opciones</option>
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
                     </div>
                     <br />
                     <div class="datatable-bordered datatable-head-custom" id="table_custodios">
@@ -98,7 +83,7 @@
                                         <th>CORREO</th>
                                         <th class="text-center">MÁS</th>
                                         <th class="text-center">ESTADO</th>
-                                        <th class="text-center">ACCIONES</th>
+                                        <th class="text-center">HOJA</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -163,9 +148,9 @@
                                                         {{ $custodio->estado->nombre_estado }}
                                                     </span>
                                                 </td>
-                                                <td>
-                                                    <a href="{{ route('admin.custodios.show', $custodio->idc_custodio) }}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2 mb-2" title="Show details">
-                                                        <i class="la la-file-pdf-o"></i> Ver Hoja
+                                                <td class="text-center">
+                                                    <a href="{{ route('admin.custodios.incidencias.pdf', $custodio->idc_custodio) }}" target="_blank" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2 mb-2" title="Show details">
+                                                        <i class="la la-file-pdf-o"></i>
                                                     </a>
                                                 </td>
                                             </tr>
@@ -349,27 +334,28 @@
             });
         </script>
     @endpush
+
     @push('styles')
-    <style>
-        .pagination li {
-            margin-left: .25rem;
-            margin-right: .25rem;
-        }
+        <style>
+            .pagination li {
+                margin-left: .25rem;
+                margin-right: .25rem;
+            }
 
-        .pagination li .page-link {
-            border-radius: .25rem;
-            border: none;
-            min-width: 2.25rem;
-            text-align: center;
-            color: #4f5464;
-        }
+            .pagination li .page-link {
+                border-radius: .25rem;
+                border: none;
+                min-width: 2.25rem;
+                text-align: center;
+                color: #4f5464;
+            }
 
-        .pagination li.active .page-link,
-        .pagination li .page-link:hover {
-            background-color: #1d97c9;
-            color: #fff;
-            font-weight: bold;
-        }
-    </style>
+            .pagination li.active .page-link,
+            .pagination li .page-link:hover {
+                background-color: #1d97c9;
+                color: #fff;
+                font-weight: bold;
+            }
+        </style>
     @endpush
 </x-app-layout>
