@@ -1017,6 +1017,7 @@ class CustodiosController extends Controller
         $data = DB::table('tbl_resp')
             ->select('tbl_preg.id', 'tbl_preg.pregunta', 'tbl_resp.respuesta')
             ->join('tbl_preg', 'tbl_preg.cod_preg', '=', 'tbl_resp.cod_preg')
+            ->where('tbl_resp.idc_custodio', $idc_custodio)
             ->orderBy('id', 'asc')
             ->get();
 
