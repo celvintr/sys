@@ -42,4 +42,10 @@ class CustodiosFaltantes extends Controller
     }
 
 
+    public function exportExcel(Request $request)
+    {
+        return Excel::download(new UsuariosExport($request->all()), 'usuarios.xlsx');
+    }
+
+
 }
