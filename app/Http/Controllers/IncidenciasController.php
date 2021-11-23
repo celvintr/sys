@@ -44,17 +44,15 @@ class IncidenciasController extends Controller
         $custodio = Custodios::where('dni_custodio', $request->dni_custodio)->first();
         if (empty($custodio->dni_custodio)) {
             throw ValidationException::withMessages([
-                'dni_custodio' => 'DNI no encontrado',
+                'dni_custodio' => 'Los sentimos DNI no encontrado',
             ]);
         }
         elseif ($custodio->hoja_incidencia == 1) {
             throw ValidationException::withMessages([
-                'dni_custodio' => 'Incidencias ya enviada',
+                'dni_custodio' => 'Hoja de incidencias ya enviada',
             ]);
         }
-        //  esta linea va a ser sustituida por la consulta en el campo de fecha OJO
-        //  aqui me imaginocs vamos a validar que la fecha este en el registro que conicida con el DNI es temporal esto aqui...
-        elseif ($request->fecha_nacimiento != $custodio->fecha_nacimiento->format('d/m/Y')) {
+         elseif ($request->fecha_nacimiento != $custodio->fecha_nacimiento->format('d/m/Y')) {
             throw ValidationException::withMessages([
                 'fecha_nacimiento' => 'Fecha de nacimiento no coincide',
             ]);

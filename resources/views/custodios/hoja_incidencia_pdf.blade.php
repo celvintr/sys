@@ -78,8 +78,7 @@
             </td>
             <td>
                 <b>Cantidad de Junta(s) que atendió:</b>
-                _____________
-            </td>
+                   </td>
         </tr>
         <tr>
             <td colspan="2">

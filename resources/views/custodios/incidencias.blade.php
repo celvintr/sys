@@ -42,7 +42,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-icon">
-                                <input type="text" class="form-control" placeholder="Search DNI..." id="input-dni" value="{{ request()->has('dni_custodio') ? request('dni_custodio') : ''   }}">
+                                <input type="text" class="form-control" placeholder="Buscar DNI..." id="input-dni" value="{{ request()->has('dni_custodio') ? request('dni_custodio') : ''   }}">
                                 <span><i class="flaticon2-search-1 text-muted"></i></span>
                             </div>
                         </div>
@@ -96,9 +96,7 @@
                                                 <td>
                                                     <span style="width: 134px;">
                                                         <div class="d-flex align-items-center">
-                                                            <div class="symbol symbol-40 symbol-sm flex-shrink-0">
-                                                                <img class="" src="{{  $custodio->avatar }}" alt="photo">
-                                                            </div>
+                                                           
                                                             <div class="ml-4">
                                                                 <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">{{ $custodio->nombre_custodio }}</div>
                                                                 <p class="text-muted font-weight-bold text-hover-primary">DNI: {{ $custodio->dni_custodio }}</p>

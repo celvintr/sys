@@ -83,6 +83,13 @@
                                     <input type="text" value="{{ !empty($custodio->centro->nombre_centro) ? $custodio->centro->nombre_centro : '-' }}" class="form-control" disabled>
                                 </div>
                             </div>
+                            <div class="col-lg-4">
+                                <label style="font-weight:bold">Cantidad de Junta(s) que atendió:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text"><i class="la la-street-view"></i></span></div>
+                                    <input type="number" value="0" name="group[{{ $preguntas[35]->cod_preg }}]" class="form-control" required>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -142,7 +149,7 @@
                                         <label class="col-form-label text-right col-lg-3 col-sm-12"> Seleccione la fecha y hora</label>
                                         <div class="col-lg-9 col-sm-12">
                                             <div class="input-group date" id="kt_datetimepicker_2" data-target-input="nearest">
-                                                <input type="text" name="group[{{ $preguntas[2]->cod_preg }}]" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_2" required />
+                                                <input type="text" name="group[{{ $preguntas[2]->cod_preg }}]" class="form-control datetimepicker-input" placeholder="Seleccione " data-target="#kt_datetimepicker_2" required />
                                                 <div class="input-group-append" data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
                                                     <span class="input-group-text">
                                                         <i class="ki ki-calendar"></i>
@@ -230,7 +237,7 @@
                                             <label class="col-form-label text-right col-lg-3 col-sm-12"> Seleccione la fecha y hora</label>
                                             <div class="col-lg-9 col-sm-12">
                                                 <div class="input-group date" id="kt_datetimepicker_9" data-target-input="nearest">
-                                                    <input type="text" name="group[{{ $preguntas[9]->cod_preg }}]" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_9" required />
+                                                    <input type="text" name="group[{{ $preguntas[9]->cod_preg }}]" class="form-control datetimepicker-input" placeholder="Seleccione " data-target="#kt_datetimepicker_9" required />
                                                     <div class="input-group-append" data-target="#kt_datetimepicker_9" data-toggle="datetimepicker">
                                                         <span class="input-group-text">
                                                             <i class="ki ki-calendar"></i>
@@ -292,7 +299,326 @@
                                 </label>
                             </div>
                         </div>
+                        <div style="padding-top:10px;width:100%"><p style="font-weight:bold"> {{$preguntas['13']->pregunta}}</p></div>
 
+                        <div style="" class="col-9 col-form-label">
+                            <fieldset id="group2">
+                                <div class="radio-inline">
+                                    <div class="form-group row">
+                                        <label class="col-form-label text-right col-lg-3 col-sm-12"> Seleccione la hora</label>
+                                        <div class="col-lg-9 col-sm-12">
+                                            <div class="input-group date"  data-target-input="nearest">
+                                                <input class="form-control" value="" id="kt_timepicker_1" readonly placeholder="Selecciona la hora" type="text"  name="group[{{ $preguntas[13]->cod_preg }}]"/>
+ 
+                                                    <span class="input-group-text">
+                                                        <i class="ki ki-calendar"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 
+                            </fieldset>
+                        </div>
+                        <div style="width:100%;padding-top:30px;color:#F19600"><h3>:: Kit de Bioseguridad ::</h3></div>    
+                        <div style="padding-top:10px;width:100%"><p style="font-weight:bold">12. {{$preguntas['14']->pregunta}}</p></div>
+                        <div style="" class="col-9 col-form-label">
+                            <div class="radio-inline">
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[14]->cod_preg }}]" value="Si" required>
+                                    <span></span>
+                                    Si
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[14]->cod_preg }}]" value="No" required>
+                                    <span></span>
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                         <div style="padding-top:10px;width:100%"><p style="font-weight:bold">13. {{$preguntas['15']->pregunta}}</p></div>
+                        <div style="" class="col-9 col-form-label">
+                            <div class="radio-inline">
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[15]->cod_preg }}]" value="Si" required>
+                                    <span></span>
+                                    Si
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[15]->cod_preg }}]" value="No" required>
+                                    <span></span>
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                        <div style="padding-top:10px;width:100%"><p style="font-weight:bold">14. {{$preguntas['16']->pregunta}}</p></div>
+                        <div style="" class="col-9 col-form-label">
+                            <div class="radio-inline">
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[16]->cod_preg }}]" value="Si" required>
+                                    <span></span>
+                                    Si
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[16]->cod_preg }}]" value="No" required>
+                                    <span></span>
+                                    No
+                                </label>
+                            </div>
+                        </div>  
+                        <div style="padding-top:10px;width:100%"><p style="font-weight:bold">15. {{$preguntas['17']->pregunta}}</p></div>
+                        <div style="" class="col-9 col-form-label">
+                            <div class="radio-inline">
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[17]->cod_preg }}]" value="Si" required>
+                                    <span></span>
+                                    Si
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[17]->cod_preg }}]" value="No" required>
+                                    <span></span>
+                                    No
+                                </label>
+                            </div>
+                        </div>    
+                        <div style="padding-top:10px;width:100%"><p style="font-weight:bold">16. {{$preguntas['18']->pregunta}}</p></div>
+                        <div style="" class="col-9 col-form-label">
+                            <div class="radio-inline">
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[18]->cod_preg }}]" value="Si" required>
+                                    <span></span>
+                                    Si
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[18]->cod_preg }}]" value="No" required>
+                                    <span></span>
+                                    No
+                                </label>
+                            </div>
+                        </div> 
+                        <div style="padding-top:10px;width:100%"><p style="font-weight:bold">17. {{$preguntas['19']->pregunta}}</p></div>
+                        <div style="" class="col-9 col-form-label">
+                            <div class="radio-inline">
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text"><i class="la la-info"></i></span></div>
+                                    <input type="text" name="group[{{ $preguntas[19]->cod_preg }}]"  class="form-control" value="">
+                                </div>
+                            </div>
+                        </div>       
+            
+                        <div style="width:100%;padding-top:30px;color:#F19600"><h3>:: Call Center
+                            ::</h3></div>    
+                            <div style="padding-top:10px;width:100%"><p style="font-weight:bold">18. {{$preguntas['20']->pregunta}}</p></div>
+                            
+                            <div class="radio-inline">
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[20]->cod_preg }}]" value="Si">
+                                    <span></span>
+                                    Si
+                                </label>
+                                <div style="padding-top:10px;width:100%"><p style="font-weight:bold">{{$preguntas['21']->pregunta}}</p></div>
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text"><i class="la la-number"></i></span></div>
+                                    <input type="number" name="group[{{ $preguntas[21]->cod_preg }}]"  class="form-control">
+                                </div>
+
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[20]->cod_preg }}]" value="No">
+                                    <span></span>
+                                    No
+                                </label>
+                             
+
+
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                               
+                            <div style="padding-top:10px;width:100%"><p style="font-weight:bold">19. {{$preguntas['22']->pregunta}}</p></div>
+                            <div style="" class="col-2 col-form-label">
+                                <div class="radio-inline">
+                                        Minutos: 
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span class="input-group-text"><i class="la la-clock"></i></span></div>
+                                            <input type="number" name="group[{{ $preguntas[22]->cod_preg }}]"  class="form-control">
+                                        </div>
+                                    
+                            </div>  
+                            </div> 
+
+
+                            <div style="padding-top:10px;width:100%"><p style="font-weight:bold">20. {{$preguntas['23']->pregunta}}</p></div>
+                            <div style="" class="col-9 col-form-label">
+                                <div class="radio-inline">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text"><i class="la la-info"></i></span></div>
+                                        <input type="text" name="group[{{ $preguntas[23]->cod_preg }}]"  class="form-control" value="Escriba su respuesta">
+                                    </div>
+                                </div>
+                            </div> 
+                            <div style="padding-top:10px;width:100%"><p style="font-weight:bold">{{$preguntas['24']->pregunta}}</p></div>
+                                      
+                            <div class="radio-inline">
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[24]->cod_preg }}]" value="Si">
+                                    <span></span>
+                                    Si
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[24]->cod_preg }}]" value="No">
+                                    <span></span>
+                                    No
+                                </label>
+                            </div>
+                            <div style="padding-top:10px;width:100%"><p style="font-weight:bold">{{$preguntas['25']->pregunta}}</p></div>
+                                      
+                            <div class="radio-inline">
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[25]->cod_preg }}]" value="Si">
+                                    <span></span>
+                                    Si
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[25]->cod_preg }}]" value="No">
+                                    <span></span>
+                                    No
+                                </label>
+                            </div>
+                            <div style="padding-top:10px;width:100%"><p style="font-weight:bold">{{$preguntas['26']->pregunta}}</p></div>
+                                      
+                            <div class="radio-inline">
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[26]->cod_preg }}]" value="Si">
+                                    <span></span>
+                                    Si
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="group[{{ $preguntas[26]->cod_preg }}]" value="No">
+                                    <span></span>
+                                    No
+                                </label>
+                            </div>
+ 
+                            <div style="width:100%;padding-top:30px;color:#F19600"><h3>:: Cierre de la Votación
+                                ::</h3></div>       
+                                
+                                <div style="padding-top:10px;width:100%"><p style="font-weight:bold">21. {{$preguntas['27']->pregunta}}</p></div>
+                                <div style="" class="col-9 col-form-label">
+                                    <fieldset id="group2">
+                                        <div class="radio-inline">
+                                                <div class="form-group row">
+                                                    <label class="col-form-label text-right col-lg-3 col-sm-12"> Seleccione la fecha y hora</label>
+                                                    <div class="col-lg-9 col-sm-12">
+                                                        <div class="input-group date" id="kt_datetimepicker_11" data-target-input="nearest">
+                                                            <input type="text" name="group[{{ $preguntas[27]->cod_preg }}]" class="form-control datetimepicker-input" placeholder="Seleccione " data-target="#kt_datetimepicker_11" required />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_11" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+        
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div style="padding-top:10px;width:100%"><p style="font-weight:bold">22. {{$preguntas['28']->pregunta}}</p></div>
+                                <div style="" class="col-9 col-form-label">
+                                    <fieldset id="group2">
+                                        <div class="radio-inline">
+                                                <div class="form-group row">
+                                                    <label class="col-form-label text-right col-lg-3 col-sm-12"> Seleccione la fecha y hora</label>
+                                                    <div class="col-lg-9 col-sm-12">
+                                                        <div class="input-group date" id="kt_datetimepicker_12" data-target-input="nearest">
+                                                            <input type="text" name="group[{{ $preguntas[28]->cod_preg }}]" class="form-control datetimepicker-input" placeholder="Seleccione " data-target="#kt_datetimepicker_12" required />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_12" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+        
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div style="width:100%;padding-top:30px;color:#F19600"><h3>:: Retorno de la Maleta Electoral y kits tecnológicos
+
+                                    ::</h3></div> 
+                                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">23. {{$preguntas['29']->pregunta}}</p></div>
+                                    <div class="radio-inline">
+                                        <label class="radio">
+                                            <input type="radio" name="group[{{ $preguntas[29]->cod_preg }}]" value="Si">
+                                            <span></span>
+                                            Si
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" name="group[{{ $preguntas[29]->cod_preg }}]" value="No">
+                                            <span></span>
+                                            No
+                                        </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span class="input-group-text"><i class="la la-number"></i></span></div>
+                                            <input type="number" name="group[{{ $preguntas[30]->cod_preg }}]"  class="form-control">
+                                        </div>
+
+                                    </div>
+
+                                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">24. {{$preguntas['31']->pregunta}}</p></div>
+                                    <div class="radio-inline">
+                                        <label class="radio">
+                                            <input type="radio" name="group[{{ $preguntas[31]->cod_preg }}]" value="Si">
+                                            <span></span>
+                                            Si
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" name="group[{{ $preguntas[31]->cod_preg }}]" value="No">
+                                            <span></span>
+                                            No
+                                        </label>
+ 
+                                    </div>
+                                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">25. {{$preguntas['32']->pregunta}}</p></div>
+                                    <div class="radio-inline">
+                                        <label class="radio">
+                                            <input type="radio" name="group[{{ $preguntas[32]->cod_preg }}]" value="Si">
+                                            <span></span>
+                                            Si
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" name="group[{{ $preguntas[32]->cod_preg }}]" value="No">
+                                            <span></span>
+                                            No
+                                        </label>
+                                           <div style="padding-top:10px;width:100%"><p style="font-weight:bold">{{$preguntas['33']->pregunta}}</p></div>
+
+                                        <div class="input-group">
+
+                                             <input type="number" name="group[{{ $preguntas[33]->cod_preg }}]"  class="form-control">
+ 
+                                    </div>
+                                    </div>
+                                    <div style="padding-top:10px;width:100%"><p style="font-weight:bold">26. {{$preguntas['34']->pregunta}}</p></div>
+                                    <div class="radio-inline">
+                                        <label class="radio">
+                                            <input type="radio" name="group[{{ $preguntas[34]->cod_preg }}]" value="Si">
+                                            <span></span>
+                                            Si
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" name="group[{{ $preguntas[34]->cod_preg }}]" value="No">
+                                            <span></span>
+                                            No
+                                        </label>
+                                        
+                                    </div>
 
                     </div>
                 </div>
@@ -308,7 +634,9 @@
 @push('scripts')
 <script>
 $('.datetimepicker-input').datetimepicker();
-
+$('#kt_timepicker_1').timepicker({
+			defaultTime: ''
+		});
 </script>
     @endpush
 </x-guest-layout>

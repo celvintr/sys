@@ -953,7 +953,7 @@ class CustodiosController extends Controller
     }
 
     /**
-     * Mostrar vista listado.
+     * Mostrar  listado de incidencias por partido;; dasboard.
      *
      * @return \Illuminate\Http\Response
      */
@@ -1010,9 +1010,9 @@ class CustodiosController extends Controller
     /**
      * Mostrar hoja
      */
-    public function incidencias_pdf($dni_custodio)
+    public function incidencias_pdf($idc_custodio)
     {
-        $custodio = Custodios::find($dni_custodio);
+        $custodio = Custodios::find($idc_custodio);
 
         $data = DB::table('tbl_resp')
             ->select('tbl_preg.id', 'tbl_preg.pregunta', 'tbl_resp.respuesta')
@@ -1021,8 +1021,16 @@ class CustodiosController extends Controller
             ->orderBy('id', 'asc')
             ->get();
 
+            $data1 = DB::table('tbl_resp')
+            ->select('tbl_preg.id', 'tbl_preg.pregunta', 'tbl_resp.respuesta')
+            ->join('tbl_preg', 'tbl_preg.cod_preg', '=', 'tbl_resp.cod_preg')
+            ->where('tbl_resp.idc_custodio', $idc_custodio)
+            ->where('nombre_del _id', $id)
+            ->get();
+
         $pdf = PDF::loadView('custodios.hoja_incidencia_pdf', [
             'data' => $data,
+            'data1' => $data1,
             'custodio' => $custodio,
         ]);
         return $pdf->stream('hoja_incidencia_' . $custodio->dni_custodio . '.pdf');
