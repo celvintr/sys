@@ -78,6 +78,7 @@
             </td>
             <td>
                 <b>Cantidad de Junta(s) que atendió:</b>
+                {{ $data1->respuesta }}
                    </td>
         </tr>
         <tr>
@@ -99,15 +100,118 @@
 
     <table>
         @foreach ($data as $key => $item)
-            <tr>
-                <td>
-                    {{ $key + 1 }}
-                    {{ $item->pregunta }}
-                </td>
-                <td style="text-align: right;">
-                    <b>{{ $item->respuesta }}</b>
-                </td>
-            </tr>
+            @if ($item->id == 13)
+                @php
+                    $arr = json_decode($item->respuesta);
+                @endphp
+                <tr>
+                    <td>
+                        {{ $key + 1 }}
+                        {{ $item->pregunta }}
+                    </td>
+                    <td style="text-align: right;">
+                        <b>{{ $arr[0] }}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        Si su respuesta es “NO”: ¿A qué hora se presentaron? <b>{{ $arr[1] }}</b>
+                    </td>
+                </tr>
+            @elseif ($item->id == 21)
+                @php
+                    $arr = json_decode($item->respuesta);
+                @endphp
+                <tr>
+                    <td>
+                        {{ $key + 1 }}
+                        {{ $item->pregunta }}
+                    </td>
+                    <td style="text-align: right;">
+                        <b>{{ $arr[0] }}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        ¿Cuántas veces? <b>{{ $arr[1] }}</b>
+                    </td>
+                </tr>
+            @elseif ($item->id == 24)
+                @php
+                    $arr = json_decode($item->respuesta);
+                @endphp
+                <tr>
+                    <td colspan="2">
+                        {{ $key + 1 }}
+                        {{ $item->pregunta }}
+                    </td>
+                </tr>
+                @foreach ($arr as $a)
+                    @if (!empty($a[0]))
+                        <tr>
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td style="width: 80%;">
+                                            {{ $a[0] }}
+                                        </td>
+                                        <td style="text-align: right;">
+                                            {{ $a[1] }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    @endif
+                @endforeach
+            @elseif ($item->id == 30)
+                @php
+                    $arr = json_decode($item->respuesta);
+                @endphp
+                <tr>
+                    <td>
+                        {{ $key + 1 }}
+                        {{ $item->pregunta }}
+                    </td>
+                    <td style="text-align: right;">
+                        <b>{{ $arr[0] }}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        ¿Cuántas maletas Electorales recibió? <b>{{ $arr[1] }}</b>
+                    </td>
+                </tr>
+            @elseif ($item->id == 33)
+                @php
+                    $arr = json_decode($item->respuesta);
+                @endphp
+                <tr>
+                    <td>
+                        {{ $key + 1 }}
+                        {{ $item->pregunta }}
+                    </td>
+                    <td style="text-align: right;">
+                        <b>{{ $arr[0] }}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        ¿Cuántos kits tecnológicos recibió? <b>{{ $arr[1] }}</b>
+                    </td>
+                </tr>
+            @else
+                <tr>
+                    <td>
+                        {{ $key + 1 }}
+                        {{ $item->pregunta }}
+                    </td>
+                    <td style="text-align: right;">
+                        <b>{{ $item->respuesta }}</b>
+                    </td>
+                </tr>
+            @endif
+
         @endforeach
     </table>
 

@@ -1018,15 +1018,16 @@ class CustodiosController extends Controller
             ->select('tbl_preg.id', 'tbl_preg.pregunta', 'tbl_resp.respuesta')
             ->join('tbl_preg', 'tbl_preg.cod_preg', '=', 'tbl_resp.cod_preg')
             ->where('tbl_resp.idc_custodio', $idc_custodio)
+            ->where('tbl_preg', 27)
             ->orderBy('id', 'asc')
             ->get();
 
-            $data1 = DB::table('tbl_resp')
+        $data1 = DB::table('tbl_resp')
             ->select('tbl_preg.id', 'tbl_preg.pregunta', 'tbl_resp.respuesta')
             ->join('tbl_preg', 'tbl_preg.cod_preg', '=', 'tbl_resp.cod_preg')
             ->where('tbl_resp.idc_custodio', $idc_custodio)
-            ->where('nombre_del _id', $id)
-            ->get();
+            ->where('tbl_preg', 27)
+            ->first();
 
         $pdf = PDF::loadView('custodios.hoja_incidencia_pdf', [
             'data' => $data,

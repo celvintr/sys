@@ -1,0 +1,5 @@
+21-11-23
+1.  Al enviar el formulario el custodio debería descargar una copia en pdf de forma automática
+2.  Lo otro era el pdf de la hoja que se ve desde el administrador
+3.  mostrar aqui el dato ingresado desde el form(agregue un input para guardar ese valor - cantidad de juntas)
+4.  las que tienen indice no tomar en cuenta la numeracion

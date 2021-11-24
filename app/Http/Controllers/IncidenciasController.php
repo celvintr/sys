@@ -19,6 +19,8 @@ use App\Models\TipoCustodio;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use DB;
+use PDF;
+
 class IncidenciasController extends Controller
 {
 
@@ -101,8 +103,35 @@ class IncidenciasController extends Controller
             'hoja_incidencia' => 1,
         ]);
 
-        $request->session()->flash('status', 'Incidencias enviada');
+        $custodio = Custodios::find($request->idc_custodio);
 
-        return redirect()->route('login');
+        $data = DB::table('tbl_resp')
+            ->select('tbl_preg.id', 'tbl_preg.pregunta', 'tbl_resp.respuesta')
+            ->join('tbl_preg', 'tbl_preg.cod_preg', '=', 'tbl_resp.cod_preg')
+            ->where('tbl_resp.idc_custodio', $request->idc_custodio)
+            ->where('tbl_preg.id', '<>', 36)
+            ->orderBy('id', 'asc')
+            ->get();
+
+        $data1 = DB::table('tbl_resp')
+            ->select('tbl_preg.id', 'tbl_preg.pregunta', 'tbl_resp.respuesta')
+            ->join('tbl_preg', 'tbl_preg.cod_preg', '=', 'tbl_resp.cod_preg')
+            ->where('tbl_resp.idc_custodio', $request->idc_custodio)
+            ->where('tbl_preg.id', 36)
+            ->first();
+
+        $pdf = PDF::loadView('custodios.hoja_incidencia_pdf', [
+            'data' => $data,
+            'data1' => $data1,
+            'custodio' => $custodio,
+        ]);
+
+        return $pdf->stream('hoja_incidencia_' . $custodio->dni_custodio . '.pdf');
+
+
+
+        // $request->session()->flash('status', 'Incidencias enviada');
+
+        // return redirect()->route('login');
     }
 }
