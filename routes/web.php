@@ -122,7 +122,7 @@ Route::middleware(['auth', 'estadosesion'])->group(function () {
         });
 
         Route::prefix('pendientes')->name('pendientes.')->group(function () {
-           
+
 
             # Cust faltantes
             Route::get('/', [CustodiosFaltantes::class, 'index'])->name('index');

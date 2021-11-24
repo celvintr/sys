@@ -32,6 +32,23 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
+     * Display the login view.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function custodiosLogin()
+    {
+        if ($position = Location::get()) {
+            // Successfully retrieved position.
+            if ($position->countryCode != 'US') abort(404);
+        } else {
+            // Failed retrieving position.
+        }
+
+        return view('auth.custodios-login');
+    }
+
+    /**
      * Handle an incoming authentication request.
      *
      * @param  \App\Http\Requests\Auth\LoginRequest  $request
